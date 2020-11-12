@@ -18,12 +18,30 @@
  */
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
-  #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
+#warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-#include "drivers/inc/stm32f446xx.h"
+#include "drivers/peripherals/inc/gpio.h"
+#include "utils.h"
+
 int main(void)
 {
-    /* Loop forever */
-	for(;;);
+  gpio_handle_t led;
+  led.p_reg = GPIOA;
+  led.cfg.number = GPIO_PIN_5;
+  led.cfg.mode = GPIO_MODE_OUT;
+  led.cfg.speed = GPIO_SPEED_FAST;
+  led.cfg.out_type = GPIO_OUT_TYPE_PUSH_PULL;
+  led.cfg.pull_mode = GPIO_PULL_MODE_NONE;
+
+  gpio_enable_peripheral_clock(led.p_reg, true);
+  gpio_init(&led);
+
+  while (1)
+  {
+    gpio_toggle_pin(&led);
+    Utils::delay();
+  }
+
+  return 0;
 }
