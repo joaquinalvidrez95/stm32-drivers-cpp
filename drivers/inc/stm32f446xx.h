@@ -8,6 +8,11 @@
 #ifndef INC_STM32F446XX_H_
 #define INC_STM32F446XX_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdint.h>
 
 /* ARM Cortex */
@@ -78,149 +83,149 @@
 
 #define SYSCFG_BASEADDR (APB2PERIPH_BASE + 0x3800u)
 
-/** Registers */
-typedef struct
-{
-	struct
+	/** Registers */
+	typedef struct
 	{
-		volatile unsigned int CPHA : 1;
-		volatile unsigned int CPOL : 1;
-		volatile unsigned int MSTR : 1;
-		volatile unsigned int BR : 3;
-		volatile unsigned int SPE : 1;
-		volatile unsigned int LSBFIRST : 1;
-		volatile unsigned int SSI : 1;
-		volatile unsigned int SSM : 1;
-		volatile unsigned int RXONLY : 1;
-		volatile unsigned int DFF : 1;
-		volatile unsigned int CRCNEXT : 1;
-		volatile unsigned int CRCEN : 1;
-		volatile unsigned int BIDIOE : 1;
-		volatile unsigned int BIDIMODE : 1;
-		unsigned int reserved : 16;
-	} CR1;
-	struct
+		struct
+		{
+			volatile unsigned int CPHA : 1;
+			volatile unsigned int CPOL : 1;
+			volatile unsigned int MSTR : 1;
+			volatile unsigned int BR : 3;
+			volatile unsigned int SPE : 1;
+			volatile unsigned int LSBFIRST : 1;
+			volatile unsigned int SSI : 1;
+			volatile unsigned int SSM : 1;
+			volatile unsigned int RXONLY : 1;
+			volatile unsigned int DFF : 1;
+			volatile unsigned int CRCNEXT : 1;
+			volatile unsigned int CRCEN : 1;
+			volatile unsigned int BIDIOE : 1;
+			volatile unsigned int BIDIMODE : 1;
+			unsigned int reserved : 16;
+		} CR1;
+		struct
+		{
+			volatile unsigned int RXDMAEN : 1;
+			volatile unsigned int TXDMAEN : 1;
+			volatile unsigned int SSOE : 1;
+			unsigned int reserved_0 : 1;
+			volatile unsigned int FRF : 1;
+			volatile unsigned int ERRIE : 1;
+			volatile unsigned int RXNEIE : 1;
+			volatile unsigned int TXEIE : 1;
+			unsigned int reserved_1 : 24;
+		} CR2;
+
+		struct
+		{
+			volatile unsigned int RXNE : 1;
+			volatile unsigned int TXE : 1;
+			volatile unsigned int CHSIDE : 1;
+			volatile unsigned int UDR : 1;
+			volatile unsigned int CRCERR : 1;
+			volatile unsigned int MODF : 1;
+			volatile unsigned int OVR : 1;
+			volatile unsigned int BSY : 1;
+			volatile unsigned int FRE : 1;
+			unsigned int reserved : 23;
+		} SR;
+
+		volatile uint32_t DR;
+		volatile uint32_t CRCPR;
+		volatile uint32_t RXCRCR;
+		volatile uint32_t TXCRCR;
+		volatile uint32_t I2SCFGR;
+		volatile uint32_t I2SPR;
+	} Spi_reg_t;
+
+	typedef struct
 	{
-		volatile unsigned int RXDMAEN : 1;
-		volatile unsigned int TXDMAEN : 1;
-		volatile unsigned int SSOE : 1;
-		unsigned int reserved_0 : 1;
-		volatile unsigned int FRF : 1;
-		volatile unsigned int ERRIE : 1;
-		volatile unsigned int RXNEIE : 1;
-		volatile unsigned int TXEIE : 1;
-		unsigned int reserved_1 : 24;
-	} CR2;
+		uint16_t CR1;
+		const uint16_t _unused_0;
+		uint16_t CR2;
+		const uint16_t _unused_1;
+		uint16_t OAR1;
+		const uint16_t _unused_2;
+		uint16_t OAR2;
+		const uint16_t _unused_3;
+		uint8_t DR;
+		const uint8_t _unused_4;
+		const uint16_t _unused_5;
+		uint16_t SR1;
+		const uint16_t _unused_6;
+		uint16_t SR2;
+		const uint16_t _unused_7;
+		uint16_t CCR;
+		const uint16_t _unused_8;
+		uint16_t TRISE;
+		const uint16_t _unused_9;
+		uint16_t FLTR;
+		const uint16_t _unused_10;
+	} i2c_reg_t;
 
-	struct
+	typedef struct
 	{
-		volatile unsigned int RXNE : 1;
-		volatile unsigned int TXE : 1;
-		volatile unsigned int CHSIDE : 1;
-		volatile unsigned int UDR : 1;
-		volatile unsigned int CRCERR : 1;
-		volatile unsigned int MODF : 1;
-		volatile unsigned int OVR : 1;
-		volatile unsigned int BSY : 1;
-		volatile unsigned int FRE : 1;
-		unsigned int reserved : 23;
-	} SR;
+		volatile uint32_t MODER;
+		volatile uint32_t OTYPER;
+		volatile uint32_t OSPEEDER;
+		volatile uint32_t PUPDR;
+		volatile uint32_t IDR;
+		volatile uint32_t ODR;
+		volatile uint32_t BSRR;
+		volatile uint32_t LCKR;
+		volatile uint32_t AFR[2];
+	} gpio_reg_t;
 
-	volatile uint32_t DR;
-	volatile uint32_t CRCPR;
-	volatile uint32_t RXCRCR;
-	volatile uint32_t TXCRCR;
-	volatile uint32_t I2SCFGR;
-	volatile uint32_t I2SPR;
-} Spi_reg_t;
+	typedef struct
+	{
+		volatile uint32_t CR;
+		volatile uint32_t PLL_CFGR;
+		volatile uint32_t CFGR;
+		volatile uint32_t CIR;
+		volatile uint32_t AHB_RSTR[3];
+		uint32_t RESERVED1;
+		volatile uint32_t APB_RSTR[2];
+		uint32_t RESERVED2[2];
+		volatile uint32_t AHBENR[3];
+		uint32_t RESERVED3;
+		volatile uint32_t APBENR[2];
+		uint32_t RESERVED4[2];
+		volatile uint32_t AHB_LPENR[3];
+		uint32_t RESERVED5;
+		volatile uint32_t APB_LPENR[2];
+		uint32_t RESERVED6[2];
+		volatile uint32_t BDCR;
+		volatile uint32_t CSR;
+		uint32_t RESERVED7[2];
+		volatile uint32_t SS_CGR;
+		volatile uint32_t PLLI2_SCFGR;
+		volatile uint32_t PLL_SAI_CFGR;
+		volatile uint32_t DCK_CFGR;
+		volatile uint32_t CK_GATENR;
+		volatile uint32_t DCK_CFGR2;
+	} rcc_reg_t;
 
-typedef struct
-{
-	uint16_t CR1;
-	const uint16_t _unused_0;
-	uint16_t CR2;
-	const uint16_t _unused_1;
-	uint16_t OAR1;
-	const uint16_t _unused_2;
-	uint16_t OAR2;
-	const uint16_t _unused_3;
-	uint8_t DR;
-	const uint8_t _unused_4;
-	const uint16_t _unused_5;
-	uint16_t SR1;
-	const uint16_t _unused_6;
-	uint16_t SR2;
-	const uint16_t _unused_7;
-	uint16_t CCR;
-	const uint16_t _unused_8;
-	uint16_t TRISE;
-	const uint16_t _unused_9;
-	uint16_t FLTR;
-	const uint16_t _unused_10;
-} i2c_reg_t;
+	typedef struct
+	{
+		volatile uint32_t IMR;
+		volatile uint32_t EMR;
+		volatile uint32_t RTSR;
+		volatile uint32_t FTSR;
+		volatile uint32_t SWIER;
+		volatile uint32_t PR;
+	} exti_reg_t;
 
-typedef struct
-{
-	volatile uint32_t MODER;
-	volatile uint32_t OTYPER;
-	volatile uint32_t OSPEEDER;
-	volatile uint32_t PUPDR;
-	volatile uint32_t IDR;
-	volatile uint32_t ODR;
-	volatile uint32_t BSRR;
-	volatile uint32_t LCKR;
-	volatile uint32_t AFR[2];
-} gpio_reg_t;
-
-typedef struct
-{
-	volatile uint32_t CR;
-	volatile uint32_t PLL_CFGR;
-	volatile uint32_t CFGR;
-	volatile uint32_t CIR;
-	volatile uint32_t AHB_RSTR[3];
-	uint32_t RESERVED1;
-	volatile uint32_t APB_RSTR[2];
-	uint32_t RESERVED2[2];
-	volatile uint32_t AHBENR[3];
-	uint32_t RESERVED3;
-	volatile uint32_t APBENR[2];
-	uint32_t RESERVED4[2];
-	volatile uint32_t AHB_LPENR[3];
-	uint32_t RESERVED5;
-	volatile uint32_t APB_LPENR[2];
-	uint32_t RESERVED6[2];
-	volatile uint32_t BDCR;
-	volatile uint32_t CSR;
-	uint32_t RESERVED7[2];
-	volatile uint32_t SS_CGR;
-	volatile uint32_t PLLI2_SCFGR;
-	volatile uint32_t PLL_SAI_CFGR;
-	volatile uint32_t DCK_CFGR;
-	volatile uint32_t CK_GATENR;
-	volatile uint32_t DCK_CFGR2;
-} rcc_reg_t;
-
-typedef struct
-{
-	volatile uint32_t IMR;
-	volatile uint32_t EMR;
-	volatile uint32_t RTSR;
-	volatile uint32_t FTSR;
-	volatile uint32_t SWIER;
-	volatile uint32_t PR;
-} exti_reg_t;
-
-typedef struct
-{
-	volatile uint32_t MEMRMP;
-	volatile uint32_t PMC;
-	volatile uint32_t EXTICR[4];
-	uint32_t reserved1[2];
-	volatile uint32_t CMPCR;
-	uint32_t reserved2[2];
-	volatile uint32_t CFGR;
-} Syscfg_reg_t;
+	typedef struct
+	{
+		volatile uint32_t MEMRMP;
+		volatile uint32_t PMC;
+		volatile uint32_t EXTICR[4];
+		uint32_t reserved1[2];
+		volatile uint32_t CMPCR;
+		uint32_t reserved2[2];
+		volatile uint32_t CFGR;
+	} Syscfg_reg_t;
 
 #define GPIOA ((gpio_reg_t *const)GPIOA_BASEADDR)
 #define GPIOB ((gpio_reg_t *const)GPIOB_BASEADDR)
@@ -286,18 +291,18 @@ typedef struct
 /** Enables SYSCFG */
 #define SYSCFG_PCLK_EN() (RCC->APBENR[1] |= (1u << 14u))
 
-/** Resets peripheral */
-typedef enum
-{
-	Gpio_reset_port_a = 0u,
-	Gpio_reset_port_b,
-	Gpio_reset_port_c,
-	Gpio_reset_port_d,
-	Gpio_reset_port_e,
-	Gpio_reset_port_f,
-	Gpio_reset_port_g,
-	Gpio_reset_port_h,
-} gpio_reset_t;
+	/** Resets peripheral */
+	typedef enum
+	{
+		Gpio_reset_port_a = 0u,
+		Gpio_reset_port_b,
+		Gpio_reset_port_c,
+		Gpio_reset_port_d,
+		Gpio_reset_port_e,
+		Gpio_reset_port_f,
+		Gpio_reset_port_g,
+		Gpio_reset_port_h,
+	} gpio_reset_t;
 
 #define GPIOX_REG_RESET(port)                \
 	do                                       \
@@ -337,5 +342,10 @@ typedef enum
 
 #define SET ENABLE
 #define RESET DISABLE
-uint8_t Driver_gpio_address_to_code(gpio_reg_t *);
+	uint8_t Driver_gpio_address_to_code(gpio_reg_t *);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* INC_STM32F446XX_H_ */
