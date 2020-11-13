@@ -6,7 +6,8 @@
  */
 
 #include "drivers/peripherals/inc/gpio.h"
-#include <stddef.h>
+
+#include <cstddef>
 
 /**
  * @brief 
@@ -272,12 +273,11 @@ void gpio_toggle_pin(gpio_handle_t *p_handle)
  */
 void gpio_config_irq(nvic_irq_num_t irq_number, bool b_enable)
 {
-/* TODO: Get IRQ automatically */
+    /* TODO: Get IRQ automatically */
 }
 
 void gpio_config_irq_priority(nvic_irq_num_t irq_number, nvic_irq_prio_t priority)
 {
-  
 }
 
 /**
@@ -293,3 +293,90 @@ void gpio_irq_handling(gpio_pin_t pin)
         EXTI->PR |= 1 << pin;
     }
 }
+
+Gpio_handle::Gpio_handle(const gpio_cfg_t &cfg)
+    : m_cfg{cfg},
+      mp_reg{Gpio_handle::p_registers[static_cast<std::size_t>(m_cfg.channel)]}
+{
+}
+
+void Gpio_handle::init()
+{
+    auto *const p_reg{Gpio_handle::p_registers[static_cast<std::size_t>(m_cfg.channel)]};
+    gpio_enable_peripheral_clock(p_reg, true);
+
+    /* TODO: Check if memset */
+    /* Configures mode. */
+    if (m_cfg.mode <= GPIO_MODE_ANALOG)
+    {
+        p_reg->MODER &= ~(0x3u << (2u * m_cfg.number));
+        p_reg->MODER |= m_cfg.mode << (2u * m_cfg.number);
+    }
+    else
+    {
+        switch (m_cfg.mode)
+        {
+        case GPIO_MODE_INTERRUPT_FT:
+            EXTI->FTSR |= 1u << m_cfg.number;
+            EXTI->RTSR &= ~(1u << m_cfg.number);
+            break;
+
+        case GPIO_MODE_INTERRUPT_RT:
+            EXTI->RTSR |= 1u << m_cfg.number;
+            EXTI->FTSR &= ~(1u << m_cfg.number);
+            break;
+
+        case GPIO_MODE_INTERRUPT_RFT:
+            EXTI->RTSR |= 1u << m_cfg.number;
+            EXTI->FTSR |= 1u << m_cfg.number;
+            break;
+
+        default:
+            break;
+        }
+        /* Configures the GPIO port selection in SYSCFG_EXTICR */
+
+        SYSCFG_PCLK_EN();
+        size_t index = m_cfg.number / 4u;
+        uint8_t section = m_cfg.number % 4u;
+        SYSCFG->EXTICR[index] = (uint32_t)Driver_gpio_address_to_code(p_reg) << (section * 4u);
+        EXTI->IMR |= 1u << m_cfg.number;
+    }
+
+    /* Configures speed. */
+    p_reg->OSPEEDER &= ~(0x3u << (2 * m_cfg.number));
+    p_reg->OSPEEDER |= m_cfg.speed << (2 * m_cfg.number);
+
+    /* Configures pupd. */
+    p_reg->PUPDR &= ~(0x3u << (2 * m_cfg.number));
+    p_reg->PUPDR |= m_cfg.pull_mode << (2 * m_cfg.number);
+
+    /* Configures opt type. */
+    p_reg->OTYPER &= ~(0x1u << m_cfg.number);
+    p_reg->OTYPER |= (uint32_t)m_cfg.out_type << (uint32_t)m_cfg.number;
+
+    /* Configures alternate function */
+    if (m_cfg.mode == GPIO_MODE_ALT_FN)
+    {
+        const uint32_t temp1 = m_cfg.number / 8u;
+        const uint32_t tmp2 = m_cfg.number % 8u;
+        p_reg->AFR[temp1] &= ~(0xFu << (4 * tmp2));
+        p_reg->AFR[temp1] |= m_cfg.alt_fun_mode << (4 * tmp2);
+    }
+}
+
+void Gpio_handle::toggle_pin()
+{
+    mp_reg->ODR ^= 1u << m_cfg.number;
+}
+
+gpio_reg_t *const Gpio_handle::p_registers[static_cast<std::size_t>(Gpio_channel::total)] = {
+    GPIOA,
+    GPIOB,
+    GPIOC,
+    GPIOD,
+    GPIOE,
+    GPIOF,
+    GPIOG,
+    GPIOH,
+};

@@ -14,9 +14,23 @@ extern "C"
 #endif
 
 #include <stdbool.h>
+#include <cstddef>
 
 #include "drivers/inc/stm32f446xx.h"
 #include "drivers/cortex/inc/nvic.h"
+
+    enum class Gpio_channel
+    {
+        a,
+        b,
+        c,
+        d,
+        e,
+        f,
+        g,
+        h,
+        total
+    };
 
     typedef enum
     {
@@ -107,6 +121,7 @@ extern "C"
         gpio_pull_mode_t pull_mode;
         gpio_out_type_t out_type;
         uint8_t alt_fun_mode;
+        Gpio_channel channel;
     } gpio_cfg_t;
 
     typedef struct
@@ -135,6 +150,19 @@ extern "C"
     void gpio_config_irq(nvic_irq_num_t irq_number, bool b_enable);
     void gpio_config_irq_priority(nvic_irq_num_t irq_number, nvic_irq_prio_t priority);
     void gpio_irq_handling(gpio_pin_t pin);
+
+    class Gpio_handle
+    {
+    public:
+        Gpio_handle(const gpio_cfg_t &cfg);
+        void init();
+        void toggle_pin();
+
+    private:
+        const gpio_cfg_t &m_cfg;
+        gpio_reg_t *const mp_reg = nullptr;
+        static gpio_reg_t *const p_registers[static_cast<std::size_t>(Gpio_channel::total)];
+    };
 
 #ifdef __cplusplus
 }

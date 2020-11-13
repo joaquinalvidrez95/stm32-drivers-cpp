@@ -26,22 +26,21 @@
 
 int main(void)
 {
-  gpio_handle_t led;
-  led.p_reg = GPIOA;
-  led.cfg.number = GPIO_PIN_5;
-  led.cfg.mode = GPIO_MODE_OUT;
-  led.cfg.speed = GPIO_SPEED_FAST;
-  led.cfg.out_type = GPIO_OUT_TYPE_PUSH_PULL;
-  led.cfg.pull_mode = GPIO_PULL_MODE_NONE;
-
-  gpio_enable_peripheral_clock(led.p_reg, true);
-  gpio_init(&led);
-
+  const gpio_cfg_t cfg{
+      .number = GPIO_PIN_5,
+      .mode = GPIO_MODE_OUT,
+      .speed = GPIO_SPEED_FAST,
+      .pull_mode = GPIO_PULL_MODE_NONE,
+      .out_type = GPIO_OUT_TYPE_PUSH_PULL,
+      .alt_fun_mode = GPIO_ALTERNATE_FUNCTION_0,
+      .channel = Gpio_channel::a,
+  };
+  Gpio_handle h{cfg};
+  h.init();
   while (1)
   {
-    gpio_toggle_pin(&led);
+    h.toggle_pin();
     Utils::delay();
   }
-
   return 0;
 }
