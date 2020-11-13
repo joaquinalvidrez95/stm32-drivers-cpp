@@ -26,21 +26,23 @@
 
 int main(void)
 {
-  const gpio_cfg_t cfg{
-      .number = GPIO_PIN_5,
-      .mode = GPIO_MODE_OUT,
-      .speed = GPIO_SPEED_FAST,
-      .pull_mode = GPIO_PULL_MODE_NONE,
-      .out_type = GPIO_OUT_TYPE_PUSH_PULL,
-      .alt_fun_mode = GPIO_ALTERNATE_FUNCTION_0,
-      .channel = Gpio_channel::a,
+#if 1
+  const drivers::peripherals::gpio::Configuration cfg{
+      .number = drivers::peripherals::gpio::GPIO_PIN_5,
+      .mode = drivers::peripherals::gpio::Mode::out,
+      .speed = drivers::peripherals::gpio::GPIO_SPEED_FAST,
+      .pull_mode = drivers::peripherals::gpio::GPIO_PULL_MODE_NONE,
+      .out_type = drivers::peripherals::gpio::GPIO_OUT_TYPE_PUSH_PULL,
+      .alt_fun_mode = drivers::peripherals::gpio::GPIO_ALTERNATE_FUNCTION_0,
+      .channel = drivers::peripherals::gpio::Channel::a,
   };
-  Gpio_handle h{cfg};
+  drivers::peripherals::gpio::Gpio_handle h{cfg};
   h.init();
   while (1)
   {
     h.toggle_pin();
     Utils::delay();
   }
+#endif
   return 0;
 }
