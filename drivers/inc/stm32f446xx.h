@@ -250,27 +250,6 @@ extern "C"
 #define I2C2 ((volatile i2c_reg_t *)I2C2_BASEADDR)
 #define I2C3 ((volatile i2c_reg_t *)I2C3_BASEADDR)
 
-/* TODO: Move to RCC module */
-/** Enables GPIOx */
-#define GPIOA_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 0u))
-#define GPIOB_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 1u))
-#define GPIOC_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 2u))
-#define GPIOD_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 3u))
-#define GPIOE_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 4u))
-#define GPIOF_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 5u))
-#define GPIOG_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 6u))
-#define GPIOH_PCLCK_EN() (RCC->AHBENR[0] |= (1u << 7u))
-
-/** Disables GPIOx */
-#define GPIOA_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 0u))
-#define GPIOB_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 1u))
-#define GPIOC_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 2u))
-#define GPIOD_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 3u))
-#define GPIOE_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 4u))
-#define GPIOF_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 5u))
-#define GPIOG_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 6u))
-#define GPIOH_PCLCK_DI() (RCC->AHBENR[0] &= ~(1u << 7u))
-
 /** Enables SPIx */
 #define SPI1_PCLK_EN() (RCC->APBENR[1] |= (1u << 12u))
 #define SPI2_PCLK_EN() (RCC->APBENR[0] |= (1u << 14u))

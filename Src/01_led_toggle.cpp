@@ -21,20 +21,19 @@
 #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-#include "drivers/peripherals/inc/gpio.h"
+#include "drivers/peripherals/gpio/inc/gpio.h"
 #include "utils.h"
 
 int main(void)
 {
-#if 1
   const drivers::peripherals::gpio::Configuration cfg{
-      .number = drivers::peripherals::gpio::GPIO_PIN_5,
-      .mode = drivers::peripherals::gpio::Mode::out,
-      .speed = drivers::peripherals::gpio::GPIO_SPEED_FAST,
-      .pull_mode = drivers::peripherals::gpio::GPIO_PULL_MODE_NONE,
-      .out_type = drivers::peripherals::gpio::GPIO_OUT_TYPE_PUSH_PULL,
-      .alt_fun_mode = drivers::peripherals::gpio::GPIO_ALTERNATE_FUNCTION_0,
-      .channel = drivers::peripherals::gpio::Channel::a,
+      .number = drivers::peripherals::gpio::Configuration::GPIO_PIN_5,
+      .mode = drivers::peripherals::gpio::Configuration::Mode::out,
+      .speed = drivers::peripherals::gpio::Configuration::GPIO_SPEED_FAST,
+      .pull_mode = drivers::peripherals::gpio::Configuration::GPIO_PULL_MODE_NONE,
+      .out_type = drivers::peripherals::gpio::Configuration::GPIO_OUT_TYPE_PUSH_PULL,
+      .alt_fun_mode = drivers::peripherals::gpio::Configuration::GPIO_ALTERNATE_FUNCTION_0,
+      .channel = drivers::peripherals::gpio::Configuration::Channel::a,
   };
   drivers::peripherals::gpio::Gpio_handle h{cfg};
   h.init();
@@ -43,6 +42,5 @@ int main(void)
     h.toggle_pin();
     Utils::delay();
   }
-#endif
   return 0;
 }
