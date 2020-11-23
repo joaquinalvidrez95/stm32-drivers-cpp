@@ -50,80 +50,74 @@ extern "C"
                         rising_falling_transition_interrupt = 6u,
                     };
 
-                    typedef enum
+                    enum class Out_type : uint32_t
                     {
-                        GPIO_OUT_TYPE_PUSH_PULL = 0u,
-                        GPIO_OUT_TYPE_OPEN_DRAIN = 1u,
-                    } gpio_out_type_t;
+                        push_pull = 0u,
+                        open_drain = 1u,
+                    };
 
-                    typedef enum
+                    enum class Speed : uint32_t
                     {
-                        GPIO_SPEED_LOW = 0u,
-                        GPIO_SPEED_MED = 1u,
-                        GPIO_SPEED_FAST = 2u,
-                        GPIO_SPEED_HIGH = 3u,
-                    } gpio_speed_t;
+                        low = 0u,
+                        medium = 1u,
+                        fast = 2u,
+                        high = 3u,
+                    };
 
-                    typedef enum
+                    enum class Pull_mode : uint32_t
                     {
-                        GPIO_PULL_MODE_NONE = 0u,
-                        GPIO_PULL_MODE_UP = 1u,
-                        GPIO_PULL_MODE_DOWN = 2u,
-                    } gpio_pull_mode_t;
+                        none = 0u,
+                        up = 1u,
+                        down = 2u,
+                    };
 
-                    typedef enum
+                    enum class Pin_num : uint32_t
                     {
-                        GPIO_PIN_0 = 0u,
-                        GPIO_PIN_1,
-                        GPIO_PIN_2,
-                        GPIO_PIN_3,
-                        GPIO_PIN_4,
-                        GPIO_PIN_5,
-                        GPIO_PIN_6,
-                        GPIO_PIN_7,
-                        GPIO_PIN_8,
-                        GPIO_PIN_9,
-                        GPIO_PIN_10,
-                        GPIO_PIN_11,
-                        GPIO_PIN_12,
-                        GPIO_PIN_13,
-                        GPIO_PIN_14,
-                        GPIO_PIN_15,
-                    } gpio_pin_t;
+                        zero = 0u,
+                        one,
+                        two,
+                        three,
+                        four,
+                        five,
+                        six,
+                        seven,
+                        eight,
+                        nine,
+                        ten,
+                        eleven,
+                        twelve,
+                        thirteen,
+                        fourteen,
+                        fiveteen,
+                    };
 
-                    typedef enum
+                    enum class Alternate_function : uint32_t
                     {
-                        GPIO_BUTTON_STATE_LOW = 0u,
-                        GPIO_BUTTON_STATE_HIGH = 1u,
-                    } gpio_button_state_t;
+                        zero = 0u,
+                        one,
+                        two,
+                        three,
+                        four,
+                        five,
+                        six,
+                        seven,
+                        eight,
+                        nine,
+                        ten,
+                        eleven,
+                        twelve,
+                        thirteen,
+                        fourteen,
+                        fiveteen,
+                    };
 
-                    typedef enum
-                    {
-                        GPIO_ALTERNATE_FUNCTION_0 = 0u,
-                        GPIO_ALTERNATE_FUNCTION_1,
-                        GPIO_ALTERNATE_FUNCTION_2,
-                        GPIO_ALTERNATE_FUNCTION_3,
-                        GPIO_ALTERNATE_FUNCTION_4,
-                        GPIO_ALTERNATE_FUNCTION_5,
-                        GPIO_ALTERNATE_FUNCTION_6,
-                        GPIO_ALTERNATE_FUNCTION_7,
-                        GPIO_ALTERNATE_FUNCTION_8,
-                        GPIO_ALTERNATE_FUNCTION_9,
-                        GPIO_ALTERNATE_FUNCTION_10,
-                        GPIO_ALTERNATE_FUNCTION_11,
-                        GPIO_ALTERNATE_FUNCTION_12,
-                        GPIO_ALTERNATE_FUNCTION_13,
-                        GPIO_ALTERNATE_FUNCTION_14,
-                        GPIO_ALTERNATE_FUNCTION_15,
-                    } gpio_alternate_function_t;
-
-                    gpio_pin_t pin_num;
-                    Mode mode;
-                    gpio_speed_t speed;
-                    gpio_pull_mode_t pull_mode;
-                    gpio_out_type_t out_type;
-                    gpio_alternate_function_t alt_fun_mode;
                     Channel channel;
+                    Pin_num pin_num;
+                    Mode mode;
+                    Out_type out_type;
+                    Pull_mode pull_mode;
+                    Speed speed;
+                    Alternate_function alt_fun_mode;
                 };
             } // namespace gpio
         }     // namespace peripherals

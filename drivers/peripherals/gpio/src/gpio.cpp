@@ -33,7 +33,7 @@ namespace drivers
                 /* Configures mode. */
                 if (m_cfg.mode <= Configuration::Mode::analog)
                 {
-                    mp_reg->moder &= ~(0x3u << (2u * m_cfg.pin_num));
+                    mp_reg->moder &= ~(0x3u << (2u * static_cast<uint32_t>(m_cfg.pin_num)));
                     mp_reg->moder |= static_cast<uint32_t>(m_cfg.mode) << (2u * static_cast<uint32_t>(m_cfg.pin_num));
                 }
                 else
@@ -42,18 +42,18 @@ namespace drivers
                     switch (m_cfg.mode)
                     {
                     case Configuration::Mode::falling_transition_interrupt:
-                        EXTI->ftsr |= 1u << m_cfg.pin_num;
-                        EXTI->rtsr &= ~(1u << m_cfg.pin_num);
+                        EXTI->ftsr |= 1u << static_cast<uint32_t>(m_cfg.pin_num);
+                        EXTI->rtsr &= ~(1u << static_cast<uint32_t>(m_cfg.pin_num));
                         break;
 
                     case Configuration::Mode::rising_transition_interrupt:
-                        EXTI->rtsr |= 1u << m_cfg.pin_num;
-                        EXTI->ftsr &= ~(1u << m_cfg.pin_num);
+                        EXTI->rtsr |= 1u << static_cast<uint32_t>(m_cfg.pin_num);
+                        EXTI->ftsr &= ~(1u << static_cast<uint32_t>(m_cfg.pin_num));
                         break;
 
                     case Configuration::Mode::rising_falling_transition_interrupt:
-                        EXTI->rtsr |= 1u << m_cfg.pin_num;
-                        EXTI->ftsr |= 1u << m_cfg.pin_num;
+                        EXTI->rtsr |= 1u << static_cast<uint32_t>(m_cfg.pin_num);
+                        EXTI->ftsr |= 1u << static_cast<uint32_t>(m_cfg.pin_num);
                         break;
 
                     default:
@@ -63,32 +63,32 @@ namespace drivers
                     /* Configures the GPIO port selection in SYSCFG_EXTICR */
                     SYSCFG_PCLK_EN();
                     constexpr uint32_t num_bits_per_section{4u};
-                    const uint32_t idx = m_cfg.pin_num / num_bits_per_section;
-                    const uint32_t section = m_cfg.pin_num % num_bits_per_section;
+                    const uint32_t idx = static_cast<uint32_t>(m_cfg.pin_num) / num_bits_per_section;
+                    const uint32_t section = static_cast<uint32_t>(m_cfg.pin_num) % num_bits_per_section;
                     SYSCFG->exticr[idx] = static_cast<uint32_t>(m_cfg.channel) << (section * num_bits_per_section);
-                    EXTI->imr |= 1u << m_cfg.pin_num;
+                    EXTI->imr |= 1u << static_cast<uint32_t>(m_cfg.pin_num);
                 }
 
                 /* Configures speed. */
-                mp_reg->ospeeder &= ~(0x3u << (2 * m_cfg.pin_num));
-                mp_reg->ospeeder |= m_cfg.speed << (2 * m_cfg.pin_num);
+                mp_reg->ospeeder &= ~(0x3u << (2 * static_cast<uint32_t>(m_cfg.pin_num)));
+                mp_reg->ospeeder |= static_cast<uint32_t>(m_cfg.speed) << (2 * static_cast<uint32_t>(m_cfg.pin_num));
 
                 /* Configures pupd. */
-                mp_reg->pupdr &= ~(0x3u << (2 * m_cfg.pin_num));
-                mp_reg->pupdr |= m_cfg.pull_mode << (2 * m_cfg.pin_num);
+                mp_reg->pupdr &= ~(0x3u << (2 * static_cast<uint32_t>(m_cfg.pin_num)));
+                mp_reg->pupdr |= static_cast<uint32_t>(m_cfg.pull_mode) << (2 * static_cast<uint32_t>(m_cfg.pin_num));
 
                 /* Configures opt type. */
-                mp_reg->otyper &= ~(0x1u << m_cfg.pin_num);
-                mp_reg->otyper |= (uint32_t)m_cfg.out_type << (uint32_t)m_cfg.pin_num;
+                mp_reg->otyper &= ~(0x1u << static_cast<uint32_t>(m_cfg.pin_num));
+                mp_reg->otyper |= static_cast<uint32_t>(m_cfg.out_type) << static_cast<uint32_t>(m_cfg.pin_num);
 
                 /* Configures alternate function */
                 if (Configuration::Mode::alternate_function == m_cfg.mode)
                 {
                     /* TODO: Refactor */
-                    const uint32_t tmp1 = m_cfg.pin_num / 8u;
-                    const uint32_t tmp2 = m_cfg.pin_num % 8u;
+                    const uint32_t tmp1 = static_cast<uint32_t>(m_cfg.pin_num) / 8u;
+                    const uint32_t tmp2 = static_cast<uint32_t>(m_cfg.pin_num) % 8u;
                     mp_reg->afr[tmp1] &= ~(0xFu << (4 * tmp2));
-                    mp_reg->afr[tmp1] |= m_cfg.alt_fun_mode << (4 * tmp2);
+                    mp_reg->afr[tmp1] |= static_cast<uint32_t>(m_cfg.alt_fun_mode) << (4 * tmp2);
                 }
             }
 

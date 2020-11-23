@@ -27,13 +27,13 @@
 int main(void)
 {
   const drivers::peripherals::gpio::Configuration cfg{
-      .pin_num = drivers::peripherals::gpio::Configuration::GPIO_PIN_5,
-      .mode = drivers::peripherals::gpio::Configuration::Mode::out,
-      .speed = drivers::peripherals::gpio::Configuration::GPIO_SPEED_FAST,
-      .pull_mode = drivers::peripherals::gpio::Configuration::GPIO_PULL_MODE_NONE,
-      .out_type = drivers::peripherals::gpio::Configuration::GPIO_OUT_TYPE_PUSH_PULL,
-      .alt_fun_mode = drivers::peripherals::gpio::Configuration::GPIO_ALTERNATE_FUNCTION_0,
-      .channel = drivers::peripherals::gpio::Configuration::Channel::a,
+      drivers::peripherals::gpio::Configuration::Channel::a,
+      drivers::peripherals::gpio::Configuration::Pin_num::five,
+      drivers::peripherals::gpio::Configuration::Mode::out,
+      drivers::peripherals::gpio::Configuration::Out_type::push_pull,
+      drivers::peripherals::gpio::Configuration::Pull_mode::none,
+      drivers::peripherals::gpio::Configuration::Speed::fast,
+      drivers::peripherals::gpio::Configuration::Alternate_function::zero,
   };
   drivers::peripherals::gpio::Handle h{cfg};
   h.init();
