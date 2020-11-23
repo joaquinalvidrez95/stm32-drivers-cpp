@@ -45,9 +45,9 @@ extern "C"
                         analog = 3u,
 
                         /* Interrupts */
-                        interrupt_falling_transition = 4u,
-                        interrupt_rising_transition = 5u,
-                        interrupt_rft = 6u,
+                        falling_transition_interrupt = 4u,
+                        rising_transition_interrupt = 5u,
+                        rising_falling_transition_interrupt = 6u,
                     };
 
                     typedef enum
@@ -89,7 +89,6 @@ extern "C"
                         GPIO_PIN_13,
                         GPIO_PIN_14,
                         GPIO_PIN_15,
-                        GPIO_PIN_16,
                     } gpio_pin_t;
 
                     typedef enum
@@ -118,7 +117,7 @@ extern "C"
                         GPIO_ALTERNATE_FUNCTION_15,
                     } gpio_alternate_function_t;
 
-                    gpio_pin_t number;
+                    gpio_pin_t pin_num;
                     Mode mode;
                     gpio_speed_t speed;
                     gpio_pull_mode_t pull_mode;
@@ -128,7 +127,7 @@ extern "C"
                 };
             } // namespace gpio
         }     // namespace peripherals
-    } // namespace drivers
+    }         // namespace drivers
 
 #ifdef __cplusplus
 }

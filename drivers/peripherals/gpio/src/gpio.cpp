@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 #include "drivers/peripherals/rcc/inc/rcc.h"
+#include "utils.h"
 
 namespace drivers
 {
@@ -18,173 +19,129 @@ namespace drivers
     {
         namespace gpio
         {
-#if 0
-            void gpio_deinit(gpio_reg_t *p_reg)
-            {
-                gpio_reset_t port = Gpio_reset_port_a;
-
-                if (p_reg == GPIOA)
-                {
-                }
-                else if (p_reg == GPIOB)
-                {
-                    port = Gpio_reset_port_b;
-                }
-                else if (p_reg == GPIOC)
-                {
-                    port = Gpio_reset_port_c;
-                }
-                else if (p_reg == GPIOD)
-                {
-                    port = Gpio_reset_port_d;
-                }
-                else if (p_reg == GPIOE)
-                {
-                    port = Gpio_reset_port_e;
-                }
-                else if (p_reg == GPIOF)
-                {
-                    port = Gpio_reset_port_f;
-                }
-                else if (p_reg == GPIOG)
-                {
-                    port = Gpio_reset_port_g;
-                }
-                else if (p_reg == GPIOH)
-                {
-                    port = Gpio_reset_port_h;
-                }
-                GPIOX_REG_RESET(port);
-            }
-
-           
-
-            gpio_button_state_t gpio_read_pin(const gpio_handle_t *p_handle)
-            {
-                return (gpio_button_state_t)((p_handle->p_reg->IDR >> p_handle->cfg.number) & 1u);
-            }
-
-            uint16_t gpio_read_port(gpio_reg_t *p_reg)
-            {
-                return (uint16_t)(p_reg->IDR);
-            }
-
-            void gpio_write_pin(gpio_handle_t *p_handle, gpio_pin_status_t value)
-            {
-                if (value == GPIO_PIN_STATUS_SET)
-                {
-                    p_handle->p_reg->ODR |= 1u << p_handle->cfg.number;
-                }
-                else
-                {
-                    p_handle->p_reg->ODR &= ~(1u << p_handle->cfg.number);
-                }
-            }
-
-            void gpio_write_port(gpio_reg_t *p_reg, uint16_t value)
-            {
-                p_reg->ODR = value;
-            }
-
-            void gpio_toggle_pin(gpio_handle_t *p_handle)
-            {
-                p_handle->p_reg->ODR ^= 1u << p_handle->cfg.number;
-            }
-
-            void gpio_config_irq(nvic_irq_num_t irq_number, bool b_enable)
-            {
-                /* TODO: Get IRQ automatically */
-            }
-
-            void gpio_config_irq_priority(nvic_irq_num_t irq_number, nvic_irq_prio_t priority)
-            {
-            }
-
-            void gpio_irq_handling(gpio_pin_t pin)
-            {
-                if (EXTI->PR & (1 << pin))
-                {
-                    /* Clears */
-                    EXTI->PR |= 1 << pin;
-                }
-            }
-#endif
-            Gpio_handle::Gpio_handle(const Configuration &cfg)
+            Handle::Handle(const Configuration &cfg)
                 : m_cfg{cfg},
-                  mp_reg{Gpio_handle::p_registers[static_cast<std::size_t>(m_cfg.channel)]}
+                  mp_reg{Handle::p_registers[static_cast<std::size_t>(m_cfg.channel)]}
             {
             }
 
-            void Gpio_handle::init()
+            void Handle::init()
             {
-                Rcc::set_gpio_clock_enabled(m_cfg.channel, true);
+                rcc::set_gpio_clock_enabled(m_cfg.channel, true);
 
                 /* TODO: Check if memset */
                 /* Configures mode. */
                 if (m_cfg.mode <= Configuration::Mode::analog)
                 {
-                    mp_reg->MODER &= ~(0x3u << (2u * m_cfg.number));
-                    mp_reg->MODER |= static_cast<uint32_t>(m_cfg.mode) << (2u * m_cfg.number);
+                    mp_reg->moder &= ~(0x3u << (2u * m_cfg.pin_num));
+                    mp_reg->moder |= static_cast<uint32_t>(m_cfg.mode) << (2u * static_cast<uint32_t>(m_cfg.pin_num));
                 }
                 else
                 {
+                    /* TODO: Use utils */
                     switch (m_cfg.mode)
                     {
-                    case Configuration::Mode::interrupt_falling_transition:
-                        EXTI->FTSR |= 1u << m_cfg.number;
-                        EXTI->RTSR &= ~(1u << m_cfg.number);
+                    case Configuration::Mode::falling_transition_interrupt:
+                        EXTI->ftsr |= 1u << m_cfg.pin_num;
+                        EXTI->rtsr &= ~(1u << m_cfg.pin_num);
                         break;
 
-                    case Configuration::Mode::interrupt_rising_transition:
-                        EXTI->RTSR |= 1u << m_cfg.number;
-                        EXTI->FTSR &= ~(1u << m_cfg.number);
+                    case Configuration::Mode::rising_transition_interrupt:
+                        EXTI->rtsr |= 1u << m_cfg.pin_num;
+                        EXTI->ftsr &= ~(1u << m_cfg.pin_num);
                         break;
 
-                    case Configuration::Mode::interrupt_rft:
-                        EXTI->RTSR |= 1u << m_cfg.number;
-                        EXTI->FTSR |= 1u << m_cfg.number;
+                    case Configuration::Mode::rising_falling_transition_interrupt:
+                        EXTI->rtsr |= 1u << m_cfg.pin_num;
+                        EXTI->ftsr |= 1u << m_cfg.pin_num;
                         break;
 
                     default:
                         break;
                     }
-                    /* Configures the GPIO port selection in SYSCFG_EXTICR */
 
+                    /* Configures the GPIO port selection in SYSCFG_EXTICR */
                     SYSCFG_PCLK_EN();
-                    size_t index = m_cfg.number / 4u;
-                    uint8_t section = m_cfg.number % 4u;
-                    SYSCFG->EXTICR[index] = (uint32_t)Driver_gpio_address_to_code(mp_reg) << (section * 4u);
-                    EXTI->IMR |= 1u << m_cfg.number;
+                    constexpr uint32_t num_bits_per_section{4u};
+                    const uint32_t idx = m_cfg.pin_num / num_bits_per_section;
+                    const uint32_t section = m_cfg.pin_num % num_bits_per_section;
+                    SYSCFG->exticr[idx] = static_cast<uint32_t>(m_cfg.channel) << (section * num_bits_per_section);
+                    EXTI->imr |= 1u << m_cfg.pin_num;
                 }
 
                 /* Configures speed. */
-                mp_reg->OSPEEDER &= ~(0x3u << (2 * m_cfg.number));
-                mp_reg->OSPEEDER |= m_cfg.speed << (2 * m_cfg.number);
+                mp_reg->ospeeder &= ~(0x3u << (2 * m_cfg.pin_num));
+                mp_reg->ospeeder |= m_cfg.speed << (2 * m_cfg.pin_num);
 
                 /* Configures pupd. */
-                mp_reg->PUPDR &= ~(0x3u << (2 * m_cfg.number));
-                mp_reg->PUPDR |= m_cfg.pull_mode << (2 * m_cfg.number);
+                mp_reg->pupdr &= ~(0x3u << (2 * m_cfg.pin_num));
+                mp_reg->pupdr |= m_cfg.pull_mode << (2 * m_cfg.pin_num);
 
                 /* Configures opt type. */
-                mp_reg->OTYPER &= ~(0x1u << m_cfg.number);
-                mp_reg->OTYPER |= (uint32_t)m_cfg.out_type << (uint32_t)m_cfg.number;
+                mp_reg->otyper &= ~(0x1u << m_cfg.pin_num);
+                mp_reg->otyper |= (uint32_t)m_cfg.out_type << (uint32_t)m_cfg.pin_num;
 
                 /* Configures alternate function */
-                if (m_cfg.mode == Configuration::Mode::alternate_function)
+                if (Configuration::Mode::alternate_function == m_cfg.mode)
                 {
-                    const uint32_t temp1 = m_cfg.number / 8u;
-                    const uint32_t tmp2 = m_cfg.number % 8u;
-                    mp_reg->AFR[temp1] &= ~(0xFu << (4 * tmp2));
-                    mp_reg->AFR[temp1] |= m_cfg.alt_fun_mode << (4 * tmp2);
+                    /* TODO: Refactor */
+                    const uint32_t tmp1 = m_cfg.pin_num / 8u;
+                    const uint32_t tmp2 = m_cfg.pin_num % 8u;
+                    mp_reg->afr[tmp1] &= ~(0xFu << (4 * tmp2));
+                    mp_reg->afr[tmp1] |= m_cfg.alt_fun_mode << (4 * tmp2);
                 }
             }
 
-            void Gpio_handle::toggle_pin()
+            void Handle::toggle_pin()
             {
-                mp_reg->ODR ^= 1u << m_cfg.number;
+                mp_reg->odr ^= 1u << static_cast<uint32_t>(m_cfg.pin_num);
             }
 
-            gpio_reg_t *const Gpio_handle::p_registers[static_cast<std::size_t>(Configuration::Channel::total)] = {
+            void Handle::deinit()
+            {
+                rcc::reset_gpio_reg(m_cfg.channel);
+            }
+
+            Pin_state Handle::read_pin()
+            {
+                return Utils::is_bit_set(mp_reg->idr, static_cast<uint32_t>(m_cfg.pin_num)) ? Pin_state::set : Pin_state::reset;
+            }
+
+            uint16_t Handle::read_port()
+            {
+                return static_cast<uint16_t>(mp_reg->idr);
+            }
+
+            void Handle::write_pin(Pin_state state)
+            {
+                Utils::set_bit_by_position(mp_reg->odr, static_cast<uint32_t>(m_cfg.pin_num), Pin_state::set == state);
+            }
+
+            void Handle::write_port(uint16_t value)
+            {
+                mp_reg->odr = value;
+            }
+
+            void Handle::config_irq(nvic_irq_num_t irq_number, bool b_enable)
+            {
+                /* TODO: Implement */
+            }
+
+            void Handle::config_irq_priority(nvic_irq_num_t irq_number, nvic_irq_prio_t priority)
+            {
+                /* TODO: implement */
+            }
+
+            void Handle::handle_irq()
+            {
+                const auto pin_number{static_cast<uint32_t>(m_cfg.pin_num)};
+                if (Utils::is_bit_set(EXTI->pr, pin_number))
+                {
+                    Utils::set_bit_by_position(EXTI->pr, pin_number, true);
+                }
+            }
+
+            gpio_reg_t *const Handle::p_registers[static_cast<std::size_t>(Configuration::Channel::total)] = {
                 GPIOA,
                 GPIOB,
                 GPIOC,

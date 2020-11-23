@@ -14,12 +14,12 @@ namespace drivers
 {
     namespace peripherals
     {
-        class Rcc
+        namespace rcc
         {
+            void set_gpio_clock_enabled(gpio::Configuration::Channel channel, bool b_set);
+            void reset_gpio_reg(gpio::Configuration::Channel channel);
 
-        public:
-            static void set_gpio_clock_enabled(gpio::Configuration::Channel channel, bool b_set);
-        };
+        } // namespace rcc
 
     } // namespace peripherals
 

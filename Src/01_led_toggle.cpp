@@ -27,7 +27,7 @@
 int main(void)
 {
   const drivers::peripherals::gpio::Configuration cfg{
-      .number = drivers::peripherals::gpio::Configuration::GPIO_PIN_5,
+      .pin_num = drivers::peripherals::gpio::Configuration::GPIO_PIN_5,
       .mode = drivers::peripherals::gpio::Configuration::Mode::out,
       .speed = drivers::peripherals::gpio::Configuration::GPIO_SPEED_FAST,
       .pull_mode = drivers::peripherals::gpio::Configuration::GPIO_PULL_MODE_NONE,
@@ -35,7 +35,7 @@ int main(void)
       .alt_fun_mode = drivers::peripherals::gpio::Configuration::GPIO_ALTERNATE_FUNCTION_0,
       .channel = drivers::peripherals::gpio::Configuration::Channel::a,
   };
-  drivers::peripherals::gpio::Gpio_handle h{cfg};
+  drivers::peripherals::gpio::Handle h{cfg};
   h.init();
   while (1)
   {

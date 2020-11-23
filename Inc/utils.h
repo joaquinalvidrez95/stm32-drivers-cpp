@@ -9,17 +9,24 @@ class Utils
 public:
     static void delay();
 
-    template <typename T>
-    static void set_bit_by_position(volatile T &p_reg, uint8_t position, bool b_set)
+    /* TODO: Make inline */
+    template <typename Integer>
+    static void set_bit_by_position(volatile Integer &out, Integer position, bool b_set)
     {
         if (b_set)
         {
-            p_reg |= static_cast<T>(1u << position);
+            out |= 1u << position;
         }
         else
         {
-            p_reg &= static_cast<T>(~(1u << position));
+            out &= ~(1u << position);
         }
+    }
+
+    template <typename Integer>
+    static bool is_bit_set(Integer value, Integer bit_position)
+    {
+        return (value & (1u << bit_position)) != 0u;
     }
 };
 

@@ -33,25 +33,26 @@ extern "C"
                     GPIO_PIN_STATUS_SET = 1u,
                 } gpio_pin_status_t;
 
-                void gpio_deinit(gpio_reg_t *p_reg);
+                enum class Pin_state : uint32_t
+                {
+                    reset,
+                    set
+                };
 
-#if 0
-                gpio_button_state_t gpio_read_pin(const gpio_handle_t *p_handle);
-                uint16_t gpio_read_port(gpio_reg_t *p_reg);
-                void gpio_write_pin(gpio_handle_t *p_handle, gpio_pin_status_t value);
-                void gpio_write_port(gpio_reg_t *p_reg, uint16_t value);
-                void gpio_toggle_pin(gpio_handle_t *p_handle);
-
-                void gpio_config_irq(nvic_irq_num_t irq_number, bool b_enable);
-                void gpio_config_irq_priority(nvic_irq_num_t irq_number, nvic_irq_prio_t priority);
-                void gpio_irq_handling(gpio_pin_t pin);
-#endif
-                class Gpio_handle
+                class Handle
                 {
                 public:
-                    Gpio_handle(const Configuration &cfg);
+                    Handle(const Configuration &cfg);
                     void init();
                     void toggle_pin();
+                    void deinit();
+                    Pin_state read_pin();
+                    uint16_t read_port();
+                    void write_pin(Pin_state state);
+                    void write_port(uint16_t value);
+                    void config_irq(nvic_irq_num_t irq_number, bool b_enable);
+                    void config_irq_priority(nvic_irq_num_t irq_number, nvic_irq_prio_t priority);
+                    void handle_irq();
 
                 private:
                     const Configuration &m_cfg;

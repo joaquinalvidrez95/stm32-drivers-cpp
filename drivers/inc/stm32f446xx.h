@@ -164,68 +164,101 @@ extern "C"
 		const uint16_t _unused_10;
 	} i2c_reg_t;
 
-	typedef struct
+	struct gpio_reg_t
 	{
-		volatile uint32_t MODER;
-		volatile uint32_t OTYPER;
-		volatile uint32_t OSPEEDER;
-		volatile uint32_t PUPDR;
-		volatile uint32_t IDR;
-		volatile uint32_t ODR;
-		volatile uint32_t BSRR;
-		volatile uint32_t LCKR;
-		volatile uint32_t AFR[2];
-	} gpio_reg_t;
+		volatile uint32_t moder;
+		volatile uint32_t otyper;
+		volatile uint32_t ospeeder;
+		volatile uint32_t pupdr;
+		volatile uint32_t idr;
+		volatile uint32_t odr;
+		volatile uint32_t bsrr;
+		volatile uint32_t lckr;
+		volatile uint32_t afr[2];
+	};
 
 	typedef struct
 	{
-		volatile uint32_t CR;
-		volatile uint32_t PLL_CFGR;
-		volatile uint32_t CFGR;
-		volatile uint32_t CIR;
-		volatile uint32_t AHB_RSTR[3];
-		uint32_t RESERVED1;
-		volatile uint32_t APB_RSTR[2];
-		uint32_t RESERVED2[2];
-		volatile uint32_t AHBENR[3];
-		uint32_t RESERVED3;
-		volatile uint32_t APBENR[2];
-		uint32_t RESERVED4[2];
-		volatile uint32_t AHB_LPENR[3];
-		uint32_t RESERVED5;
-		volatile uint32_t APB_LPENR[2];
-		uint32_t RESERVED6[2];
-		volatile uint32_t BDCR;
-		volatile uint32_t CSR;
-		uint32_t RESERVED7[2];
-		volatile uint32_t SS_CGR;
-		volatile uint32_t PLLI2_SCFGR;
-		volatile uint32_t PLL_SAI_CFGR;
-		volatile uint32_t DCK_CFGR;
-		volatile uint32_t CK_GATENR;
-		volatile uint32_t DCK_CFGR2;
+		volatile uint32_t cr;
+		volatile uint32_t pll_cfgr;
+		volatile uint32_t cfgr;
+		volatile uint32_t cir;
+		struct
+		{
+			volatile uint32_t one;
+			volatile uint32_t two;
+			volatile uint32_t three;
+		} ahbrstr;
+
+		uint32_t _reserved_1;
+		struct
+		{
+			volatile uint32_t one;
+			volatile uint32_t two;
+		} apbrstr;
+
+		uint32_t _reserved_2[2];
+		struct
+		{
+			volatile uint32_t one;
+			volatile uint32_t two;
+			volatile uint32_t three;
+		} ahbenr;
+		uint32_t _reserved_3;
+		struct
+		{
+			volatile uint32_t one;
+			volatile uint32_t two;
+		} apbenr;
+
+		uint32_t _reserved_4[2];
+		struct
+		{
+			volatile uint32_t one;
+			volatile uint32_t two;
+			volatile uint32_t three;
+		} ahblpenr;
+
+		uint32_t _reserved_5;
+		struct
+		{
+			volatile uint32_t one;
+			volatile uint32_t two;
+		} apblpenr;
+
+		uint32_t _reserved_6[2];
+		volatile uint32_t bdcr;
+		volatile uint32_t csr;
+		uint32_t _reserved_7[2];
+		volatile uint32_t sscgr;
+		volatile uint32_t plli2scfgr;
+		volatile uint32_t pllsaicfgr;
+		volatile uint32_t dckcfgr;
+		volatile uint32_t ckgatenr;
+		volatile uint32_t dckcfgr2;
 	} rcc_reg_t;
 
 	typedef struct
 	{
-		volatile uint32_t IMR;
-		volatile uint32_t EMR;
-		volatile uint32_t RTSR;
-		volatile uint32_t FTSR;
-		volatile uint32_t SWIER;
-		volatile uint32_t PR;
+		volatile uint32_t imr;
+		volatile uint32_t emr;
+		volatile uint32_t rtsr;
+		volatile uint32_t ftsr;
+		volatile uint32_t swier;
+		volatile uint32_t pr;
 	} exti_reg_t;
 
-	typedef struct
+	struct Syscfg_reg
 	{
-		volatile uint32_t MEMRMP;
-		volatile uint32_t PMC;
-		volatile uint32_t EXTICR[4];
+		volatile uint32_t memrmp;
+		volatile uint32_t pmc;
+		/* TODO: Remove magic number */
+		volatile uint32_t exticr[4];
 		uint32_t reserved1[2];
-		volatile uint32_t CMPCR;
+		volatile uint32_t cmpcr;
 		uint32_t reserved2[2];
-		volatile uint32_t CFGR;
-	} Syscfg_reg_t;
+		volatile uint32_t cfgr;
+	};
 
 #define GPIOA ((gpio_reg_t *const)GPIOA_BASEADDR)
 #define GPIOB ((gpio_reg_t *const)GPIOB_BASEADDR)
@@ -238,8 +271,8 @@ extern "C"
 
 #define RCC ((rcc_reg_t *)RCC_BASEADDR)
 #define EXTI ((exti_reg_t *)EXTI_BASEADDR)
-#define SYSCFG ((Syscfg_reg_t *)SYSCFG_BASEADDR)
-#define SYSCFG ((Syscfg_reg_t *)SYSCFG_BASEADDR)
+#define SYSCFG ((Syscfg_reg *)SYSCFG_BASEADDR)
+#define SYSCFG ((Syscfg_reg *)SYSCFG_BASEADDR)
 
 #define SPI1 ((Spi_reg_t *)SPI1_BASEADDR)
 #define SPI2 ((Spi_reg_t *)SPI2_BASEADDR)
@@ -268,7 +301,8 @@ extern "C"
 #define USART6_PCLK_EN() (RCC->APBENR[1] |= (1u << 5u))
 
 /** Enables SYSCFG */
-#define SYSCFG_PCLK_EN() (RCC->APBENR[1] |= (1u << 14u))
+/* TODO: Move to rcc */
+#define SYSCFG_PCLK_EN() (RCC->apbenr.two |= (1u << 14u))
 
 	/** Resets peripheral */
 	typedef enum
@@ -318,10 +352,6 @@ extern "C"
 		(RCC->APB_RSTR[1] |= (1u << 13u));  \
 		(RCC->APB_RSTR[1] &= ~(1u << 13u)); \
 	} while (0u)
-
-#define SET ENABLE
-#define RESET DISABLE
-	uint8_t Driver_gpio_address_to_code(gpio_reg_t *);
 
 #ifdef __cplusplus
 }
