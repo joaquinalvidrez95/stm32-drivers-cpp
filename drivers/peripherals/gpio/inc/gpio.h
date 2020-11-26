@@ -20,7 +20,7 @@ extern "C"
 #include <stdbool.h>
 #include <cstddef>
 
-#include "drivers/inc/stm32f446xx.h"
+#include "drivers/peripherals/gpio/inc/reg.h"
 #include "drivers/peripherals/gpio/inc/configuration.h"
 
     namespace drivers
@@ -42,19 +42,19 @@ extern "C"
                 public:
                     Handle(const Configuration *p_cfg = nullptr);
                     void init(const Configuration *p_cfg = nullptr);
-                    void toggle_pin();
-                    void deinit();
-                    Pin_state read_pin();
-                    uint16_t read_port();
-                    void write_pin(Pin_state state);
-                    void write_port(uint16_t value);
-                    void set_irq_enabled(bool b_enabled);
-                    void config_irq_priority(cortex::nvic::Irq_prio prio);
-                    void handle_irq();
+                    void toggle_pin() const;
+                    void deinit() const;
+                    Pin_state read_pin() const;
+                    uint16_t read_port() const;
+                    void write_pin(Pin_state state) const;
+                    void write_port(uint16_t value) const;
+                    void set_irq_enabled(bool b_enabled) const;
+                    void config_irq_priority(cortex::nvic::Irq_prio prio) const;
+                    void handle_irq() const;
 
                 private:
                     const Configuration *mp_cfg;
-                    static constexpr std::array<gpio_reg_t *, static_cast<std::size_t>(Configuration::Channel::total)> p_registers{
+                    static constexpr std::array<Reg *, static_cast<std::size_t>(Configuration::Channel::total)> p_registers{
                         GPIOA,
                         GPIOB,
                         GPIOC,
@@ -83,7 +83,7 @@ extern "C"
                         cortex::nvic::Irq_num::exti15_10,
                     };
 
-                    inline gpio_reg_t *reg() const
+                    inline Reg *reg() const
                     {
                         return mp_cfg ? Handle::p_registers.at(static_cast<std::size_t>(mp_cfg->channel)) : nullptr;
                     }

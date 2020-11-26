@@ -164,19 +164,6 @@ extern "C"
 		const uint16_t _unused_10;
 	} i2c_reg_t;
 
-	struct gpio_reg_t
-	{
-		volatile uint32_t moder;
-		volatile uint32_t otyper;
-		volatile uint32_t ospeeder;
-		volatile uint32_t pupdr;
-		volatile uint32_t idr;
-		volatile uint32_t odr;
-		volatile uint32_t bsrr;
-		volatile uint32_t lckr;
-		volatile uint32_t afr[2];
-	};
-
 	typedef struct
 	{
 		volatile uint32_t cr;
@@ -260,14 +247,7 @@ extern "C"
 		volatile uint32_t cfgr;
 	};
 
-#define GPIOA ((gpio_reg_t *const)GPIOA_BASEADDR)
-#define GPIOB ((gpio_reg_t *const)GPIOB_BASEADDR)
-#define GPIOC ((gpio_reg_t *const)GPIOC_BASEADDR)
-#define GPIOD ((gpio_reg_t *const)GPIOD_BASEADDR)
-#define GPIOE ((gpio_reg_t *const)GPIOE_BASEADDR)
-#define GPIOF ((gpio_reg_t *const)GPIOF_BASEADDR)
-#define GPIOG ((gpio_reg_t *const)GPIOG_BASEADDR)
-#define GPIOH ((gpio_reg_t *const)GPIOH_BASEADDR)
+
 
 #define RCC ((rcc_reg_t *)RCC_BASEADDR)
 #define EXTI ((exti_reg_t *)EXTI_BASEADDR)

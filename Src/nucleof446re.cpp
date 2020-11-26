@@ -12,9 +12,6 @@
 
 namespace nucleo
 {
-	constexpr drivers::peripherals::gpio::Configuration F446re::button_cfg;
-	constexpr drivers::peripherals::gpio::Configuration F446re::led_cfg;
-	constexpr drivers::peripherals::gpio::Configuration F446re::interrupt_button_cfg;
 
 	void F446re::init_button(drivers::peripherals::Mechanism mechanism)
 	{
@@ -54,4 +51,7 @@ namespace nucleo
 		mh_button.set_irq_enabled(b_enabled);
 	}
 
+	constexpr drivers::peripherals::gpio::Configuration F446re::button_cfg;
+	constexpr drivers::peripherals::gpio::Configuration F446re::led_cfg;
+	constexpr drivers::peripherals::gpio::Configuration F446re::interrupt_button_cfg;
 } // namespace nucleo

@@ -99,47 +99,47 @@ namespace drivers
                 }
             }
 
-            void Handle::toggle_pin()
+            void Handle::toggle_pin() const
             {
                 reg()->odr ^= 1u << static_cast<uint32_t>(mp_cfg->pin_num);
             }
 
-            void Handle::deinit()
+            void Handle::deinit() const
             {
                 rcc::reset_gpio_reg(mp_cfg->channel);
             }
 
-            Pin_state Handle::read_pin()
+            Pin_state Handle::read_pin() const
             {
                 return Utils::is_bit_set(reg()->idr, static_cast<uint32_t>(mp_cfg->pin_num)) ? Pin_state::set : Pin_state::reset;
             }
 
-            uint16_t Handle::read_port()
+            uint16_t Handle::read_port() const
             {
                 return static_cast<uint16_t>(reg()->idr);
             }
 
-            void Handle::write_pin(Pin_state state)
+            void Handle::write_pin(Pin_state state) const
             {
                 Utils::set_bit_by_position(reg()->odr, static_cast<uint32_t>(mp_cfg->pin_num), Pin_state::set == state);
             }
 
-            void Handle::write_port(uint16_t value)
+            void Handle::write_port(uint16_t value) const
             {
                 reg()->odr = value;
             }
 
-            void Handle::set_irq_enabled(bool b_enabled)
+            void Handle::set_irq_enabled(bool b_enabled) const
             {
                 cortex::nvic::set_irq_enabled(Handle::irq_nums.at(static_cast<std::size_t>(mp_cfg->pin_num)), b_enabled);
             }
 
-            void Handle::config_irq_priority(cortex::nvic::Irq_prio prio)
+            void Handle::config_irq_priority(cortex::nvic::Irq_prio prio) const
             {
                 cortex::nvic::set_irq_priority(Handle::irq_nums.at(static_cast<std::size_t>(mp_cfg->pin_num)), prio);
             }
 
-            void Handle::handle_irq()
+            void Handle::handle_irq() const
             {
                 const auto pin_number{static_cast<uint32_t>(mp_cfg->pin_num)};
                 if (Utils::is_bit_set(EXTI->pr, pin_number))
@@ -148,7 +148,7 @@ namespace drivers
                 }
             }
 
-            constexpr std::array<gpio_reg_t *, static_cast<std::size_t>(Configuration::Channel::total)> Handle::p_registers;
+            constexpr std::array<Reg *, static_cast<std::size_t>(Configuration::Channel::total)> Handle::p_registers;
             constexpr std::array<cortex::nvic::Irq_num, static_cast<std::size_t>(Configuration::Pin_num::total)> Handle::irq_nums;
 
         } // namespace gpio
