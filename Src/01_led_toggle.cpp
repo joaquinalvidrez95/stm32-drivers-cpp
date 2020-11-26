@@ -40,7 +40,7 @@ int main(void)
   };
   drivers::peripherals::gpio::Handle h{cfg};
   h.init();
-  while (1)
+  for (;;)
   {
     h.toggle_pin();
     Utils::delay();
