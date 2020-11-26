@@ -23,6 +23,9 @@
 
 #include "drivers/peripherals/gpio/inc/gpio.h"
 #include "utils.h"
+#include "cfg.h"
+
+#if CFG_SAMPLE == CFG_SAMPLE_01_LED_TOGGLE
 
 int main(void)
 {
@@ -44,3 +47,4 @@ int main(void)
   }
   return 0;
 }
+#endif
