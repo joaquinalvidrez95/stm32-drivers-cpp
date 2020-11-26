@@ -1,5 +1,3 @@
-#include "drivers/peripherals/gpio/inc/gpio.h"
-#include "utils.h"
 #include "nucleof446re.h"
 #include "cfg.h"
 
