@@ -88,7 +88,8 @@ extern "C"
                         twelve,
                         thirteen,
                         fourteen,
-                        fiveteen,
+                        fifteen,
+                        total,
                     };
 
                     enum class Alternate_function : uint32_t
@@ -108,7 +109,7 @@ extern "C"
                         twelve,
                         thirteen,
                         fourteen,
-                        fiveteen,
+                        fifteen,
                     };
 
                     Channel channel;

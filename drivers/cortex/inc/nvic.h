@@ -9,59 +9,76 @@
 #define INC_STM32F446XX_NVIC_DRIVER_H_
 
 #include <stdbool.h>
+#include <stdint.h>
 
-typedef enum
+#ifdef __cplusplus
+extern "C"
 {
-	NVIC_IRQ_NUM_EXTI0 = 6u,
-	NVIC_IRQ_NUM_EXTI1 = 7u,
-	NVIC_IRQ_NUM_EXTI2 = 8u,
-	NVIC_IRQ_NUM_EXTI3 = 9u,
-	NVIC_IRQ_NUM_EXTI4 = 10,
-	NVIC_IRQ_NUM_EXTI9_5 = 23,
-	NVIC_IRQ_NUM_I2C1_EV = 31,
-	NVIC_IRQ_NUM_I2C1_ER = 32,
-	NVIC_IRQ_NUM_I2C2_EV = 33,
-	NVIC_IRQ_NUM_I2C2_ER = 34,
-	NVIC_IRQ_NUM_SPI1 = 35,
-	NVIC_IRQ_NUM_SPI2 = 36,
-	NVIC_IRQ_NUM_USART1 = 37,
-	NVIC_IRQ_NUM_USART2 = 38,
-	NVIC_IRQ_NUM_USART3 = 39,
-	NVIC_IRQ_NUM_EXTI15_10 = 40,
-	NVIC_IRQ_NUM_SPI3 = 51,
-	NVIC_IRQ_NUM_SPI4,
-	NVIC_IRQ_NUM_UART4 = 52,
-	NVIC_IRQ_NUM_UART5 = 53,
-	NVIC_IRQ_NUM_USART6 = 71,
-	NVIC_IRQ_NUM_I2C3_EV = 72,
-	NVIC_IRQ_NUM_I2C3_ER = 73,
-} nvic_irq_num_t;
+#endif
 
-/**
- * @brief Priorities
- * 
- */
-typedef enum
-{
-	NVIC_IRQ_PRIO_0 = 0u,
-	NVIC_IRQ_PRIO_1,
-	NVIC_IRQ_PRIO_2,
-	NVIC_IRQ_PRIO_3,
-	NVIC_IRQ_PRIO_4,
-	NVIC_IRQ_PRIO_5,
-	NVIC_IRQ_PRIO_6,
-	NVIC_IRQ_PRIO_7,
-	NVIC_IRQ_PRIO_8,
-	NVIC_IRQ_PRIO_9,
-	NVIC_IRQ_PRIO_10,
-	NVIC_IRQ_PRIO_11,
-	NVIC_IRQ_PRIO_12,
-	NVIC_IRQ_PRIO_13,
-	NVIC_IRQ_PRIO_14,
-	NVIC_IRQ_PRIO_15,
-} nvic_irq_prio_t;
+	namespace drivers
+	{
+		namespace cortex
+		{
+			namespace nvic
+			{
+				enum class Irq_num : uint32_t
+				{
+					exti0 = 6u,
+					exti1 = 7u,
+					exti2 = 8u,
+					exti3 = 9u,
+					exti4 = 10u,
+					exti9_5 = 23u,
+					i2c1_ev = 31u,
+					i2c1_er = 32u,
+					i2c2_ev = 33u,
+					i2c2_er = 34u,
+					spi1 = 35u,
+					spi2 = 36u,
+					usart1 = 37u,
+					usart2 = 38u,
+					usart3 = 39u,
+					exti15_10 = 40u,
+					spi3 = 51u,
+					uart4 = 52u,
+					uart5 = 53u,
+					usart6 = 71u,
+					i2c3_ev = 72u,
+					i2c3_er = 73u,
+					spi4 = 84u,
+				};
 
-void nvic_set_irq_enabled(nvic_irq_num_t irq_num, bool b_enabled);
-void nvic_set_irq_priority(nvic_irq_num_t irq_num, nvic_irq_prio_t prio);
+				enum class Irq_prio : uint32_t
+				{
+					zero = 0u,
+					one,
+					two,
+					three,
+					four,
+					five,
+					six,
+					seven,
+					eight,
+					nine,
+					ten,
+					eleven,
+					twelve,
+					thirteen,
+					fourteen,
+					fifteen,
+				};
+
+				void set_irq_enabled(Irq_num irq_num, bool b_enabled);
+				void set_irq_priority(Irq_num irq_num, Irq_prio prio);
+			} // namespace nvic
+
+		} // namespace cortex
+
+	} // namespace drivers
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_STM32F446XX_NVIC_DRIVER_H_ */

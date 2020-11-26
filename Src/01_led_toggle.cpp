@@ -21,29 +21,19 @@
 #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-#include "drivers/peripherals/gpio/inc/gpio.h"
-#include "utils.h"
+#include "nucleof446re.h"
 #include "cfg.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_01_LED_TOGGLE
 
 int main(void)
 {
-  const drivers::peripherals::gpio::Configuration cfg{
-      drivers::peripherals::gpio::Configuration::Channel::a,
-      drivers::peripherals::gpio::Configuration::Pin_num::five,
-      drivers::peripherals::gpio::Configuration::Mode::out,
-      drivers::peripherals::gpio::Configuration::Out_type::push_pull,
-      drivers::peripherals::gpio::Configuration::Pull_mode::none,
-      drivers::peripherals::gpio::Configuration::Speed::fast,
-      drivers::peripherals::gpio::Configuration::Alternate_function::zero,
-  };
-  drivers::peripherals::gpio::Handle h{cfg};
-  h.init();
+  nucleo::F446re h_nucleo{};
+  h_nucleo.init_led();
   for (;;)
   {
-    h.toggle_pin();
-    Utils::delay();
+    h_nucleo.wait_till_button_pressed();
+    h_nucleo.toggle_led();
   }
   return 0;
 }

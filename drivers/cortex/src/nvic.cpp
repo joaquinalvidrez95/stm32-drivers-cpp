@@ -11,21 +11,31 @@
 
 #include "drivers/inc/stm32f446xx.h"
 
-#define NUM_PRIO_BITS_IMPLEMENTED (4u)
-#define NUM_BITS_PER_REGISTER (32u)
-
-void nvic_set_irq_enabled(nvic_irq_num_t irq_num, bool b_enabled)
+namespace drivers
 {
-    const uint32_t index = (uint32_t)irq_num / NUM_BITS_PER_REGISTER;
-    const uint32_t bit_position = (uint32_t)irq_num % NUM_BITS_PER_REGISTER;
-    volatile uint32_t *const reg = b_enabled ? NVIC_ISER0 : NVIC_ICER0;
-    reg[index] |= 1u << bit_position;
-}
+    namespace cortex
+    {
+        namespace nvic
+        {
+            void set_irq_enabled(Irq_num irq_num, bool b_enabled)
+            {
+                constexpr uint32_t num_bits_per_register{32u};
+                const uint32_t index{static_cast<uint32_t>(irq_num) / num_bits_per_register};
+                const uint32_t bit_position{static_cast<uint32_t>(irq_num) % num_bits_per_register};
+                volatile uint32_t *const reg{b_enabled ? NVIC_ISER0 : NVIC_ICER0};
+                reg[index] |= 1u << bit_position;
+            }
 
-void nvic_set_irq_priority(nvic_irq_num_t irq_num, nvic_irq_prio_t prio)
-{
-    const uint8_t index = irq_num / 4u;
-    const uint8_t section = irq_num % 4u;
-    const uint8_t shift_amount = (8u * section) + (8u - NUM_PRIO_BITS_IMPLEMENTED);
-    NVIC_PR_BASE_ADDR[index] |= (uint32_t)prio << shift_amount;
-}
+            void set_irq_priority(Irq_num irq_num, Irq_prio prio)
+            {
+                const uint32_t index{static_cast<uint32_t>(irq_num) / 4u};
+                const uint32_t section{static_cast<uint32_t>(irq_num) % 4u};
+                constexpr uint32_t num_prio_bits_implemented{4u};
+                const uint32_t shift_amount{(8u * section) + (8u - num_prio_bits_implemented)};
+                NVIC_PR_BASE_ADDR[index] |= static_cast<uint32_t>(prio) << shift_amount;
+            }
+        } // namespace nvic
+
+    } // namespace cortex
+
+} // namespace drivers
