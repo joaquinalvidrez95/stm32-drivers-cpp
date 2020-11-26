@@ -40,4 +40,23 @@ namespace nucleo
 		mh_led.toggle_pin();
 	}
 
+	const drivers::peripherals::gpio::Configuration F446re::button_cfg{
+		drivers::peripherals::gpio::Configuration::Channel::c,
+		drivers::peripherals::gpio::Configuration::Pin_num::thirteen,
+		drivers::peripherals::gpio::Configuration::Mode::in,
+		drivers::peripherals::gpio::Configuration::Out_type::push_pull,
+		drivers::peripherals::gpio::Configuration::Pull_mode::none,
+		drivers::peripherals::gpio::Configuration::Speed::fast,
+		drivers::peripherals::gpio::Configuration::Alternate_function::zero,
+	};
+
+	const drivers::peripherals::gpio::Configuration F446re::led_cfg{
+		drivers::peripherals::gpio::Configuration::Channel::a,
+		drivers::peripherals::gpio::Configuration::Pin_num::five,
+		drivers::peripherals::gpio::Configuration::Mode::out,
+		drivers::peripherals::gpio::Configuration::Out_type::push_pull,
+		drivers::peripherals::gpio::Configuration::Pull_mode::none,
+		drivers::peripherals::gpio::Configuration::Speed::fast,
+		drivers::peripherals::gpio::Configuration::Alternate_function::zero,
+	};
 } // namespace nucleo
