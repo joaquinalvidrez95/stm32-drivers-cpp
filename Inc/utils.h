@@ -11,15 +11,15 @@ public:
 
     /* TODO: Make inline */
     template <typename Integer>
-    static void set_bit_by_position(volatile Integer &out, Integer position, bool b_set)
+    static void set_bits_by_position(volatile Integer &out, Integer position, bool b_set, Integer mask = 1u)
     {
         if (b_set)
         {
-            out |= 1u << position;
+            out |= mask << position;
         }
         else
         {
-            out &= ~(1u << position);
+            out &= ~(mask << position);
         }
     }
 

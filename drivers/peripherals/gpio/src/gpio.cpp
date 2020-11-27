@@ -40,8 +40,8 @@ namespace drivers
                 /* Configures mode. */
                 if (mp_cfg->mode <= Configuration::Mode::analog)
                 {
-                    p_reg->moder &= ~(0x3u << (2u * static_cast<uint32_t>(mp_cfg->pin_num)));
-                    p_reg->moder |= static_cast<uint32_t>(mp_cfg->mode) << (2u * static_cast<uint32_t>(mp_cfg->pin_num));
+                    Utils::set_bits_by_position<uint32_t>(p_reg->moder, 2u * static_cast<uint32_t>(mp_cfg->pin_num), false, 3u);
+                    Utils::set_bits_by_position(p_reg->moder, 2u * static_cast<uint32_t>(mp_cfg->pin_num), true, static_cast<uint32_t>(mp_cfg->mode));
                 }
                 else
                 {
@@ -49,18 +49,18 @@ namespace drivers
                     switch (mp_cfg->mode)
                     {
                     case Configuration::Mode::falling_transition_interrupt:
-                        EXTI->ftsr |= 1u << static_cast<uint32_t>(mp_cfg->pin_num);
-                        EXTI->rtsr &= ~(1u << static_cast<uint32_t>(mp_cfg->pin_num));
+                        Utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(mp_cfg->pin_num), true);
+                        Utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(mp_cfg->pin_num), false);
                         break;
 
                     case Configuration::Mode::rising_transition_interrupt:
-                        EXTI->rtsr |= 1u << static_cast<uint32_t>(mp_cfg->pin_num);
-                        EXTI->ftsr &= ~(1u << static_cast<uint32_t>(mp_cfg->pin_num));
+                        Utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(mp_cfg->pin_num), true);
+                        Utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(mp_cfg->pin_num), false);
                         break;
 
                     case Configuration::Mode::rising_falling_transition_interrupt:
-                        EXTI->rtsr |= 1u << static_cast<uint32_t>(mp_cfg->pin_num);
-                        EXTI->ftsr |= 1u << static_cast<uint32_t>(mp_cfg->pin_num);
+                        Utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(mp_cfg->pin_num), true);
+                        Utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(mp_cfg->pin_num), true);
                         break;
 
                     default:
@@ -73,20 +73,20 @@ namespace drivers
                     const uint32_t idx = static_cast<uint32_t>(mp_cfg->pin_num) / num_bits_per_section;
                     const uint32_t section = static_cast<uint32_t>(mp_cfg->pin_num) % num_bits_per_section;
                     SYSCFG->exticr[idx] = static_cast<uint32_t>(mp_cfg->channel) << (section * num_bits_per_section);
-                    EXTI->imr |= 1u << static_cast<uint32_t>(mp_cfg->pin_num);
+                    Utils::set_bits_by_position(EXTI->imr, static_cast<uint32_t>(mp_cfg->pin_num), true);
                 }
 
                 /* Configures speed. */
-                p_reg->ospeeder &= ~(0x3u << (2u * static_cast<uint32_t>(mp_cfg->pin_num)));
-                p_reg->ospeeder |= static_cast<uint32_t>(mp_cfg->speed) << (2 * static_cast<uint32_t>(mp_cfg->pin_num));
+                Utils::set_bits_by_position<uint32_t>(p_reg->ospeeder, 2u * static_cast<uint32_t>(mp_cfg->pin_num), false, 3u);
+                Utils::set_bits_by_position(p_reg->ospeeder, 2u * static_cast<uint32_t>(mp_cfg->pin_num), true, static_cast<uint32_t>(mp_cfg->speed));
 
                 /* Configures pupd. */
-                p_reg->pupdr &= ~(0x3u << (2u * static_cast<uint32_t>(mp_cfg->pin_num)));
-                p_reg->pupdr |= static_cast<uint32_t>(mp_cfg->pull_mode) << (2 * static_cast<uint32_t>(mp_cfg->pin_num));
+                Utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(mp_cfg->pin_num), false, 3u);
+                Utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(mp_cfg->pin_num), false, static_cast<uint32_t>(mp_cfg->pull_mode));
 
                 /* Configures opt type. */
-                p_reg->otyper &= ~(0x1u << static_cast<uint32_t>(mp_cfg->pin_num));
-                p_reg->otyper |= static_cast<uint32_t>(mp_cfg->out_type) << static_cast<uint32_t>(mp_cfg->pin_num);
+                Utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(mp_cfg->pin_num), false);
+                Utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(mp_cfg->pin_num), true, static_cast<uint32_t>(mp_cfg->out_type));
 
                 /* Configures alternate function */
                 if (Configuration::Mode::alternate_function == mp_cfg->mode)
@@ -94,8 +94,8 @@ namespace drivers
                     /* TODO: Refactor */
                     const uint32_t tmp1 = static_cast<uint32_t>(mp_cfg->pin_num) / 8u;
                     const uint32_t tmp2 = static_cast<uint32_t>(mp_cfg->pin_num) % 8u;
-                    p_reg->afr[tmp1] &= ~(0xFu << (4 * tmp2));
-                    p_reg->afr[tmp1] |= static_cast<uint32_t>(mp_cfg->alt_fun_mode) << (4 * tmp2);
+                    Utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, false, 0xFu);
+                    Utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, true, static_cast<uint32_t>(mp_cfg->alt_fun_mode));
                 }
             }
 
@@ -121,7 +121,7 @@ namespace drivers
 
             void Handle::write_pin(Pin_state state) const
             {
-                Utils::set_bit_by_position(reg()->odr, static_cast<uint32_t>(mp_cfg->pin_num), Pin_state::set == state);
+                Utils::set_bits_by_position(reg()->odr, static_cast<uint32_t>(mp_cfg->pin_num), Pin_state::set == state);
             }
 
             void Handle::write_port(uint16_t value) const
@@ -144,7 +144,7 @@ namespace drivers
                 const auto pin_number{static_cast<uint32_t>(mp_cfg->pin_num)};
                 if (Utils::is_bit_set(EXTI->pr, pin_number))
                 {
-                    Utils::set_bit_by_position(EXTI->pr, pin_number, true);
+                    Utils::set_bits_by_position(EXTI->pr, pin_number, true);
                 }
             }
 

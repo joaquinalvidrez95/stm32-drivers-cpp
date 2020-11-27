@@ -26,14 +26,14 @@ namespace drivers
             void set_gpio_clock_enabled(gpio::Configuration::Channel channel, bool b_set)
             {
                 const auto bit_position{gpio_bit_positions.at(static_cast<std::size_t>(channel))};
-                Utils::set_bit_by_position(RCC->ahbenr.one, bit_position, b_set);
+                Utils::set_bits_by_position(RCC->ahbenr.one, bit_position, b_set);
             }
 
             void reset_gpio_reg(gpio::Configuration::Channel channel)
             {
                 const auto bit_position{gpio_bit_positions.at(static_cast<std::size_t>(channel))};
-                Utils::set_bit_by_position(RCC->ahbrstr.one, bit_position, true);
-                Utils::set_bit_by_position(RCC->ahbrstr.one, bit_position, false);
+                Utils::set_bits_by_position(RCC->ahbrstr.one, bit_position, true);
+                Utils::set_bits_by_position(RCC->ahbrstr.one, bit_position, false);
             }
         } // namespace rcc
 
