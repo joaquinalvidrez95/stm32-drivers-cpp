@@ -38,7 +38,6 @@ extern "C"
 
                 class Handle
                 {
-                    /* TODO: Add const specifier to methods */
                 public:
                     Handle(const Configuration *p_cfg = nullptr);
                     void init(const Configuration *p_cfg = nullptr);
@@ -53,7 +52,7 @@ extern "C"
                     void handle_irq() const;
 
                 private:
-                    const Configuration *mp_cfg;
+                    const Configuration *p_cfg_;
                     static constexpr std::array<Reg *, static_cast<std::size_t>(Configuration::Channel::total)> p_registers{
                         GPIOA,
                         GPIOB,
@@ -85,7 +84,7 @@ extern "C"
 
                     inline Reg *reg() const
                     {
-                        return mp_cfg ? Handle::p_registers.at(static_cast<std::size_t>(mp_cfg->channel)) : nullptr;
+                        return p_cfg_ ? Handle::p_registers.at(static_cast<std::size_t>(p_cfg_->channel)) : nullptr;
                     }
                 };
 

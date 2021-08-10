@@ -15,7 +15,7 @@ namespace nucleo
 
 	void F446re::init_button(drivers::peripherals::Mechanism mechanism)
 	{
-		mh_button.init((drivers::peripherals::Mechanism::interrupt == mechanism) ? &interrupt_button_cfg : nullptr);
+		h_button_.init((drivers::peripherals::Mechanism::interrupt == mechanism) ? &interrupt_button_cfg : nullptr);
 	}
 
 	void F446re::wait_till_button_pressed()
@@ -28,27 +28,27 @@ namespace nucleo
 
 	bool F446re::is_button_pressed()
 	{
-		return drivers::peripherals::gpio::Pin_state::reset == mh_button.read_pin();
+		return drivers::peripherals::gpio::Pin_state::reset == h_button_.read_pin();
 	}
 
 	void F446re::init_led()
 	{
-		mh_led.init();
+		h_led_.init();
 	}
 
 	void F446re::toggle_led()
 	{
-		mh_led.toggle_pin();
+		h_led_.toggle_pin();
 	}
 
 	void F446re::handle_irq_button()
 	{
-		mh_button.handle_irq();
+		h_button_.handle_irq();
 	}
 
 	void F446re::set_button_irq_enabled(bool b_enabled)
 	{
-		mh_button.set_irq_enabled(b_enabled);
+		h_button_.set_irq_enabled(b_enabled);
 	}
 
 	constexpr drivers::peripherals::gpio::Configuration F446re::button_cfg;

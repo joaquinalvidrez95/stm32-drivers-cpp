@@ -57,8 +57,8 @@ extern "C"
 				drivers::peripherals::gpio::Configuration::Speed::fast,
 				drivers::peripherals::gpio::Configuration::Alternate_function::zero,
 			};
-			drivers::peripherals::gpio::Handle mh_button{&button_cfg};
-			drivers::peripherals::gpio::Handle mh_led{&led_cfg};
+			drivers::peripherals::gpio::Handle h_button_{&button_cfg};
+			drivers::peripherals::gpio::Handle h_led_{&led_cfg};
 		};
 	} // namespace nucleo
 
