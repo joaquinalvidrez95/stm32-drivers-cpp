@@ -16,12 +16,17 @@ namespace drivers
     {
         namespace rcc
         {
-            void set_gpio_clock_enabled(gpio::Configuration::Channel channel, bool b_set);
-            void reset_gpio_reg(gpio::Configuration::Channel channel);
+            namespace gpio
+            {
+                void set_clock_enabled(
+                    peripherals::gpio::Configuration::Channel channel,
+                    bool b_set);
 
-        } // namespace rcc
-
-    } // namespace peripherals
+                void reset_reg(
+                    peripherals::gpio::Configuration::Channel channel);
+            } // namespace gpio
+        }     // namespace rcc
+    }         // namespace peripherals
 
 } // namespace drivers
 

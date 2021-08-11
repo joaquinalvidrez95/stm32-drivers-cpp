@@ -32,7 +32,7 @@ namespace drivers
                     p_cfg_ = p_cfg;
                 }
 
-                rcc::set_gpio_clock_enabled(p_cfg_->channel, true);
+                rcc::gpio::set_clock_enabled(p_cfg_->channel, true);
 
                 auto *const p_reg{reg()};
 
@@ -106,7 +106,7 @@ namespace drivers
 
             void Handle::deinit() const
             {
-                rcc::reset_gpio_reg(p_cfg_->channel);
+                rcc::gpio::reset_reg(p_cfg_->channel);
             }
 
             Pin_state Handle::read_pin() const
