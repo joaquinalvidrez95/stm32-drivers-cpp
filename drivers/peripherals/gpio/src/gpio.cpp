@@ -40,8 +40,8 @@ namespace drivers
                 /* Configures mode. */
                 if (p_cfg_->mode <= Configuration::Mode::analog)
                 {
-                    Utils::set_bits_by_position<uint32_t>(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
-                    Utils::set_bits_by_position(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->mode));
+                    utils::set_bits_by_position<uint32_t>(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
+                    utils::set_bits_by_position(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->mode));
                 }
                 else
                 {
@@ -49,18 +49,18 @@ namespace drivers
                     switch (p_cfg_->mode)
                     {
                     case Configuration::Mode::falling_transition_interrupt:
-                        Utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
-                        Utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), false);
+                        utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
+                        utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), false);
                         break;
 
                     case Configuration::Mode::rising_transition_interrupt:
-                        Utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
-                        Utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), false);
+                        utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
+                        utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), false);
                         break;
 
                     case Configuration::Mode::rising_falling_transition_interrupt:
-                        Utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
-                        Utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
+                        utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
+                        utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
                         break;
 
                     default:
@@ -73,20 +73,20 @@ namespace drivers
                     const uint32_t idx = static_cast<uint32_t>(p_cfg_->pin_num) / num_bits_per_section;
                     const uint32_t section = static_cast<uint32_t>(p_cfg_->pin_num) % num_bits_per_section;
                     SYSCFG->exticr[idx] = static_cast<uint32_t>(p_cfg_->channel) << (section * num_bits_per_section);
-                    Utils::set_bits_by_position(EXTI->imr, static_cast<uint32_t>(p_cfg_->pin_num), true);
+                    utils::set_bits_by_position(EXTI->imr, static_cast<uint32_t>(p_cfg_->pin_num), true);
                 }
 
                 /* Configures speed. */
-                Utils::set_bits_by_position<uint32_t>(p_reg->ospeeder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
-                Utils::set_bits_by_position(p_reg->ospeeder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->speed));
+                utils::set_bits_by_position<uint32_t>(p_reg->ospeeder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
+                utils::set_bits_by_position(p_reg->ospeeder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->speed));
 
                 /* Configures pupd. */
-                Utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
-                Utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, static_cast<uint32_t>(p_cfg_->pull_mode));
+                utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
+                utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, static_cast<uint32_t>(p_cfg_->pull_mode));
 
                 /* Configures opt type. */
-                Utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(p_cfg_->pin_num), false);
-                Utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->out_type));
+                utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(p_cfg_->pin_num), false);
+                utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->out_type));
 
                 /* Configures alternate function */
                 if (Configuration::Mode::alternate_function == p_cfg_->mode)
@@ -94,8 +94,8 @@ namespace drivers
                     /* TODO: Refactor */
                     const uint32_t tmp1 = static_cast<uint32_t>(p_cfg_->pin_num) / 8u;
                     const uint32_t tmp2 = static_cast<uint32_t>(p_cfg_->pin_num) % 8u;
-                    Utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, false, 0xFu);
-                    Utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, true, static_cast<uint32_t>(p_cfg_->alt_fun_mode));
+                    utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, false, 0xFu);
+                    utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, true, static_cast<uint32_t>(p_cfg_->alt_fun_mode));
                 }
             }
 
@@ -111,7 +111,7 @@ namespace drivers
 
             Pin_state Handle::read_pin() const
             {
-                return Utils::is_bit_set(reg()->idr, static_cast<uint32_t>(p_cfg_->pin_num)) ? Pin_state::set : Pin_state::reset;
+                return utils::is_bit_set(reg()->idr, static_cast<uint32_t>(p_cfg_->pin_num)) ? Pin_state::set : Pin_state::reset;
             }
 
             uint16_t Handle::read_port() const
@@ -121,7 +121,7 @@ namespace drivers
 
             void Handle::write_pin(Pin_state state) const
             {
-                Utils::set_bits_by_position(reg()->odr, static_cast<uint32_t>(p_cfg_->pin_num), Pin_state::set == state);
+                utils::set_bits_by_position(reg()->odr, static_cast<uint32_t>(p_cfg_->pin_num), Pin_state::set == state);
             }
 
             void Handle::write_port(uint16_t value) const
@@ -142,9 +142,9 @@ namespace drivers
             void Handle::handle_irq() const
             {
                 const auto pin_number{static_cast<uint32_t>(p_cfg_->pin_num)};
-                if (Utils::is_bit_set(EXTI->pr, pin_number))
+                if (utils::is_bit_set(EXTI->pr, pin_number))
                 {
-                    Utils::set_bits_by_position(EXTI->pr, pin_number, true);
+                    utils::set_bits_by_position(EXTI->pr, pin_number, true);
                 }
             }
 

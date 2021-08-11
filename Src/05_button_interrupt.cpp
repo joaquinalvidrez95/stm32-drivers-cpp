@@ -20,7 +20,7 @@ int main(void)
 
 extern "C" void EXTI15_10_IRQHandler()
 {
-    Utils::delay();
+    utils::delay();
     gh_nucleo.handle_irq_button();
     gh_nucleo.toggle_led();
 }

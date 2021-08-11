@@ -3,15 +3,15 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-class Utils
-{
 
-public:
-    static void delay();
+namespace utils
+{
+    void delay();
 
     /* TODO: Make inline */
     template <typename Integer>
-    static void set_bits_by_position(volatile Integer &out, Integer position, bool b_set, Integer mask = 1u)
+    void set_bits_by_position(volatile Integer &out, Integer position,
+                              bool b_set, Integer mask = 1u)
     {
         if (b_set)
         {
@@ -24,10 +24,11 @@ public:
     }
 
     template <typename Integer>
-    static bool is_bit_set(Integer value, Integer bit_position)
+    bool is_bit_set(Integer value, Integer bit_position)
     {
         return (value & (1u << bit_position)) != 0u;
     }
-};
+
+} // namespace utils
 
 #endif // __UTILS_H__

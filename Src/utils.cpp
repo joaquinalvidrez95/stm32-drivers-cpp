@@ -2,9 +2,12 @@
 
 #include <stdint.h>
 
-void Utils::delay()
+namespace utils
 {
-    for (uint32_t i = 0u; i < 500000u; i++)
+    void delay()
     {
+        for (uint32_t i = 0u; i < 500000u; i++)
+        {
+        }
     }
-}
+} // namespace utils

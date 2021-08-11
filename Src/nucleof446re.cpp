@@ -23,7 +23,7 @@ namespace nucleo
 		while (!is_button_pressed())
 		{
 		}
-		Utils::delay();
+		utils::delay();
 	}
 
 	bool F446re::is_button_pressed()

@@ -32,7 +32,7 @@ namespace drivers
                 {
                     const auto bit_position{
                         bit_positions.at(static_cast<std::size_t>(channel))};
-                    Utils::set_bits_by_position(RCC->ahbenr.one,
+                    utils::set_bits_by_position(RCC->ahbenr.one,
                                                 bit_position,
                                                 b_set);
                 }
@@ -41,10 +41,10 @@ namespace drivers
                 {
                     const auto bit_position{
                         bit_positions.at(static_cast<std::size_t>(channel))};
-                    Utils::set_bits_by_position(RCC->ahbrstr.one,
+                    utils::set_bits_by_position(RCC->ahbrstr.one,
                                                 bit_position,
                                                 true);
-                    Utils::set_bits_by_position(RCC->ahbrstr.one,
+                    utils::set_bits_by_position(RCC->ahbrstr.one,
                                                 bit_position,
                                                 false);
                 }
