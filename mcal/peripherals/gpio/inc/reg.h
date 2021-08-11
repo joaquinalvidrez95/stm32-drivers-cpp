@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "drivers/inc/stm32f446xx.h"
+#include "mcal/inc/stm32f446xx.h"
 
 namespace mcal
 {

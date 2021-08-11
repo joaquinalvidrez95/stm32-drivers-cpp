@@ -8,8 +8,8 @@
 #ifndef NUCLEOF446RE_H_
 #define NUCLEOF446RE_H_
 
-#include "drivers/peripherals/gpio/inc/gpio.h"
-#include "drivers/peripherals/inc/mechanism.h"
+#include "mcal/peripherals/gpio/inc/gpio.h"
+#include "mcal/peripherals/inc/mechanism.h"
 
 #ifdef __cplusplus
 extern "C"

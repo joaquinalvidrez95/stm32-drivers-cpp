@@ -5,13 +5,13 @@
  *      Author: joaquin
  */
 
-#include "drivers/peripherals/gpio/inc/gpio.h"
+#include "mcal/peripherals/gpio/inc/gpio.h"
 
 #include <cstddef>
 #include <stdint.h>
 
-#include "drivers/peripherals/rcc/inc/rcc.h"
-#include "drivers/cortex/inc/nvic.h"
+#include "mcal/peripherals/rcc/inc/rcc.h"
+#include "mcal/cortex/inc/nvic.h"
 #include "utils.h"
 
 namespace mcal

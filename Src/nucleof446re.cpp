@@ -7,7 +7,7 @@
 
 #include <nucleof446re.h>
 
-#include "drivers/peripherals/gpio/inc/gpio.h"
+#include "mcal/peripherals/gpio/inc/gpio.h"
 #include "utils.h"
 
 namespace nucleo

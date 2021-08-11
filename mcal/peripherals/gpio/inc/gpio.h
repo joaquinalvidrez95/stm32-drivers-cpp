@@ -10,7 +10,7 @@
 
 #include <array>
 
-#include "drivers/cortex/inc/nvic.h"
+#include "mcal/cortex/inc/nvic.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -20,8 +20,8 @@ extern "C"
 #include <stdbool.h>
 #include <cstddef>
 
-#include "drivers/peripherals/gpio/inc/reg.h"
-#include "drivers/peripherals/gpio/inc/configuration.h"
+#include "mcal/peripherals/gpio/inc/reg.h"
+#include "mcal/peripherals/gpio/inc/configuration.h"
 
     namespace mcal
     {

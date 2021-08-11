@@ -5,11 +5,11 @@
  *      Author: joaquin
  */
 
-#include "drivers/cortex/inc/nvic.h"
+#include "mcal/cortex/inc/nvic.h"
 
 #include <stdbool.h>
 
-#include "drivers/inc/stm32f446xx.h"
+#include "mcal/inc/stm32f446xx.h"
 
 namespace mcal
 {

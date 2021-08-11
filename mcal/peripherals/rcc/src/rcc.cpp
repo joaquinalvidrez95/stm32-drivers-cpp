@@ -1,10 +1,10 @@
-#include "drivers/peripherals/rcc/inc/rcc.h"
+#include "mcal/peripherals/rcc/inc/rcc.h"
 
 #include <cstddef>
 #include <array>
 
 #include "utils.h"
-#include "drivers/inc/stm32f446xx.h"
+#include "mcal/inc/stm32f446xx.h"
 
 namespace mcal
 {
