@@ -5,7 +5,7 @@
  *      Author: joaquin
  */
 
-#include "mcal/peripherals/gpio/inc/gpio.h"
+#include "mcal/peripherals/gpio/inc/handle.h"
 
 #include <cstddef>
 #include <stdint.h>

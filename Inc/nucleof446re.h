@@ -8,7 +8,7 @@
 #ifndef NUCLEOF446RE_H_
 #define NUCLEOF446RE_H_
 
-#include "mcal/peripherals/gpio/inc/gpio.h"
+#include "mcal/peripherals/gpio/inc/handle.h"
 #include "mcal/peripherals/inc/mechanism.h"
 
 #ifdef __cplusplus
