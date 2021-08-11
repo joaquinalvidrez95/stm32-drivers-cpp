@@ -23,11 +23,10 @@ namespace hal
             public:
                 Button();
                 void init(mcal::peripherals::Mechanism mechanism =
-                                     mcal::peripherals::Mechanism::polling);
+                              mcal::peripherals::Mechanism::polling);
                 void wait_till_pressed();
                 bool is_pressed();
                 void handle_irq();
-                void set_irq_enabled(bool b_enabled);
 
             private:
                 static constexpr mcal::peripherals::gpio::Configuration cfg_{

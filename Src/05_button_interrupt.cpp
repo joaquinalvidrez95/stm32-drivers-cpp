@@ -12,7 +12,6 @@ int main(void)
 {
     g_button.init(mcal::peripherals::Mechanism::interrupt);
     g_led.init();
-    g_button.set_irq_enabled(true);
 
     for (;;)
     {

@@ -21,10 +21,15 @@ namespace hal
 
             void Button::init(mcal::peripherals::Mechanism mechanism)
             {
-                handle_.init((mcal::peripherals::Mechanism::interrupt ==
-                              mechanism)
-                                 ? &interrupt_cfg_
-                                 : nullptr);
+                if (mcal::peripherals::Mechanism::polling == mechanism)
+                {
+                    handle_.init();
+                }
+                else
+                {
+                    handle_.init(&interrupt_cfg_);
+                    handle_.set_irq_enabled(true);
+                }
             }
 
             void Button::wait_till_pressed()
@@ -44,11 +49,6 @@ namespace hal
             void Button::handle_irq()
             {
                 handle_.handle_irq();
-            }
-
-            void Button::set_irq_enabled(bool b_enabled)
-            {
-                handle_.set_irq_enabled(b_enabled);
             }
 
             constexpr mcal::peripherals::gpio::Configuration Button::cfg_;
