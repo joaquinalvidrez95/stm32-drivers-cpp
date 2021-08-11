@@ -1,16 +1,18 @@
-#include "nucleof446re.h"
+#include "hal/nucleo/f446re/inc/button.h"
+#include "hal/nucleo/f446re/inc/led.h"
 #include "cfg.h"
 #include "utils.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_05_BUTTTON_INTERRUPT
 
-static nucleo::F446re gh_nucleo{};
+static hal::nucleo::f446re::Button g_button{};
+static hal::nucleo::f446re::Led g_led{};
 
 int main(void)
 {
-    gh_nucleo.init_button(mcal::peripherals::Mechanism::interrupt);
-    gh_nucleo.init_led();
-    gh_nucleo.set_button_irq_enabled(true);
+    g_button.init(mcal::peripherals::Mechanism::interrupt);
+    g_led.init();
+    g_button.set_irq_enabled(true);
 
     for (;;)
     {
@@ -21,8 +23,8 @@ int main(void)
 extern "C" void EXTI15_10_IRQHandler()
 {
     utils::delay();
-    gh_nucleo.handle_irq_button();
-    gh_nucleo.toggle_led();
+    g_button.handle_irq();
+    g_led.toggle();
 }
 
 #endif

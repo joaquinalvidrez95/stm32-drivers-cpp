@@ -2,7 +2,6 @@
 
 #include "hal/nucleo/f446re/inc/spi.h"
 #include "cfg.h"
-#include "utils.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_06_SPI_SEND
 

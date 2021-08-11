@@ -40,6 +40,7 @@ extern "C"
                 {
                 public:
                     Handle(const Configuration *p_cfg = nullptr);
+                    ~Handle();
                     void init(const Configuration *p_cfg = nullptr);
                     void toggle_pin() const;
                     void deinit() const;

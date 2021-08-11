@@ -25,6 +25,14 @@ namespace mcal
             {
             }
 
+            Handle::~Handle()
+            {
+                if (p_cfg_)
+                {
+                    deinit();
+                }
+            }
+
             void Handle::init(const Configuration *p_cfg)
             {
                 if (p_cfg)

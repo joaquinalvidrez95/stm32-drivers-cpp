@@ -16,24 +16,20 @@
  *
  ******************************************************************************
  */
-
-#if !defined(__SOFT_FP__) && defined(__ARM_FP)
-#warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
-#endif
-
-#include "nucleof446re.h"
+#include "hal/nucleo/f446re/inc/led.h"
+#include "utils.h"
 #include "cfg.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_01_LED_TOGGLE
 
 int main(void)
 {
-  nucleo::F446re h_nucleo{};
-  h_nucleo.init_led();
+  hal::nucleo::f446re::Led led{};
+  led.init();
   for (;;)
   {
-    h_nucleo.wait_till_button_pressed();
-    h_nucleo.toggle_led();
+    led.toggle();
+    utils::delay();
   }
   return 0;
 }
