@@ -13,9 +13,9 @@
 namespace nucleo
 {
 
-	void F446re::init_button(drivers::peripherals::Mechanism mechanism)
+	void F446re::init_button(mcal::peripherals::Mechanism mechanism)
 	{
-		h_button_.init((drivers::peripherals::Mechanism::interrupt == mechanism) ? &interrupt_button_cfg : nullptr);
+		h_button_.init((mcal::peripherals::Mechanism::interrupt == mechanism) ? &interrupt_button_cfg : nullptr);
 	}
 
 	void F446re::wait_till_button_pressed()
@@ -28,7 +28,7 @@ namespace nucleo
 
 	bool F446re::is_button_pressed()
 	{
-		return drivers::peripherals::gpio::Pin_state::reset == h_button_.read_pin();
+		return mcal::peripherals::gpio::Pin_state::reset == h_button_.read_pin();
 	}
 
 	void F446re::init_led()
@@ -51,7 +51,7 @@ namespace nucleo
 		h_button_.set_irq_enabled(b_enabled);
 	}
 
-	constexpr drivers::peripherals::gpio::Configuration F446re::button_cfg;
-	constexpr drivers::peripherals::gpio::Configuration F446re::led_cfg;
-	constexpr drivers::peripherals::gpio::Configuration F446re::interrupt_button_cfg;
+	constexpr mcal::peripherals::gpio::Configuration F446re::button_cfg;
+	constexpr mcal::peripherals::gpio::Configuration F446re::led_cfg;
+	constexpr mcal::peripherals::gpio::Configuration F446re::interrupt_button_cfg;
 } // namespace nucleo

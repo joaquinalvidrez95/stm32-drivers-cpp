@@ -10,7 +10,7 @@
 
 #include "drivers/peripherals/gpio/inc/configuration.h"
 
-namespace drivers
+namespace mcal
 {
     namespace peripherals
     {
@@ -28,6 +28,6 @@ namespace drivers
         }     // namespace rcc
     }         // namespace peripherals
 
-} // namespace drivers
+} // namespace mcal
 
 #endif /* PERIPHERALS_RCC_INC_RCC_H_ */

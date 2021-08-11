@@ -14,7 +14,7 @@
 #include "drivers/cortex/inc/nvic.h"
 #include "utils.h"
 
-namespace drivers
+namespace mcal
 {
     namespace peripherals
     {
@@ -155,4 +155,4 @@ namespace drivers
 
     } // namespace peripherals
 
-} // namespace drivers
+} // namespace mcal

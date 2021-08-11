@@ -11,7 +11,7 @@
 
 #include "drivers/inc/stm32f446xx.h"
 
-namespace drivers
+namespace mcal
 {
     namespace cortex
     {
@@ -38,4 +38,4 @@ namespace drivers
 
     } // namespace cortex
 
-} // namespace drivers
+} // namespace mcal

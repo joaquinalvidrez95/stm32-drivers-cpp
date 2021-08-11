@@ -23,7 +23,7 @@ extern "C"
 #include "drivers/peripherals/gpio/inc/reg.h"
 #include "drivers/peripherals/gpio/inc/configuration.h"
 
-    namespace drivers
+    namespace mcal
     {
         namespace peripherals
         {
@@ -91,7 +91,7 @@ extern "C"
             } // namespace gpio
         }     // namespace peripherals
 
-    } // namespace drivers
+    } // namespace mcal
 
 #ifdef __cplusplus
 }

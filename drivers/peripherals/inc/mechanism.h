@@ -6,7 +6,7 @@ extern "C"
 {
 #endif
 
-namespace drivers
+namespace mcal
 {
     namespace peripherals
     {
@@ -18,7 +18,7 @@ namespace drivers
 
     } // namespace peripherals
 
-} // namespace drivers
+} // namespace mcal
 
 #ifdef __cplusplus
 }

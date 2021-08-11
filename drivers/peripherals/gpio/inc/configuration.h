@@ -15,7 +15,7 @@ extern "C"
 
 #include <stdint.h>
 
-    namespace drivers
+    namespace mcal
     {
         namespace peripherals
         {
@@ -122,7 +122,7 @@ extern "C"
                 };
             } // namespace gpio
         }     // namespace peripherals
-    }         // namespace drivers
+    }         // namespace mcal
 
 #ifdef __cplusplus
 }

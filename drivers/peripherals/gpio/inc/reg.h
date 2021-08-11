@@ -5,7 +5,7 @@
 
 #include "drivers/inc/stm32f446xx.h"
 
-namespace drivers
+namespace mcal
 {
     namespace peripherals
     {
@@ -27,15 +27,15 @@ namespace drivers
 
     } // namespace peripherals
 
-} // namespace drivers
+} // namespace mcal
 
-#define GPIOA ((drivers::peripherals::gpio::Reg *const)GPIOA_BASEADDR)
-#define GPIOB ((drivers::peripherals::gpio::Reg *const)GPIOB_BASEADDR)
-#define GPIOC ((drivers::peripherals::gpio::Reg *const)GPIOC_BASEADDR)
-#define GPIOD ((drivers::peripherals::gpio::Reg *const)GPIOD_BASEADDR)
-#define GPIOE ((drivers::peripherals::gpio::Reg *const)GPIOE_BASEADDR)
-#define GPIOF ((drivers::peripherals::gpio::Reg *const)GPIOF_BASEADDR)
-#define GPIOG ((drivers::peripherals::gpio::Reg *const)GPIOG_BASEADDR)
-#define GPIOH ((drivers::peripherals::gpio::Reg *const)GPIOH_BASEADDR)
+#define GPIOA ((mcal::peripherals::gpio::Reg *const)GPIOA_BASEADDR)
+#define GPIOB ((mcal::peripherals::gpio::Reg *const)GPIOB_BASEADDR)
+#define GPIOC ((mcal::peripherals::gpio::Reg *const)GPIOC_BASEADDR)
+#define GPIOD ((mcal::peripherals::gpio::Reg *const)GPIOD_BASEADDR)
+#define GPIOE ((mcal::peripherals::gpio::Reg *const)GPIOE_BASEADDR)
+#define GPIOF ((mcal::peripherals::gpio::Reg *const)GPIOF_BASEADDR)
+#define GPIOG ((mcal::peripherals::gpio::Reg *const)GPIOG_BASEADDR)
+#define GPIOH ((mcal::peripherals::gpio::Reg *const)GPIOH_BASEADDR)
 
 #endif // DRIVERS_PERIPHERALS_GPIO_REG_H__

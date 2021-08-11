@@ -16,7 +16,7 @@ extern "C"
 {
 #endif
 
-	namespace drivers
+	namespace mcal
 	{
 		namespace cortex
 		{
@@ -75,7 +75,7 @@ extern "C"
 
 		} // namespace cortex
 
-	} // namespace drivers
+	} // namespace mcal
 
 #ifdef __cplusplus
 }

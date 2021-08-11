@@ -21,7 +21,7 @@ extern "C"
 		class F446re
 		{
 		public:
-			void init_button(drivers::peripherals::Mechanism mechanism = drivers::peripherals::Mechanism::polling);
+			void init_button(mcal::peripherals::Mechanism mechanism = mcal::peripherals::Mechanism::polling);
 			void wait_till_button_pressed();
 			bool is_button_pressed();
 			void init_led();
@@ -30,35 +30,35 @@ extern "C"
 			void set_button_irq_enabled(bool b_enabled);
 
 		private:
-			static constexpr drivers::peripherals::gpio::Configuration button_cfg{
-				drivers::peripherals::gpio::Configuration::Channel::c,
-				drivers::peripherals::gpio::Configuration::Pin_num::thirteen,
-				drivers::peripherals::gpio::Configuration::Mode::in,
-				drivers::peripherals::gpio::Configuration::Out_type::push_pull,
-				drivers::peripherals::gpio::Configuration::Pull_mode::none,
-				drivers::peripherals::gpio::Configuration::Speed::fast,
-				drivers::peripherals::gpio::Configuration::Alternate_function::zero,
+			static constexpr mcal::peripherals::gpio::Configuration button_cfg{
+				mcal::peripherals::gpio::Configuration::Channel::c,
+				mcal::peripherals::gpio::Configuration::Pin_num::thirteen,
+				mcal::peripherals::gpio::Configuration::Mode::in,
+				mcal::peripherals::gpio::Configuration::Out_type::push_pull,
+				mcal::peripherals::gpio::Configuration::Pull_mode::none,
+				mcal::peripherals::gpio::Configuration::Speed::fast,
+				mcal::peripherals::gpio::Configuration::Alternate_function::zero,
 			};
-			static constexpr drivers::peripherals::gpio::Configuration led_cfg{
-				drivers::peripherals::gpio::Configuration::Channel::a,
-				drivers::peripherals::gpio::Configuration::Pin_num::five,
-				drivers::peripherals::gpio::Configuration::Mode::out,
-				drivers::peripherals::gpio::Configuration::Out_type::push_pull,
-				drivers::peripherals::gpio::Configuration::Pull_mode::none,
-				drivers::peripherals::gpio::Configuration::Speed::fast,
-				drivers::peripherals::gpio::Configuration::Alternate_function::zero,
+			static constexpr mcal::peripherals::gpio::Configuration led_cfg{
+				mcal::peripherals::gpio::Configuration::Channel::a,
+				mcal::peripherals::gpio::Configuration::Pin_num::five,
+				mcal::peripherals::gpio::Configuration::Mode::out,
+				mcal::peripherals::gpio::Configuration::Out_type::push_pull,
+				mcal::peripherals::gpio::Configuration::Pull_mode::none,
+				mcal::peripherals::gpio::Configuration::Speed::fast,
+				mcal::peripherals::gpio::Configuration::Alternate_function::zero,
 			};
-			static constexpr drivers::peripherals::gpio::Configuration interrupt_button_cfg{
-				drivers::peripherals::gpio::Configuration::Channel::c,
-				drivers::peripherals::gpio::Configuration::Pin_num::thirteen,
-				drivers::peripherals::gpio::Configuration::Mode::falling_transition_interrupt,
-				drivers::peripherals::gpio::Configuration::Out_type::push_pull,
-				drivers::peripherals::gpio::Configuration::Pull_mode::none,
-				drivers::peripherals::gpio::Configuration::Speed::fast,
-				drivers::peripherals::gpio::Configuration::Alternate_function::zero,
+			static constexpr mcal::peripherals::gpio::Configuration interrupt_button_cfg{
+				mcal::peripherals::gpio::Configuration::Channel::c,
+				mcal::peripherals::gpio::Configuration::Pin_num::thirteen,
+				mcal::peripherals::gpio::Configuration::Mode::falling_transition_interrupt,
+				mcal::peripherals::gpio::Configuration::Out_type::push_pull,
+				mcal::peripherals::gpio::Configuration::Pull_mode::none,
+				mcal::peripherals::gpio::Configuration::Speed::fast,
+				mcal::peripherals::gpio::Configuration::Alternate_function::zero,
 			};
-			drivers::peripherals::gpio::Handle h_button_{&button_cfg};
-			drivers::peripherals::gpio::Handle h_led_{&led_cfg};
+			mcal::peripherals::gpio::Handle h_button_{&button_cfg};
+			mcal::peripherals::gpio::Handle h_led_{&led_cfg};
 		};
 	} // namespace nucleo
 

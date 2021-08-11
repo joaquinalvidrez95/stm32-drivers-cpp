@@ -6,7 +6,7 @@
 #include "utils.h"
 #include "drivers/inc/stm32f446xx.h"
 
-namespace drivers
+namespace mcal
 {
     namespace peripherals
     {
@@ -54,4 +54,4 @@ namespace drivers
 
     } // namespace peripherals
 
-} // namespace drivers
+} // namespace mcal

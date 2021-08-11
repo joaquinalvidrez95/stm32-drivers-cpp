@@ -8,7 +8,7 @@ static nucleo::F446re gh_nucleo{};
 
 int main(void)
 {
-    gh_nucleo.init_button(drivers::peripherals::Mechanism::interrupt);
+    gh_nucleo.init_button(mcal::peripherals::Mechanism::interrupt);
     gh_nucleo.init_led();
     gh_nucleo.set_button_irq_enabled(true);
 
