@@ -17,14 +17,6 @@ namespace mcal
     {
         namespace rcc
         {
-            void set_system_cfg_ctrl_clock_enabled(bool b_enabled)
-            {
-                utils::set_bits_by_position(
-                    RCC->apbenr[static_cast<size_t>(apb::Bus::two)],
-                    static_cast<uint32_t>(apb::Two_bits::syscfg),
-                    b_enabled);
-            }
-
             static constexpr std::array<uint32_t, static_cast<std::size_t>(
                                                       peripherals::gpio::Cfg::Channel::total)>
                 gpio_bit_positions{
@@ -37,6 +29,36 @@ namespace mcal
                     static_cast<uint32_t>(ahb::One_bits::gpiog),
                     static_cast<uint32_t>(ahb::One_bits::gpioh),
                 };
+
+            constexpr std::array<std::pair<uint32_t, size_t>,
+                                 static_cast<std::size_t>(
+                                     peripherals::spi::Cfg::Bus::total)>
+                spi_mapping{
+                    std::pair{
+                        static_cast<uint32_t>(apb::Two_bits::spi1),
+                        static_cast<size_t>(apb::Bus::two),
+                    }, /* SPI1 */
+                    {
+                        static_cast<uint32_t>(apb::One_bits::spi2),
+                        static_cast<size_t>(apb::Bus::one),
+                    }, /* SPI2 */
+                    {
+                        static_cast<uint32_t>(apb::One_bits::spi3),
+                        static_cast<size_t>(apb::Bus::one),
+                    }, /* SPI3 */
+                    {
+                        static_cast<uint32_t>(apb::Two_bits::spi4),
+                        static_cast<size_t>(apb::Bus::two),
+                    }, /* SPI4 */
+                };
+
+            void set_system_cfg_ctrl_clock_enabled(bool b_enabled)
+            {
+                utils::set_bits_by_position(
+                    RCC->apbenr[static_cast<size_t>(apb::Bus::two)],
+                    static_cast<uint32_t>(apb::Two_bits::syscfg),
+                    b_enabled);
+            }
 
             void set_clock_enabled(peripherals::gpio::Cfg::Channel channel,
                                    bool b_set)
@@ -65,36 +87,27 @@ namespace mcal
 
             void set_clock_enabled(peripherals::spi::Cfg::Bus bus, bool b_set)
             {
-                constexpr std::array<std::pair<uint32_t, size_t>,
-                                     static_cast<std::size_t>(
-                                         peripherals::spi::Cfg::Bus::total)>
-                    parameters{
-                        std::pair{
-                            static_cast<uint32_t>(apb::Two_bits::spi1),
-                            static_cast<size_t>(apb::Bus::two),
-                        }, /* SPI1 */
-                        {
-                            static_cast<uint32_t>(apb::One_bits::spi2),
-                            static_cast<size_t>(apb::Bus::one),
-                        }, /* SPI2 */
-                        {
-                            static_cast<uint32_t>(apb::One_bits::spi3),
-                            static_cast<size_t>(apb::Bus::one),
-                        }, /* SPI3 */
-                        {
-                            static_cast<uint32_t>(apb::Two_bits::spi4),
-                            static_cast<size_t>(apb::Bus::two),
-                        }, /* SPI4 */
-                    };
                 const auto [bit_position, apb_bus] =
-                    parameters.at(static_cast<std::size_t>(bus));
+                    spi_mapping.at(static_cast<std::size_t>(bus));
 
                 utils::set_bits_by_position(RCC->apbenr[apb_bus],
                                             bit_position,
                                             b_set);
             }
 
-            void reset_reg(peripherals::spi::Cfg::Bus bus) {}
+            void reset_reg(peripherals::spi::Cfg::Bus bus)
+            {
+                const auto [bit_position, apb_bus] =
+                    spi_mapping.at(static_cast<std::size_t>(bus));
+
+                utils::set_bits_by_position(RCC->apbrstr[apb_bus],
+                                            bit_position,
+                                            true);
+
+                utils::set_bits_by_position(RCC->apbrstr[apb_bus],
+                                            bit_position,
+                                            false);
+            }
         } // namespace rcc
 
     } // namespace peripherals
