@@ -11,62 +11,51 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace mcal
+namespace mcal::peripherals::rcc::ahb
 {
-    namespace peripherals
+    enum class Bus : size_t
     {
-        namespace rcc
-        {
-            namespace ahb
-            {
-                enum class Bus : size_t
-                {
-                    one,
-                    two,
-                    three,
-                    total,
-                };
+        one,
+        two,
+        three,
+        total,
+    };
 
-                enum class One_bits : uint32_t
-                {
-                    gpioa,
-                    gpiob,
-                    gpioc,
-                    gpiod,
-                    gpioe,
-                    gpiof,
-                    gpiog,
-                    gpioh,
-                    _reserved1,
-                    _reserved2,
-                    _reserved3,
-                    _reserved4,
-                    crc,
-                    _reserved5,
-                    _reserved6,
-                    _reserved7,
-                    _reserved8,
-                    _reserved9,
-                    bkpsram,
-                    _reserved10,
-                    _reserved11,
-                    dma1,
-                    dma2,
-                    _reserved12,
-                    _reserved13,
-                    _reserved14,
-                    _reserved15,
-                    _reserved16,
-                    _reserved17,
-                    otghs,
-                    otghsulpi,
-                };
+    enum class One_bits : uint32_t
+    {
+        gpioa,
+        gpiob,
+        gpioc,
+        gpiod,
+        gpioe,
+        gpiof,
+        gpiog,
+        gpioh,
+        _reserved1,
+        _reserved2,
+        _reserved3,
+        _reserved4,
+        crc,
+        _reserved5,
+        _reserved6,
+        _reserved7,
+        _reserved8,
+        _reserved9,
+        bkpsram,
+        _reserved10,
+        _reserved11,
+        dma1,
+        dma2,
+        _reserved12,
+        _reserved13,
+        _reserved14,
+        _reserved15,
+        _reserved16,
+        _reserved17,
+        otghs,
+        otghsulpi,
+    };
 
-            } // namespace ahb
-
-        } // namespace rcc
-
-    } // namespace peripherals
-} // namespace mcal
+} // namespace mcal::peripherals::rcc::ahb
 
 #endif /* PERIPHERALS_RCC_INC_AHB_H_ */

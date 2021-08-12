@@ -10,16 +10,15 @@
 
 #include <cstdint>
 
-#include "stm32f446xx.h"
-
-namespace mcal
+namespace mcal::peripherals::spi
 {
-    namespace peripherals
+    struct Reg
     {
-        namespace spi
-        {
-            struct Reg
-            {
+        volatile uint32_t cr1;
+        volatile uint32_t cr2;
+        volatile uint32_t sr;
+
+#if 0
                 struct
                 {
                     volatile unsigned int CPHA : 1;
@@ -64,23 +63,16 @@ namespace mcal
                     volatile unsigned int FRE : 1;
                     unsigned int reserved : 23;
                 } SR;
+#endif
 
-                volatile uint32_t DR;
-                volatile uint32_t CRCPR;
-                volatile uint32_t RXCRCR;
-                volatile uint32_t TXCRCR;
-                volatile uint32_t I2SCFGR;
-                volatile uint32_t I2SPR;
-            };
+        volatile uint32_t dr;
+        volatile uint32_t crcpr;
+        volatile uint32_t rxcrcr;
+        volatile uint32_t txcrcr;
+        volatile uint32_t i2scfgR;
+        volatile uint32_t i2spr;
+    };
 
-#define SPI1 ((Reg *)SPI1_BASEADDR)
-#define SPI2 ((Reg *)SPI2_BASEADDR)
-#define SPI3 ((Reg *)SPI3_BASEADDR)
-#define SPI4 ((Reg *)SPI4_BASEADDR)
-        } // namespace spi
-
-    } // namespace peripherals
-
-} // namespace mcal
+} // namespace mcal::peripherals::spi
 
 #endif /* PERIPHERALS_SPI_INC_REG_H_ */

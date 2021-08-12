@@ -12,46 +12,40 @@
 #include "mcal/peripherals/gpio/inc/configuration.h"
 #include "mcal/peripherals/inc/mechanism.h"
 
-namespace hal
+namespace hal::nucleo::f446re
 {
-    namespace nucleo
+    class Button
     {
-        namespace f446re
-        {
-            class Button
-            {
-            public:
-                Button();
-                void init(mcal::peripherals::Mechanism mechanism =
-                              mcal::peripherals::Mechanism::polling);
-                void wait_till_pressed();
-                bool is_pressed();
-                void handle_irq();
+    public:
+        Button();
+        void init(mcal::peripherals::Mechanism mechanism =
+                      mcal::peripherals::Mechanism::polling);
+        void wait_till_pressed();
+        bool is_pressed();
+        void handle_irq();
 
-            private:
-                static constexpr mcal::peripherals::gpio::Cfg cfg_{
-                    mcal::peripherals::gpio::Cfg::Channel::c,
-                    mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
-                    mcal::peripherals::gpio::Cfg::Mode::in,
-                    mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-                    mcal::peripherals::gpio::Cfg::Pull_mode::none,
-                    mcal::peripherals::gpio::Cfg::Speed::fast,
-                    mcal::peripherals::gpio::Cfg::Alternate_function::zero,
-                };
+    private:
+        static constexpr mcal::peripherals::gpio::Cfg cfg_{
+            mcal::peripherals::gpio::Cfg::Channel::c,
+            mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
+            mcal::peripherals::gpio::Cfg::Mode::in,
+            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
+            mcal::peripherals::gpio::Cfg::Pull_mode::none,
+            mcal::peripherals::gpio::Cfg::Speed::fast,
+            mcal::peripherals::gpio::Cfg::Alternate_function::zero,
+        };
 
-                static constexpr mcal::peripherals::gpio::Cfg interrupt_cfg_{
-                    mcal::peripherals::gpio::Cfg::Channel::c,
-                    mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
-                    mcal::peripherals::gpio::Cfg::Mode::falling_transition_interrupt,
-                    mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-                    mcal::peripherals::gpio::Cfg::Pull_mode::none,
-                    mcal::peripherals::gpio::Cfg::Speed::fast,
-                    mcal::peripherals::gpio::Cfg::Alternate_function::zero,
-                };
-                mcal::peripherals::gpio::Handle handle_{&cfg_};
-            };
-        } // namespace f446re
-    }     // namespace nucleo
-} // namespace hal
+        static constexpr mcal::peripherals::gpio::Cfg interrupt_cfg_{
+            mcal::peripherals::gpio::Cfg::Channel::c,
+            mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
+            mcal::peripherals::gpio::Cfg::Mode::falling_transition_interrupt,
+            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
+            mcal::peripherals::gpio::Cfg::Pull_mode::none,
+            mcal::peripherals::gpio::Cfg::Speed::fast,
+            mcal::peripherals::gpio::Cfg::Alternate_function::zero,
+        };
+        mcal::peripherals::gpio::Handle handle_{&cfg_};
+    };
+} // namespace hal::nucleo::f446re
 
 #endif /* NUCLEO_F446RE_INC_BUTTON_H_ */

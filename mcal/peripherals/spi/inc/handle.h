@@ -10,33 +10,18 @@
 
 #include "mcal/peripherals/spi/inc/cfg.h"
 
-namespace mcal
+namespace mcal::peripherals::spi
 {
-    namespace peripherals
+    class Handle
     {
-        namespace spi
-        {
-            class Handle
-            {
-            public:
-                Handle(/* args */);
-                ~Handle();
-                void init(const Cfg *p_cfg);
-            private:
-                /* data */
-            };
-           
-            
-            
-        } // namespace spi
-        
-        
-    } // namespace peripherals
-    
-    
-} // namespace mcal
+    public:
+        Handle(/* args */);
+        ~Handle();
+        void init(const Cfg *p_cfg);
 
-
-
+    private:
+        /* data */
+    };
+} // namespace mcal::peripherals::spi
 
 #endif /* PERIPHERALS_SPI_INC_HANDLE_H_ */

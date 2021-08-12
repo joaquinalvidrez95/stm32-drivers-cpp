@@ -5,20 +5,16 @@
 extern "C"
 {
 #endif
-
-namespace mcal
-{
-    namespace peripherals
+    namespace mcal::peripherals
     {
+
         enum class Mechanism
         {
             polling,
             interrupt
         };
 
-    } // namespace peripherals
-
-} // namespace mcal
+    } // namespace mcal::peripherals
 
 #ifdef __cplusplus
 }

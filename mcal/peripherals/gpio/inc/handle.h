@@ -23,80 +23,73 @@ extern "C"
 #include "mcal/peripherals/gpio/inc/reg.h"
 #include "mcal/peripherals/gpio/inc/configuration.h"
 
-    namespace mcal
+    namespace mcal::peripherals::gpio
     {
-        namespace peripherals
+
+        enum class Pin_state : uint32_t
         {
-            namespace gpio
+            reset,
+            set
+        };
+
+        class Handle
+        {
+        public:
+            Handle(const Cfg *p_cfg = nullptr);
+            ~Handle();
+            void init(const Cfg *p_cfg = nullptr);
+            void toggle_pin() const;
+            void deinit() const;
+            Pin_state read_pin() const;
+            uint16_t read_port() const;
+            void write_pin(Pin_state state) const;
+            void write_port(uint16_t value) const;
+            void set_irq_enabled(bool b_enabled) const;
+            void config_irq_priority(cortex::nvic::Irq_prio prio) const;
+            void handle_irq() const;
+
+        private:
+            const Cfg *p_cfg_;
+            static constexpr std::array<Reg *const,
+                                        static_cast<std::size_t>(Cfg::Channel::total)>
+                p_registers{
+                    GPIOA,
+                    GPIOB,
+                    GPIOC,
+                    GPIOD,
+                    GPIOE,
+                    GPIOF,
+                    GPIOG,
+                    GPIOH,
+                };
+            static constexpr std::array<cortex::nvic::Irq_num,
+                                        static_cast<std::size_t>(Cfg::Pin_num::total)>
+                irq_nums{
+                    cortex::nvic::Irq_num::exti0,
+                    cortex::nvic::Irq_num::exti1,
+                    cortex::nvic::Irq_num::exti2,
+                    cortex::nvic::Irq_num::exti3,
+                    cortex::nvic::Irq_num::exti4,
+                    cortex::nvic::Irq_num::exti9_5,
+                    cortex::nvic::Irq_num::exti9_5,
+                    cortex::nvic::Irq_num::exti9_5,
+                    cortex::nvic::Irq_num::exti9_5,
+                    cortex::nvic::Irq_num::exti9_5,
+                    cortex::nvic::Irq_num::exti15_10,
+                    cortex::nvic::Irq_num::exti15_10,
+                    cortex::nvic::Irq_num::exti15_10,
+                    cortex::nvic::Irq_num::exti15_10,
+                    cortex::nvic::Irq_num::exti15_10,
+                    cortex::nvic::Irq_num::exti15_10,
+                };
+
+            inline Reg *reg() const
             {
+                return p_cfg_ ? Handle::p_registers.at(static_cast<std::size_t>(p_cfg_->channel)) : nullptr;
+            }
+        };
 
-                enum class Pin_state : uint32_t
-                {
-                    reset,
-                    set
-                };
-
-                class Handle
-                {
-                public:
-                    Handle(const Cfg *p_cfg = nullptr);
-                    ~Handle();
-                    void init(const Cfg *p_cfg = nullptr);
-                    void toggle_pin() const;
-                    void deinit() const;
-                    Pin_state read_pin() const;
-                    uint16_t read_port() const;
-                    void write_pin(Pin_state state) const;
-                    void write_port(uint16_t value) const;
-                    void set_irq_enabled(bool b_enabled) const;
-                    void config_irq_priority(cortex::nvic::Irq_prio prio) const;
-                    void handle_irq() const;
-
-                private:
-                    const Cfg *p_cfg_;
-                    static constexpr std::array<Reg *const,
-                                                static_cast<std::size_t>(Cfg::Channel::total)>
-                        p_registers{
-                            GPIOA,
-                            GPIOB,
-                            GPIOC,
-                            GPIOD,
-                            GPIOE,
-                            GPIOF,
-                            GPIOG,
-                            GPIOH,
-                        };
-                    static constexpr std::array<cortex::nvic::Irq_num,
-                                                static_cast<std::size_t>(Cfg::Pin_num::total)>
-                        irq_nums{
-                            cortex::nvic::Irq_num::exti0,
-                            cortex::nvic::Irq_num::exti1,
-                            cortex::nvic::Irq_num::exti2,
-                            cortex::nvic::Irq_num::exti3,
-                            cortex::nvic::Irq_num::exti4,
-                            cortex::nvic::Irq_num::exti9_5,
-                            cortex::nvic::Irq_num::exti9_5,
-                            cortex::nvic::Irq_num::exti9_5,
-                            cortex::nvic::Irq_num::exti9_5,
-                            cortex::nvic::Irq_num::exti9_5,
-                            cortex::nvic::Irq_num::exti15_10,
-                            cortex::nvic::Irq_num::exti15_10,
-                            cortex::nvic::Irq_num::exti15_10,
-                            cortex::nvic::Irq_num::exti15_10,
-                            cortex::nvic::Irq_num::exti15_10,
-                            cortex::nvic::Irq_num::exti15_10,
-                        };
-
-                    inline Reg *reg() const
-                    {
-                        return p_cfg_ ? Handle::p_registers.at(static_cast<std::size_t>(p_cfg_->channel)) : nullptr;
-                    }
-                };
-
-            } // namespace gpio
-        }     // namespace peripherals
-
-    } // namespace mcal
+    } // namespace mcal::peripherals::gpio
 
 #ifdef __cplusplus
 }

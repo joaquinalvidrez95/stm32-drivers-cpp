@@ -7,27 +7,21 @@
 
 #include "hal/nucleo/f446re/inc/led.h"
 
-namespace hal
+namespace hal::nucleo::f446re
 {
-    namespace nucleo
+    Led::Led()
     {
-        namespace f446re
-        {
-            Led::Led()
-            {
-            }
+    }
 
-            void Led::init()
-            {
-                handle_.init();
-            }
+    void Led::init()
+    {
+        handle_.init();
+    }
 
-            void Led::toggle()
-            {
-                handle_.toggle_pin();
-            }
-            constexpr mcal::peripherals::gpio::Cfg Led::cfg_;
+    void Led::toggle()
+    {
+        handle_.toggle_pin();
+    }
+    constexpr mcal::peripherals::gpio::Cfg Led::cfg_;
 
-        } // namespace f446re
-    }     // namespace nucleo
-} // namespace hal
+} // namespace hal::nucleo::f446re

@@ -10,28 +10,19 @@
 
 #include <cstddef>
 
-namespace hal
+namespace hal::nucleo::f446re
 {
-    namespace nucleo
+    class Spi
     {
-        namespace f446re
-        {
-            class Spi
-            {
-            public:
-                Spi();
+    public:
+        Spi();
 
-                void init();
+        void init();
 
-                void send(std::byte *first, std::byte *last);
+        void send(std::byte *first, std::byte *last);
 
-                void send(const char *first, const char *last);
-            };
-
-        } // namespace f446re
-
-    } // namespace nucleo
-
-} // namespace hal
+        void send(const char *first, const char *last);
+    };
+} // namespace hal::nucleo::f446re
 
 #endif /* NUCLEO_F446RE_INC_SPI_H_ */
