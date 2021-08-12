@@ -164,67 +164,7 @@ extern "C"
 		const uint16_t _unused_10;
 	} i2c_reg_t;
 
-	typedef struct
-	{
-		volatile uint32_t cr;
-		volatile uint32_t pll_cfgr;
-		volatile uint32_t cfgr;
-		volatile uint32_t cir;
-		struct
-		{
-			volatile uint32_t one;
-			volatile uint32_t two;
-			volatile uint32_t three;
-		} ahbrstr;
-
-		uint32_t _reserved_1;
-		struct
-		{
-			volatile uint32_t one;
-			volatile uint32_t two;
-		} apbrstr;
-
-		uint32_t _reserved_2[2];
-		struct
-		{
-			volatile uint32_t one;
-			volatile uint32_t two;
-			volatile uint32_t three;
-		} ahbenr;
-		uint32_t _reserved_3;
-		struct
-		{
-			volatile uint32_t one;
-			volatile uint32_t two;
-		} apbenr;
-
-		uint32_t _reserved_4[2];
-		struct
-		{
-			volatile uint32_t one;
-			volatile uint32_t two;
-			volatile uint32_t three;
-		} ahblpenr;
-
-		uint32_t _reserved_5;
-		struct
-		{
-			volatile uint32_t one;
-			volatile uint32_t two;
-		} apblpenr;
-
-		uint32_t _reserved_6[2];
-		volatile uint32_t bdcr;
-		volatile uint32_t csr;
-		uint32_t _reserved_7[2];
-		volatile uint32_t sscgr;
-		volatile uint32_t plli2scfgr;
-		volatile uint32_t pllsaicfgr;
-		volatile uint32_t dckcfgr;
-		volatile uint32_t ckgatenr;
-		volatile uint32_t dckcfgr2;
-	} rcc_reg_t;
-
+	
 	typedef struct
 	{
 		volatile uint32_t imr;
@@ -247,11 +187,7 @@ extern "C"
 		volatile uint32_t cfgr;
 	};
 
-
-
-#define RCC ((rcc_reg_t *)RCC_BASEADDR)
 #define EXTI ((exti_reg_t *)EXTI_BASEADDR)
-#define SYSCFG ((Syscfg_reg *)SYSCFG_BASEADDR)
 #define SYSCFG ((Syscfg_reg *)SYSCFG_BASEADDR)
 
 #define SPI1 ((Spi_reg_t *)SPI1_BASEADDR)
@@ -279,10 +215,6 @@ extern "C"
 #define USART2_PCLK_EN() (RCC->APBENR[0] |= (1u << 17u))
 #define USART3_PCLK_EN() (RCC->APBENR[0] |= (1u << 18u))
 #define USART6_PCLK_EN() (RCC->APBENR[1] |= (1u << 5u))
-
-/** Enables SYSCFG */
-/* TODO: Move to rcc */
-#define SYSCFG_PCLK_EN() (RCC->apbenr.two |= (1u << 14u))
 
 	/** Resets peripheral */
 	typedef enum

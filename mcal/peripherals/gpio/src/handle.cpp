@@ -76,7 +76,7 @@ namespace mcal
                     }
 
                     /* Configures the GPIO port selection in SYSCFG_EXTICR */
-                    SYSCFG_PCLK_EN();
+                    rcc::set_system_cfg_ctrl_clock_enabled(true);
                     constexpr uint32_t num_bits_per_section{4u};
                     const uint32_t idx = static_cast<uint32_t>(p_cfg_->pin_num) / num_bits_per_section;
                     const uint32_t section = static_cast<uint32_t>(p_cfg_->pin_num) % num_bits_per_section;
