@@ -97,6 +97,41 @@ namespace mcal
                     total,
                 };
 
+                enum class One_bits : uint32_t
+                {
+                    gpioa,
+                    gpiob,
+                    gpioc,
+                    gpiod,
+                    gpioe,
+                    gpiof,
+                    gpiog,
+                    gpioh,
+                    _reserved1,
+                    _reserved2,
+                    _reserved3,
+                    _reserved4,
+                    crc,
+                    _reserved5,
+                    _reserved6,
+                    _reserved7,
+                    _reserved8,
+                    _reserved9,
+                    bkpsram,
+                    _reserved10,
+                    _reserved11,
+                    dma1,
+                    dma2,
+                    _reserved12,
+                    _reserved13,
+                    _reserved14,
+                    _reserved15,
+                    _reserved16,
+                    _reserved17,
+                    otghs,
+                    otghsulpi,
+                };
+
             } // namespace ahb
 
             struct Reg
@@ -138,58 +173,49 @@ namespace mcal
                     b_enabled);
             }
 
-            namespace gpio
-            {
-                static constexpr std::array<uint32_t, static_cast<std::size_t>(
-                                                          peripherals::gpio::Configuration::Channel::total)>
-                    bit_positions{
-                        0u,
-                        1u,
-                        2u,
-                        3u,
-                        4u,
-                        5u,
-                        6u,
-                        7u,
-                    };
-                void set_clock_enabled(
-                    peripherals::gpio::Configuration::Channel channel,
-                    bool b_set)
-                {
-                    const auto bit_position{
-                        bit_positions.at(static_cast<std::size_t>(channel))};
-                    utils::set_bits_by_position(
-                        RCC->ahbenr[static_cast<size_t>(ahb::Bus::one)],
-                        bit_position,
-                        b_set);
-                }
+            static constexpr std::array<uint32_t, static_cast<std::size_t>(
+                                                      peripherals::gpio::Cfg::Channel::total)>
+                gpio_bit_positions{
+                    static_cast<uint32_t>(ahb::One_bits::gpioa),
+                    static_cast<uint32_t>(ahb::One_bits::gpiob),
+                    static_cast<uint32_t>(ahb::One_bits::gpioc),
+                    static_cast<uint32_t>(ahb::One_bits::gpiod),
+                    static_cast<uint32_t>(ahb::One_bits::gpioe),
+                    static_cast<uint32_t>(ahb::One_bits::gpiof),
+                    static_cast<uint32_t>(ahb::One_bits::gpiog),
+                    static_cast<uint32_t>(ahb::One_bits::gpioh),
+                };
 
-                void reset_reg(peripherals::gpio::Configuration::Channel channel)
-                {
-                    const auto bit_position{
-                        bit_positions.at(static_cast<std::size_t>(channel))};
-                    utils::set_bits_by_position(
-                        RCC->ahbrstr[static_cast<size_t>(ahb::Bus::one)],
-                        bit_position,
-                        true);
-                    utils::set_bits_by_position(
-                        RCC->ahbrstr[static_cast<size_t>(ahb::Bus::one)],
-                        bit_position,
-                        false);
-                }
-            } // namespace gpio
-
-            void set_clock_enabled(peripherals::gpio::Configuration::Channel channel,
-                                   bool b_set) {}
-
-            void reset_reg(peripherals::gpio::Configuration::Channel channel) {}
-
-            void set_clock_enabled(peripherals::spi::Configuration::Bus bus,
+            void set_clock_enabled(peripherals::gpio::Cfg::Channel channel,
                                    bool b_set)
+            {
+                const auto bit_position{
+                    gpio_bit_positions.at(static_cast<std::size_t>(channel))};
+                utils::set_bits_by_position(
+                    RCC->ahbenr[static_cast<size_t>(ahb::Bus::one)],
+                    bit_position,
+                    b_set);
+            }
+
+            void reset_reg(peripherals::gpio::Cfg::Channel channel)
+            {
+                const auto bit_position{
+                    gpio_bit_positions.at(static_cast<std::size_t>(channel))};
+                utils::set_bits_by_position(
+                    RCC->ahbrstr[static_cast<size_t>(ahb::Bus::one)],
+                    bit_position,
+                    true);
+                utils::set_bits_by_position(
+                    RCC->ahbrstr[static_cast<size_t>(ahb::Bus::one)],
+                    bit_position,
+                    false);
+            }
+
+            void set_clock_enabled(peripherals::spi::Cfg::Bus bus, bool b_set)
             {
                 constexpr std::array<std::pair<uint32_t, size_t>,
                                      static_cast<std::size_t>(
-                                         peripherals::spi::Configuration::Bus::total)>
+                                         peripherals::spi::Cfg::Bus::total)>
                     parameters{
                         std::pair{
                             static_cast<uint32_t>(apb::Two_bits::spi1),
@@ -216,7 +242,7 @@ namespace mcal
                                             b_set);
             }
 
-            void reset_reg(peripherals::spi::Configuration::Bus bus) {}
+            void reset_reg(peripherals::spi::Cfg::Bus bus) {}
         } // namespace rcc
 
     } // namespace peripherals

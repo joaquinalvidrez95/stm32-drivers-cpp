@@ -25,14 +25,14 @@ namespace hal
                 void toggle();
 
             private:
-                static constexpr mcal::peripherals::gpio::Configuration cfg_{
-                    mcal::peripherals::gpio::Configuration::Channel::a,
-                    mcal::peripherals::gpio::Configuration::Pin_num::five,
-                    mcal::peripherals::gpio::Configuration::Mode::out,
-                    mcal::peripherals::gpio::Configuration::Out_type::push_pull,
-                    mcal::peripherals::gpio::Configuration::Pull_mode::none,
-                    mcal::peripherals::gpio::Configuration::Speed::fast,
-                    mcal::peripherals::gpio::Configuration::Alternate_function::zero,
+                static constexpr mcal::peripherals::gpio::Cfg cfg_{
+                    mcal::peripherals::gpio::Cfg::Channel::a,
+                    mcal::peripherals::gpio::Cfg::Pin_num::five,
+                    mcal::peripherals::gpio::Cfg::Mode::out,
+                    mcal::peripherals::gpio::Cfg::Out_type::push_pull,
+                    mcal::peripherals::gpio::Cfg::Pull_mode::none,
+                    mcal::peripherals::gpio::Cfg::Speed::fast,
+                    mcal::peripherals::gpio::Cfg::Alternate_function::zero,
                 };
                 mcal::peripherals::gpio::Handle handle_{&cfg_};
             };

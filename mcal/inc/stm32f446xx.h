@@ -199,6 +199,7 @@ extern "C"
 #define I2C2 ((volatile i2c_reg_t *)I2C2_BASEADDR)
 #define I2C3 ((volatile i2c_reg_t *)I2C3_BASEADDR)
 
+/* TODO: Remove. This is not necessary */
 /** Enables SPIx */
 #define SPI1_PCLK_EN() (RCC->APBENR[1] |= (1u << 12u))
 #define SPI2_PCLK_EN() (RCC->APBENR[0] |= (1u << 14u))

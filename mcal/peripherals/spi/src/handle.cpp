@@ -22,7 +22,7 @@ namespace mcal
             {
             }
 
-            void Handle::init(const Configuration *p_cfg)
+            void Handle::init(const Cfg *p_cfg)
             {
             }
 

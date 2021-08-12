@@ -51,8 +51,8 @@ namespace hal
                 handle_.handle_irq();
             }
 
-            constexpr mcal::peripherals::gpio::Configuration Button::cfg_;
-            constexpr mcal::peripherals::gpio::Configuration Button::interrupt_cfg_;
+            constexpr mcal::peripherals::gpio::Cfg Button::cfg_;
+            constexpr mcal::peripherals::gpio::Cfg Button::interrupt_cfg_;
         } // namespace f446re
     }     // namespace nucleo
 } // namespace hal

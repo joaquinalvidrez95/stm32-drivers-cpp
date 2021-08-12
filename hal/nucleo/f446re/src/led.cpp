@@ -26,7 +26,7 @@ namespace hal
             {
                 handle_.toggle_pin();
             }
-            constexpr mcal::peripherals::gpio::Configuration Led::cfg_;
+            constexpr mcal::peripherals::gpio::Cfg Led::cfg_;
 
         } // namespace f446re
     }     // namespace nucleo

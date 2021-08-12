@@ -21,7 +21,7 @@ namespace mcal
             public:
                 Handle(/* args */);
                 ~Handle();
-                void init(const Configuration *p_cfg);
+                void init(const Cfg *p_cfg);
             private:
                 /* data */
             };

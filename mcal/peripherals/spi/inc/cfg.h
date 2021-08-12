@@ -16,7 +16,7 @@ namespace mcal
     {
         namespace spi
         {
-            struct Configuration
+            struct Cfg
             {
                 enum class Device_mode : uint32_t
                 {

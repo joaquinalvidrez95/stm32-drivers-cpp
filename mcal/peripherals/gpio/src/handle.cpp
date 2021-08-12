@@ -20,7 +20,7 @@ namespace mcal
     {
         namespace gpio
         {
-            Handle::Handle(const Configuration *p_cfg)
+            Handle::Handle(const Cfg *p_cfg)
                 : p_cfg_{p_cfg}
             {
             }
@@ -33,20 +33,20 @@ namespace mcal
                 }
             }
 
-            void Handle::init(const Configuration *p_cfg)
+            void Handle::init(const Cfg *p_cfg)
             {
                 if (p_cfg)
                 {
                     p_cfg_ = p_cfg;
                 }
 
-                rcc::gpio::set_clock_enabled(p_cfg_->channel, true);
+                rcc::set_clock_enabled(p_cfg_->channel, true);
 
                 auto *const p_reg{reg()};
 
                 /* TODO: Check if memset */
                 /* Configures mode. */
-                if (p_cfg_->mode <= Configuration::Mode::analog)
+                if (p_cfg_->mode <= Cfg::Mode::analog)
                 {
                     utils::set_bits_by_position<uint32_t>(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
                     utils::set_bits_by_position(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->mode));
@@ -56,17 +56,17 @@ namespace mcal
                     /* TODO: Use utils */
                     switch (p_cfg_->mode)
                     {
-                    case Configuration::Mode::falling_transition_interrupt:
+                    case Cfg::Mode::falling_transition_interrupt:
                         utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
                         utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), false);
                         break;
 
-                    case Configuration::Mode::rising_transition_interrupt:
+                    case Cfg::Mode::rising_transition_interrupt:
                         utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
                         utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), false);
                         break;
 
-                    case Configuration::Mode::rising_falling_transition_interrupt:
+                    case Cfg::Mode::rising_falling_transition_interrupt:
                         utils::set_bits_by_position(EXTI->rtsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
                         utils::set_bits_by_position(EXTI->ftsr, static_cast<uint32_t>(p_cfg_->pin_num), true);
                         break;
@@ -97,7 +97,7 @@ namespace mcal
                 utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->out_type));
 
                 /* Configures alternate function */
-                if (Configuration::Mode::alternate_function == p_cfg_->mode)
+                if (Cfg::Mode::alternate_function == p_cfg_->mode)
                 {
                     /* TODO: Refactor */
                     const uint32_t tmp1 = static_cast<uint32_t>(p_cfg_->pin_num) / 8u;
@@ -114,7 +114,7 @@ namespace mcal
 
             void Handle::deinit() const
             {
-                rcc::gpio::reset_reg(p_cfg_->channel);
+                rcc::reset_reg(p_cfg_->channel);
             }
 
             Pin_state Handle::read_pin() const
@@ -156,8 +156,8 @@ namespace mcal
                 }
             }
 
-            constexpr std::array<Reg *, static_cast<std::size_t>(Configuration::Channel::total)> Handle::p_registers;
-            constexpr std::array<cortex::nvic::Irq_num, static_cast<std::size_t>(Configuration::Pin_num::total)> Handle::irq_nums;
+            constexpr std::array<Reg *, static_cast<std::size_t>(Cfg::Channel::total)> Handle::p_registers;
+            constexpr std::array<cortex::nvic::Irq_num, static_cast<std::size_t>(Cfg::Pin_num::total)> Handle::irq_nums;
 
         } // namespace gpio
 

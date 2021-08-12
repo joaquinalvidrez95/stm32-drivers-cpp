@@ -22,7 +22,7 @@ extern "C"
             namespace gpio
             {
 
-                struct Configuration
+                struct Cfg
                 {
                     enum class Channel
                     {

@@ -29,24 +29,24 @@ namespace hal
                 void handle_irq();
 
             private:
-                static constexpr mcal::peripherals::gpio::Configuration cfg_{
-                    mcal::peripherals::gpio::Configuration::Channel::c,
-                    mcal::peripherals::gpio::Configuration::Pin_num::thirteen,
-                    mcal::peripherals::gpio::Configuration::Mode::in,
-                    mcal::peripherals::gpio::Configuration::Out_type::push_pull,
-                    mcal::peripherals::gpio::Configuration::Pull_mode::none,
-                    mcal::peripherals::gpio::Configuration::Speed::fast,
-                    mcal::peripherals::gpio::Configuration::Alternate_function::zero,
+                static constexpr mcal::peripherals::gpio::Cfg cfg_{
+                    mcal::peripherals::gpio::Cfg::Channel::c,
+                    mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
+                    mcal::peripherals::gpio::Cfg::Mode::in,
+                    mcal::peripherals::gpio::Cfg::Out_type::push_pull,
+                    mcal::peripherals::gpio::Cfg::Pull_mode::none,
+                    mcal::peripherals::gpio::Cfg::Speed::fast,
+                    mcal::peripherals::gpio::Cfg::Alternate_function::zero,
                 };
 
-                static constexpr mcal::peripherals::gpio::Configuration interrupt_cfg_{
-                    mcal::peripherals::gpio::Configuration::Channel::c,
-                    mcal::peripherals::gpio::Configuration::Pin_num::thirteen,
-                    mcal::peripherals::gpio::Configuration::Mode::falling_transition_interrupt,
-                    mcal::peripherals::gpio::Configuration::Out_type::push_pull,
-                    mcal::peripherals::gpio::Configuration::Pull_mode::none,
-                    mcal::peripherals::gpio::Configuration::Speed::fast,
-                    mcal::peripherals::gpio::Configuration::Alternate_function::zero,
+                static constexpr mcal::peripherals::gpio::Cfg interrupt_cfg_{
+                    mcal::peripherals::gpio::Cfg::Channel::c,
+                    mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
+                    mcal::peripherals::gpio::Cfg::Mode::falling_transition_interrupt,
+                    mcal::peripherals::gpio::Cfg::Out_type::push_pull,
+                    mcal::peripherals::gpio::Cfg::Pull_mode::none,
+                    mcal::peripherals::gpio::Cfg::Speed::fast,
+                    mcal::peripherals::gpio::Cfg::Alternate_function::zero,
                 };
                 mcal::peripherals::gpio::Handle handle_{&cfg_};
             };

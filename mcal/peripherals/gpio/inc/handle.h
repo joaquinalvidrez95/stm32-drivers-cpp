@@ -39,9 +39,9 @@ extern "C"
                 class Handle
                 {
                 public:
-                    Handle(const Configuration *p_cfg = nullptr);
+                    Handle(const Cfg *p_cfg = nullptr);
                     ~Handle();
-                    void init(const Configuration *p_cfg = nullptr);
+                    void init(const Cfg *p_cfg = nullptr);
                     void toggle_pin() const;
                     void deinit() const;
                     Pin_state read_pin() const;
@@ -53,35 +53,39 @@ extern "C"
                     void handle_irq() const;
 
                 private:
-                    const Configuration *p_cfg_;
-                    static constexpr std::array<Reg *, static_cast<std::size_t>(Configuration::Channel::total)> p_registers{
-                        GPIOA,
-                        GPIOB,
-                        GPIOC,
-                        GPIOD,
-                        GPIOE,
-                        GPIOF,
-                        GPIOG,
-                        GPIOH,
-                    };
-                    static constexpr std::array<cortex::nvic::Irq_num, static_cast<std::size_t>(Configuration::Pin_num::total)> irq_nums{
-                        cortex::nvic::Irq_num::exti0,
-                        cortex::nvic::Irq_num::exti1,
-                        cortex::nvic::Irq_num::exti2,
-                        cortex::nvic::Irq_num::exti3,
-                        cortex::nvic::Irq_num::exti4,
-                        cortex::nvic::Irq_num::exti9_5,
-                        cortex::nvic::Irq_num::exti9_5,
-                        cortex::nvic::Irq_num::exti9_5,
-                        cortex::nvic::Irq_num::exti9_5,
-                        cortex::nvic::Irq_num::exti9_5,
-                        cortex::nvic::Irq_num::exti15_10,
-                        cortex::nvic::Irq_num::exti15_10,
-                        cortex::nvic::Irq_num::exti15_10,
-                        cortex::nvic::Irq_num::exti15_10,
-                        cortex::nvic::Irq_num::exti15_10,
-                        cortex::nvic::Irq_num::exti15_10,
-                    };
+                    const Cfg *p_cfg_;
+                    static constexpr std::array<Reg *,
+                                                static_cast<std::size_t>(Cfg::Channel::total)>
+                        p_registers{
+                            GPIOA,
+                            GPIOB,
+                            GPIOC,
+                            GPIOD,
+                            GPIOE,
+                            GPIOF,
+                            GPIOG,
+                            GPIOH,
+                        };
+                    static constexpr std::array<cortex::nvic::Irq_num,
+                                                static_cast<std::size_t>(Cfg::Pin_num::total)>
+                        irq_nums{
+                            cortex::nvic::Irq_num::exti0,
+                            cortex::nvic::Irq_num::exti1,
+                            cortex::nvic::Irq_num::exti2,
+                            cortex::nvic::Irq_num::exti3,
+                            cortex::nvic::Irq_num::exti4,
+                            cortex::nvic::Irq_num::exti9_5,
+                            cortex::nvic::Irq_num::exti9_5,
+                            cortex::nvic::Irq_num::exti9_5,
+                            cortex::nvic::Irq_num::exti9_5,
+                            cortex::nvic::Irq_num::exti9_5,
+                            cortex::nvic::Irq_num::exti15_10,
+                            cortex::nvic::Irq_num::exti15_10,
+                            cortex::nvic::Irq_num::exti15_10,
+                            cortex::nvic::Irq_num::exti15_10,
+                            cortex::nvic::Irq_num::exti15_10,
+                            cortex::nvic::Irq_num::exti15_10,
+                        };
 
                     inline Reg *reg() const
                     {
