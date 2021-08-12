@@ -23,19 +23,19 @@ namespace mcal
                 volatile uint32_t lckr;
                 volatile uint32_t afr[2];
             };
+
+#define GPIOA (reinterpret_cast<Reg *>(GPIOA_BASEADDR))
+#define GPIOB (reinterpret_cast<Reg *>(GPIOB_BASEADDR))
+#define GPIOC (reinterpret_cast<Reg *>(GPIOC_BASEADDR))
+#define GPIOD (reinterpret_cast<Reg *>(GPIOD_BASEADDR))
+#define GPIOE (reinterpret_cast<Reg *>(GPIOE_BASEADDR))
+#define GPIOF (reinterpret_cast<Reg *>(GPIOF_BASEADDR))
+#define GPIOG (reinterpret_cast<Reg *>(GPIOG_BASEADDR))
+#define GPIOH (reinterpret_cast<Reg *>(GPIOH_BASEADDR))
         } // namespace gpio
 
     } // namespace peripherals
 
 } // namespace mcal
-
-#define GPIOA ((mcal::peripherals::gpio::Reg *const)GPIOA_BASEADDR)
-#define GPIOB ((mcal::peripherals::gpio::Reg *const)GPIOB_BASEADDR)
-#define GPIOC ((mcal::peripherals::gpio::Reg *const)GPIOC_BASEADDR)
-#define GPIOD ((mcal::peripherals::gpio::Reg *const)GPIOD_BASEADDR)
-#define GPIOE ((mcal::peripherals::gpio::Reg *const)GPIOE_BASEADDR)
-#define GPIOF ((mcal::peripherals::gpio::Reg *const)GPIOF_BASEADDR)
-#define GPIOG ((mcal::peripherals::gpio::Reg *const)GPIOG_BASEADDR)
-#define GPIOH ((mcal::peripherals::gpio::Reg *const)GPIOH_BASEADDR)
 
 #endif // DRIVERS_PERIPHERALS_GPIO_REG_H__

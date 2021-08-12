@@ -7,6 +7,8 @@
 #include "mcal/peripherals/gpio/inc/configuration.h"
 #include "mcal/peripherals/spi/inc/cfg.h"
 #include "mcal/inc/stm32f446xx.h"
+#include "mcal/peripherals/rcc/inc/ahb.h"
+#include "mcal/peripherals/rcc/inc/aph.h"
 
 namespace mcal
 {
@@ -14,126 +16,6 @@ namespace mcal
     {
         namespace rcc
         {
-            namespace apb
-            {
-                enum class Bus : size_t
-                {
-                    one,
-                    two,
-                    total,
-                };
-
-                enum class One_bits : uint32_t
-                {
-                    tim2,
-                    tim3,
-                    tim4,
-                    tim5,
-                    tim6,
-                    tim7,
-                    tim12,
-                    tim13,
-                    tim14,
-                    _reserved1,
-                    _reserved2,
-                    wwdg,
-                    _reserved3,
-                    _reserved4,
-                    spi2,
-                    spi3,
-                    spdifrx,
-                    usart2,
-                    usart3,
-                    uart4,
-                    uart5,
-                    i2c1,
-                    i2c2,
-                    i2c3,
-                    fmpi2c1,
-                    can1,
-                    can2,
-                    cec,
-                    pwr,
-                    dac,
-                };
-
-                enum class Two_bits : uint32_t
-                {
-                    tim1,
-                    tim8,
-                    _reserved1,
-                    _reserved2,
-                    usart1,
-                    usart6,
-                    _reserved3,
-                    _reserved4,
-                    adc1,
-                    adc2,
-                    adc3,
-                    sdio,
-                    spi1,
-                    spi4,
-                    syscfg,
-                    _reserved5,
-                    tim9,
-                    tim10,
-                    tim11,
-                    _reserved6,
-                    _reserved7,
-                    _reserved8,
-                    sai1,
-                    sai2
-                };
-
-            } // namespace apb
-
-            namespace ahb
-            {
-                enum class Bus : size_t
-                {
-                    one,
-                    two,
-                    three,
-                    total,
-                };
-
-                enum class One_bits : uint32_t
-                {
-                    gpioa,
-                    gpiob,
-                    gpioc,
-                    gpiod,
-                    gpioe,
-                    gpiof,
-                    gpiog,
-                    gpioh,
-                    _reserved1,
-                    _reserved2,
-                    _reserved3,
-                    _reserved4,
-                    crc,
-                    _reserved5,
-                    _reserved6,
-                    _reserved7,
-                    _reserved8,
-                    _reserved9,
-                    bkpsram,
-                    _reserved10,
-                    _reserved11,
-                    dma1,
-                    dma2,
-                    _reserved12,
-                    _reserved13,
-                    _reserved14,
-                    _reserved15,
-                    _reserved16,
-                    _reserved17,
-                    otghs,
-                    otghsulpi,
-                };
-
-            } // namespace ahb
-
             struct Reg
             {
                 volatile uint32_t cr;

@@ -156,7 +156,7 @@ namespace mcal
                 }
             }
 
-            constexpr std::array<Reg *, static_cast<std::size_t>(Cfg::Channel::total)> Handle::p_registers;
+            constexpr std::array<Reg *const, static_cast<std::size_t>(Cfg::Channel::total)> Handle::p_registers;
             constexpr std::array<cortex::nvic::Irq_num, static_cast<std::size_t>(Cfg::Pin_num::total)> Handle::irq_nums;
 
         } // namespace gpio

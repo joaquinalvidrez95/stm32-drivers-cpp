@@ -54,7 +54,7 @@ extern "C"
 
                 private:
                     const Cfg *p_cfg_;
-                    static constexpr std::array<Reg *,
+                    static constexpr std::array<Reg *const,
                                                 static_cast<std::size_t>(Cfg::Channel::total)>
                         p_registers{
                             GPIOA,
