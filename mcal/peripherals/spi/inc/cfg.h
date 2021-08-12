@@ -84,6 +84,16 @@ namespace mcal
                     four,
                     total
                 };
+
+                Communication communication;
+                Bus bus;
+                Data_frame_format data_frame_format;
+                Baud_rate_ctrl baud_rate_ctrl;
+                struct
+                {
+                    Clock_polarity polarity;
+                    Clock_phase phase;
+                } clock;
             };
 
         } // namespace spi

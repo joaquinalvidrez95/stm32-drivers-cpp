@@ -13,6 +13,7 @@
 
 #include "mcal/peripherals/rcc/inc/ahb.h"
 #include "mcal/peripherals/rcc/inc/aph.h"
+#include "stm32f446xx.h"
 
 namespace mcal
 {
