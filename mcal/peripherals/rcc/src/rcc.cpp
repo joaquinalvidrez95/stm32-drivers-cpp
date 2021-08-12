@@ -9,6 +9,7 @@
 #include "mcal/inc/stm32f446xx.h"
 #include "mcal/peripherals/rcc/inc/ahb.h"
 #include "mcal/peripherals/rcc/inc/aph.h"
+#include "mcal/peripherals/rcc/inc/reg.h"
 
 namespace mcal
 {
@@ -16,37 +17,6 @@ namespace mcal
     {
         namespace rcc
         {
-            struct Reg
-            {
-                volatile uint32_t cr;
-                volatile uint32_t pll_cfgr;
-                volatile uint32_t cfgr;
-                volatile uint32_t cir;
-                volatile uint32_t ahbrstr[static_cast<size_t>(ahb::Bus::total)];
-                uint32_t _reserved_1;
-                volatile uint32_t apbrstr[static_cast<size_t>(apb::Bus::total)];
-                uint32_t _reserved_2[2];
-                volatile uint32_t ahbenr[static_cast<size_t>(ahb::Bus::total)];
-                uint32_t _reserved_3;
-                volatile uint32_t apbenr[static_cast<size_t>(apb::Bus::total)];
-                uint32_t _reserved_4[2];
-                volatile uint32_t ahblpenr[static_cast<size_t>(ahb::Bus::total)];
-                uint32_t _reserved_5;
-                volatile uint32_t apblpenr[static_cast<size_t>(apb::Bus::total)];
-                uint32_t _reserved_6[2];
-                volatile uint32_t bdcr;
-                volatile uint32_t csr;
-                uint32_t _reserved_7[2];
-                volatile uint32_t sscgr;
-                volatile uint32_t plli2scfgr;
-                volatile uint32_t pllsaicfgr;
-                volatile uint32_t dckcfgr;
-                volatile uint32_t ckgatenr;
-                volatile uint32_t dckcfgr2;
-            };
-
-#define RCC (reinterpret_cast<Reg *>(RCC_BASEADDR))
-
             void set_system_cfg_ctrl_clock_enabled(bool b_enabled)
             {
                 utils::set_bits_by_position(
