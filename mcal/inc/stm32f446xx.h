@@ -16,100 +16,103 @@ extern "C"
 #include <stdint.h>
 
 /* ARM Cortex */
-#define NVIC_ISER0 (reinterpret_cast<volatile uint32_t *>(0xE000E100U))
-#define NVIC_ISER1 (reinterpret_cast<volatile uint32_t *>(0xE000E104U))
-#define NVIC_ISER2 (reinterpret_cast<volatile uint32_t *>(0xE000E108U))
-#define NVIC_ISER3 (reinterpret_cast<volatile uint32_t *>(0xE000E10CU))
+#define NVIC_ISER0 (reinterpret_cast<volatile uint32_t *>(0xE000'E100LU))
+#define NVIC_ISER1 (reinterpret_cast<volatile uint32_t *>(0xE000'E104LU))
+#define NVIC_ISER2 (reinterpret_cast<volatile uint32_t *>(0xE000'E108LU))
+#define NVIC_ISER3 (reinterpret_cast<volatile uint32_t *>(0xE000'E10CLU))
 
-#define NVIC_ICER0 (reinterpret_cast<volatile uint32_t *>(0xE000E180U))
-#define NVIC_ICER1 (reinterpret_cast<volatile uint32_t *>(0xE000E184U))
-#define NVIC_ICER2 (reinterpret_cast<volatile uint32_t *>(0xE000E188U))
-#define NVIC_ICER3 (reinterpret_cast<volatile uint32_t *>(0xE000E18CU))
+#define NVIC_ICER0 (reinterpret_cast<volatile uint32_t *>(0xE000'E180LU))
+#define NVIC_ICER1 (reinterpret_cast<volatile uint32_t *>(0xE000'E184LU))
+#define NVIC_ICER2 (reinterpret_cast<volatile uint32_t *>(0xE000'E188LU))
+#define NVIC_ICER3 (reinterpret_cast<volatile uint32_t *>(0xE000'E18CLU))
 
-#define NVIC_PR_BASE_ADDR (reinterpret_cast<volatile uint32_t *>(0xE000E400U))
+#define NVIC_PR_BASE_ADDR (reinterpret_cast<volatile uint32_t *>(0xE000'E400LU))
 
-#define FLASH_BASEADDR (0x08000000LU)
-
-/** 112KB */
-#define SRAM1_BASEADDR (0x20000000LU)
-
-#define SRAM2_BASEADDR (0x20001C00LU)
-
-/** */
-#define ROM_BASEADDR
-
-#define SRAM (SRAM1_BASEADDR)
-
-#define PERIPH_BASE (0x40000000LU)
-#define APB1PERIPH_BASE (PERIPH_BASE)
-#define APB2PERIPH_BASE (0x40010000LU)
-#define AHB1PERIPH_BASE (0x40020000LU)
-#define AHB2PERIPH_BASE (0x50000000LU)
-
-// TODO: Check if constexpr can be used
-/** AHB1 */
-#define GPIOA_BASEADDR (AHB1PERIPH_BASE + 0x0000U)
-#define GPIOB_BASEADDR (AHB1PERIPH_BASE + 0x0400U)
-#define GPIOC_BASEADDR (AHB1PERIPH_BASE + 0x0800U)
-#define GPIOD_BASEADDR (AHB1PERIPH_BASE + 0x0C00U)
-#define GPIOE_BASEADDR (AHB1PERIPH_BASE + 0x1000U)
-#define GPIOF_BASEADDR (AHB1PERIPH_BASE + 0x1400U)
-#define GPIOG_BASEADDR (AHB1PERIPH_BASE + 0x1800U)
-#define GPIOH_BASEADDR (AHB1PERIPH_BASE + 0x1C00U)
-
-#define RCC_BASEADDR (AHB1PERIPH_BASE + 0x3800U)
-
-/** APB1 */
-#define I2C1_BASEADDR (APB1PERIPH_BASE + 0x5400U)
-#define I2C2_BASEADDR (APB1PERIPH_BASE + 0x5800U)
-#define I2C3_BASEADDR (APB1PERIPH_BASE + 0x5C00U)
-
-#define SPI2_BASEADDR (APB1PERIPH_BASE + 0x3800U)
-#define SPI3_BASEADDR (APB1PERIPH_BASE + 0x3C00U)
-
-#define USART2_BASEADDR (APB1PERIPH_BASE + 0x4400U)
-#define USART3_BASEADDR (APB1PERIPH_BASE + 0x4800U)
-
-#define UART4_BASEADDR (APB1PERIPH_BASE + 0x4C00U)
-#define UART5_BASEADDR (APB1PERIPH_BASE + 0x5000U)
-
-/** APB2 */
-#define SPI1_BASEADDR (APB2PERIPH_BASE + 0x3000U)
-#define SPI4_BASEADDR (APB2PERIPH_BASE + 0x3400U)
-
-#define EXTI_BASEADDR (APB2PERIPH_BASE + 0x3C00U)
-
-#define USART1_BASEADDR (APB2PERIPH_BASE + 0x1000U)
-#define USART6_BASEADDR (APB2PERIPH_BASE + 0x1400U)
-
-#define SYSCFG_BASEADDR (APB2PERIPH_BASE + 0x3800U)
-
-	/** Registers */
-	struct Exti_reg
+	namespace mcal::address
 	{
-		volatile uint32_t imr;
-		volatile uint32_t emr;
-		volatile uint32_t rtsr;
-		volatile uint32_t ftsr;
-		volatile uint32_t swier;
-		volatile uint32_t pr;
-	};
+		constexpr uint32_t flash{0x0800'0000LU};
 
-	struct Syscfg_reg
-	{
-		volatile uint32_t memrmp;
-		volatile uint32_t pmc;
-		/* TODO: Remove magic number */
-		volatile uint32_t exticr[4];
-		uint32_t reserved1[2];
-		volatile uint32_t cmpcr;
-		uint32_t reserved2[2];
-		volatile uint32_t cfgr;
-	};
+		/** 112KB */
+		constexpr uint32_t sram1{0x2000'0000LU};
 
-#define EXTI (reinterpret_cast<Exti_reg *>(EXTI_BASEADDR))
-#define SYSCFG (reinterpret_cast<Syscfg_reg *>(SYSCFG_BASEADDR))
+		constexpr uint32_t sram2{0x2000'1C00LU};
 
+		constexpr uint32_t rom_baseaddr{0u};
+
+		constexpr uint32_t sram{sram1};
+		constexpr uint32_t peripheral{0x4000'0000LU};
+
+		namespace apb1
+		{
+			constexpr uint32_t base{peripheral};
+			constexpr uint32_t tim2{base};
+			constexpr uint32_t tim3{base + 0x0400UL};
+			constexpr uint32_t tim4{base + 0x0800UL};
+			constexpr uint32_t tim5{base + 0x0C00UL};
+			constexpr uint32_t tim6{base + 0x1000UL};
+			constexpr uint32_t tim7{base + 0x1400UL};
+			constexpr uint32_t tim12{base + 0x1800UL};
+			constexpr uint32_t tim13{base + 0x1C00UL};
+			constexpr uint32_t tim14{base + 0x2000UL};
+			constexpr uint32_t rtc_bkp{base + 0x2800UL};
+			constexpr uint32_t wwdg{base + 0x2C00UL};
+			constexpr uint32_t iwdg{base + 0x3000UL};
+			constexpr uint32_t spi2_i2s2{base + 0x3800LU};
+			constexpr uint32_t spi3_i2s3{base + 0x3C00LU};
+			constexpr uint32_t spdifrx{base + 0x4000LU};
+			constexpr uint32_t usart2{base + 0x4400LU};
+			constexpr uint32_t usart3{base + 0x4800LU};
+			constexpr uint32_t uart4{base + 0x4c00LU};
+			constexpr uint32_t uart5{base + 0x5000LU};
+			constexpr uint32_t i2c1{base + 0x5400LU};
+			constexpr uint32_t i2c2{base + 0x5800LU};
+			constexpr uint32_t i2c3{base + 0x5C00LU};
+			constexpr uint32_t fmpi2c1{base + 0x6000LU};
+			constexpr uint32_t can1{base + 0x6400LU};
+			constexpr uint32_t can2{base + 0x6800LU};
+			constexpr uint32_t hdmi_cec{base + 0x6C00LU};
+			constexpr uint32_t pwr{base + 0x7000LU};
+			constexpr uint32_t dac{base + 0x7400LU};
+		} // namespace apb1
+
+		namespace apb2
+		{
+			constexpr uint32_t base{peripheral + 0x1'0000LU};
+			constexpr uint32_t tim1{base};
+			constexpr uint32_t tim8{base + 0x0400LU};
+			constexpr uint32_t usart1{base + 0x1000LU};
+			constexpr uint32_t usart6{base + 0x1400LU};
+			constexpr uint32_t adc123{base + 0x2000LU};
+			constexpr uint32_t sdio{base + 0x2C00LU};
+			constexpr uint32_t spi1{base + 0x3000LU};
+			constexpr uint32_t spi4{base + 0x3400LU};
+			constexpr uint32_t syscfg{base + 0x3800LU};
+			constexpr uint32_t exti{base + 0x3C00LU};
+			constexpr uint32_t tim9{base + 0x4000LU};
+			constexpr uint32_t tim10{base + 0x4400LU};
+			constexpr uint32_t tim11{base + 0x4800LU};
+			constexpr uint32_t sai1{base + 0x5800LU};
+			constexpr uint32_t sai2{base + 0x5C00LU};
+		} // namespace apb2
+		namespace ahb1
+		{
+			constexpr uint32_t base{peripheral + 0x2'0000LU};
+			constexpr uint32_t gpioa{base + 0x0000LU};
+			constexpr uint32_t gpiob{base + 0x0400LU};
+			constexpr uint32_t gpioc{base + 0x0800LU};
+			constexpr uint32_t gpiod{base + 0x0c00LU};
+			constexpr uint32_t gpioe{base + 0x1000LU};
+			constexpr uint32_t gpiof{base + 0x1400LU};
+			constexpr uint32_t gpiog{base + 0x1800LU};
+			constexpr uint32_t gpioh{base + 0x1c00LU};
+			constexpr uint32_t rcc{base + 0x3800LU};
+		} // namespace ahb1
+
+		namespace ahb2
+		{
+			constexpr uint32_t base{0x5000'0000LU};
+		} // namespace ahb2
+	}	  // namespace mcal
 #ifdef __cplusplus
 }
 #endif

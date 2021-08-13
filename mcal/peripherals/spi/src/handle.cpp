@@ -67,12 +67,12 @@ namespace mcal::peripherals::spi
     } // namespace bitfield
     namespace
     {
-        constexpr std::array<Reg *const, static_cast<size_t>(Cfg::Bus::total)>
+        const std::array<Reg *const, static_cast<size_t>(Cfg::Bus::total)>
             gp_registers{
-                reinterpret_cast<Reg *>(SPI1_BASEADDR),
-                reinterpret_cast<Reg *>(SPI2_BASEADDR),
-                reinterpret_cast<Reg *>(SPI3_BASEADDR),
-                reinterpret_cast<Reg *>(SPI4_BASEADDR),
+                reinterpret_cast<Reg *>(address::apb2::spi1),
+                reinterpret_cast<Reg *>(address::apb1::spi2_i2s2),
+                reinterpret_cast<Reg *>(address::apb1::spi3_i2s3),
+                reinterpret_cast<Reg *>(address::apb2::spi4),
             };
 
         uint32_t calculate_cr1(const Cfg &cfg);

@@ -46,7 +46,7 @@ namespace mcal::peripherals::rcc
         volatile uint32_t dckcfgr2;
     };
 
-#define RCC (reinterpret_cast<Reg *>(RCC_BASEADDR))
+#define RCC (reinterpret_cast<mcal::peripherals::rcc::Reg *>(mcal::address::ahb1::rcc))
 
 } // namespace mcal::peripherals::rcc
 

@@ -17,7 +17,7 @@ extern "C"
 {
 #endif
 
-#include <stdbool.h>
+#include <cstdint>
 #include <cstddef>
 
 #include "mcal/peripherals/gpio/inc/reg.h"
@@ -50,42 +50,24 @@ extern "C"
 
         private:
             const Cfg *p_cfg_;
-            static constexpr std::array<Reg *const,
-                                        static_cast<std::size_t>(Cfg::Channel::total)>
-                p_registers{
-                    GPIOA,
-                    GPIOB,
-                    GPIOC,
-                    GPIOD,
-                    GPIOE,
-                    GPIOF,
-                    GPIOG,
-                    GPIOH,
-                };
-            static constexpr std::array<cortex::nvic::Irq_num,
-                                        static_cast<std::size_t>(Cfg::Pin_num::total)>
-                irq_nums{
-                    cortex::nvic::Irq_num::exti0,
-                    cortex::nvic::Irq_num::exti1,
-                    cortex::nvic::Irq_num::exti2,
-                    cortex::nvic::Irq_num::exti3,
-                    cortex::nvic::Irq_num::exti4,
-                    cortex::nvic::Irq_num::exti9_5,
-                    cortex::nvic::Irq_num::exti9_5,
-                    cortex::nvic::Irq_num::exti9_5,
-                    cortex::nvic::Irq_num::exti9_5,
-                    cortex::nvic::Irq_num::exti9_5,
-                    cortex::nvic::Irq_num::exti15_10,
-                    cortex::nvic::Irq_num::exti15_10,
-                    cortex::nvic::Irq_num::exti15_10,
-                    cortex::nvic::Irq_num::exti15_10,
-                    cortex::nvic::Irq_num::exti15_10,
-                    cortex::nvic::Irq_num::exti15_10,
-                };
 
             inline Reg *reg() const
             {
-                return p_cfg_ ? Handle::p_registers.at(static_cast<std::size_t>(p_cfg_->channel)) : nullptr;
+                static const std::array<Reg *const,
+                                        static_cast<std::size_t>(Cfg::Channel::total)>
+                    p_registers{
+                        reinterpret_cast<Reg *>(address::ahb1::gpioa),
+                        reinterpret_cast<Reg *>(address::ahb1::gpiob),
+                        reinterpret_cast<Reg *>(address::ahb1::gpioc),
+                        reinterpret_cast<Reg *>(address::ahb1::gpiod),
+                        reinterpret_cast<Reg *>(address::ahb1::gpioe),
+                        reinterpret_cast<Reg *>(address::ahb1::gpiof),
+                        reinterpret_cast<Reg *>(address::ahb1::gpiog),
+                        reinterpret_cast<Reg *>(address::ahb1::gpioh),
+                    };
+                return p_cfg_
+                           ? p_registers.at(static_cast<std::size_t>(p_cfg_->channel))
+                           : nullptr;
             }
         };
 
