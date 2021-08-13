@@ -6,7 +6,7 @@ namespace utils
 {
     void delay()
     {
-        for (uint32_t i = 0u; i < 500000u; i++)
+        for (uint32_t i = 0U; i < 500000U; i++)
         {
         }
     }

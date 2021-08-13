@@ -44,8 +44,8 @@ namespace mcal::peripherals::gpio
         /* Configures mode. */
         if (p_cfg_->mode <= Cfg::Mode::analog)
         {
-            utils::set_bits_by_position<uint32_t>(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
-            utils::set_bits_by_position(p_reg->moder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->mode));
+            utils::set_bits_by_position<uint32_t>(p_reg->moder, 2U * static_cast<uint32_t>(p_cfg_->pin_num), false, 3U);
+            utils::set_bits_by_position(p_reg->moder, 2U * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->mode));
         }
         else
         {
@@ -73,7 +73,7 @@ namespace mcal::peripherals::gpio
 
             /* Configures the GPIO port selection in SYSCFG_EXTICR */
             rcc::set_system_cfg_ctrl_clock_enabled(true);
-            constexpr uint32_t num_bits_per_section{4u};
+            constexpr uint32_t num_bits_per_section{4U};
             const uint32_t idx = static_cast<uint32_t>(p_cfg_->pin_num) / num_bits_per_section;
             const uint32_t section = static_cast<uint32_t>(p_cfg_->pin_num) % num_bits_per_section;
             SYSCFG->exticr[idx] = static_cast<uint32_t>(p_cfg_->channel) << (section * num_bits_per_section);
@@ -81,12 +81,12 @@ namespace mcal::peripherals::gpio
         }
 
         /* Configures speed. */
-        utils::set_bits_by_position<uint32_t>(p_reg->ospeeder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
-        utils::set_bits_by_position(p_reg->ospeeder, 2u * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->speed));
+        utils::set_bits_by_position<uint32_t>(p_reg->ospeeder, 2U * static_cast<uint32_t>(p_cfg_->pin_num), false, 3U);
+        utils::set_bits_by_position(p_reg->ospeeder, 2U * static_cast<uint32_t>(p_cfg_->pin_num), true, static_cast<uint32_t>(p_cfg_->speed));
 
         /* Configures pupd. */
-        utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, 3u);
-        utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2u * static_cast<uint32_t>(p_cfg_->pin_num), false, static_cast<uint32_t>(p_cfg_->pull_mode));
+        utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2U * static_cast<uint32_t>(p_cfg_->pin_num), false, 3U);
+        utils::set_bits_by_position<uint32_t>(p_reg->pupdr, 2U * static_cast<uint32_t>(p_cfg_->pin_num), false, static_cast<uint32_t>(p_cfg_->pull_mode));
 
         /* Configures opt type. */
         utils::set_bits_by_position(p_reg->otyper, static_cast<uint32_t>(p_cfg_->pin_num), false);
@@ -96,16 +96,16 @@ namespace mcal::peripherals::gpio
         if (Cfg::Mode::alternate_function == p_cfg_->mode)
         {
             /* TODO: Refactor */
-            const uint32_t tmp1 = static_cast<uint32_t>(p_cfg_->pin_num) / 8u;
-            const uint32_t tmp2 = static_cast<uint32_t>(p_cfg_->pin_num) % 8u;
-            utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, false, 0xFu);
-            utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4u * tmp2, true, static_cast<uint32_t>(p_cfg_->alt_fun_mode));
+            const uint32_t tmp1 = static_cast<uint32_t>(p_cfg_->pin_num) / 8U;
+            const uint32_t tmp2 = static_cast<uint32_t>(p_cfg_->pin_num) % 8U;
+            utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4U * tmp2, false, 0xFU);
+            utils::set_bits_by_position<uint32_t>(p_reg->afr[tmp1], 4U * tmp2, true, static_cast<uint32_t>(p_cfg_->alt_fun_mode));
         }
     }
 
     void Handle::toggle_pin() const
     {
-        reg()->odr ^= 1u << static_cast<uint32_t>(p_cfg_->pin_num);
+        reg()->odr ^= 1U << static_cast<uint32_t>(p_cfg_->pin_num);
     }
 
     void Handle::deinit() const

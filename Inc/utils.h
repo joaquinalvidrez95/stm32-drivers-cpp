@@ -10,8 +10,10 @@ namespace utils
 
     /* TODO: Make inline */
     template <typename Integer>
-    void set_bits_by_position(volatile Integer &out, Integer position,
-                              bool b_set, Integer mask = 1u)
+    void set_bits_by_position(volatile Integer &out,
+                              Integer position,
+                              bool b_set,
+                              Integer mask = 1U)
     {
         if (b_set)
         {
@@ -26,7 +28,7 @@ namespace utils
     template <typename Integer>
     bool is_bit_set(Integer value, Integer bit_position)
     {
-        return (value & (1u << bit_position)) != 0u;
+        return (value & (1U << bit_position)) != 0U;
     }
 
 } // namespace utils

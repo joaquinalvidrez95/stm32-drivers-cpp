@@ -44,7 +44,8 @@ namespace mcal::peripherals::spi
             rxdmaen,
             txdmaen,
             ssoe,
-            frf = 4u,
+            _reserved,
+            frf,
             errie,
             rxneie,
             txeie,
@@ -64,20 +65,50 @@ namespace mcal::peripherals::spi
         };
 
     } // namespace bitfield
+    namespace
+    {
+        constexpr std::array<Reg *const, static_cast<size_t>(Cfg::Bus::total)>
+            gp_registers{
+                reinterpret_cast<Reg *>(SPI1_BASEADDR),
+                reinterpret_cast<Reg *>(SPI2_BASEADDR),
+                reinterpret_cast<Reg *>(SPI3_BASEADDR),
+                reinterpret_cast<Reg *>(SPI4_BASEADDR),
+            };
 
-    static constexpr std::array<
-        Reg *const,
-        static_cast<std::size_t>(Cfg::Bus::total)>
-        gp_registers{
-            reinterpret_cast<Reg *>(SPI1_BASEADDR),
-            reinterpret_cast<Reg *>(SPI2_BASEADDR),
-            reinterpret_cast<Reg *>(SPI3_BASEADDR),
-            reinterpret_cast<Reg *>(SPI4_BASEADDR),
-        };
+        uint32_t calculate_cr1(const Cfg &cfg);
+        uint32_t calculate_communication_mode(Cfg::Communication mode);
+        uint32_t calculate_communication_mode(Cfg::Communication mode)
+        {
+        }
 
-    static uint32_t calculate_cr1(const Cfg &cfg);
-    static void set_communication_mode(Cfg::Communication mode,
-                                       volatile uint32_t &cr1);
+        uint32_t calculate_cr1(const Cfg &cfg)
+        {
+            uint32_t cr1{0U};
+
+            /* Baud rate */
+            utils::set_bits_by_position(
+                cr1,
+                static_cast<uint32_t>(bitfield::Cr1::br0),
+                true,
+                static_cast<uint32_t>(cfg.baud_rate_ctrl));
+
+            /* Clock phase */
+            utils::set_bits_by_position(
+                cr1,
+                static_cast<uint32_t>(bitfield::Cr1::cpha),
+                Cfg::Clock_phase::second_edge == cfg.clock.phase);
+
+            /* Clock polarity */
+            utils::set_bits_by_position(
+                cr1,
+                static_cast<uint32_t>(bitfield::Cr1::cpol),
+                Cfg::Clock_polarity::high == cfg.clock.polarity);
+
+            cr1 |= calculate_communication_mode(cfg.communication);
+
+            return cr1;
+        }
+    }
 
     Handle::Handle(/* args */)
     {
@@ -96,36 +127,6 @@ namespace mcal::peripherals::spi
 #if 0
                 p_cfg->baud_rate_ctrl
 #endif
-    }
-
-    static uint32_t calculate_cr1(const Cfg &cfg)
-    {
-        uint32_t cr1{0u};
-
-        /* Baud rate */
-        utils::set_bits_by_position(
-            cr1,
-            static_cast<uint32_t>(bitfield::Cr1::br0),
-            static_cast<uint32_t>(cfg.baud_rate_ctrl));
-
-        /* Clock phase */
-        utils::set_bits_by_position(
-            cr1,
-            static_cast<uint32_t>(bitfield::Cr1::cpha),
-            static_cast<uint32_t>(cfg.clock.phase));
-
-        /* Clock polarity */
-        utils::set_bits_by_position(
-            cr1,
-            static_cast<uint32_t>(bitfield::Cr1::cpol),
-            static_cast<uint32_t>(cfg.clock.polarity));
-
-        set_communication_mode(cfg.communication, cr1);
-    }
-
-    static void set_communication_mode(Cfg::Communication mode,
-                                       volatile uint32_t &cr1)
-    {
     }
 
 } // namespace mcal::peripherals::spi

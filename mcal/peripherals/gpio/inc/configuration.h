@@ -35,41 +35,41 @@ extern "C"
 
             enum class Mode : uint32_t
             {
-                in = 0u,
-                out = 1u,
-                alternate_function = 2u,
-                analog = 3u,
+                in,
+                out,
+                alternate_function,
+                analog,
 
                 /* Interrupts */
-                falling_transition_interrupt = 4u,
-                rising_transition_interrupt = 5u,
-                rising_falling_transition_interrupt = 6u,
+                falling_transition_interrupt,
+                rising_transition_interrupt,
+                rising_falling_transition_interrupt,
             };
 
             enum class Out_type : uint32_t
             {
-                push_pull = 0u,
-                open_drain = 1u,
+                push_pull,
+                open_drain,
             };
 
             enum class Speed : uint32_t
             {
-                low = 0u,
-                medium = 1u,
-                fast = 2u,
-                high = 3u,
+                low,
+                medium,
+                fast,
+                high,
             };
 
             enum class Pull_mode : uint32_t
             {
-                none = 0u,
-                up = 1u,
-                down = 2u,
+                none,
+                up,
+                down,
             };
 
             enum class Pin_num : uint32_t
             {
-                zero = 0u,
+                zero,
                 one,
                 two,
                 three,
@@ -90,7 +90,7 @@ extern "C"
 
             enum class Alternate_function : uint32_t
             {
-                zero = 0u,
+                zero,
                 one,
                 two,
                 three,
