@@ -7,7 +7,6 @@
  * @copyright Copyright (c) 2021
  * 
  */
-
 #ifndef PERIPHERALS_SPI_INC_CFG_H_
 #define PERIPHERALS_SPI_INC_CFG_H_
 
@@ -84,15 +83,52 @@ namespace mcal::peripherals::spi
             total
         };
 
-        Communication communication;
+        enum class Frame_format : uint32_t
+        {
+            /* MSB transmitted first. */
+            msb,
+            /* LSB transmitted first. */
+            lsb,
+        };
+
+        enum class Sw_slave_management : uint32_t
+        {
+            /* Software Slave Management disabled. */
+            disabled,
+            /* Software Slave Management enabled. */
+            enabled,
+        };
+
+        enum class Ss_out_enable : uint32_t
+        {
+            /* SS output is disabled in master mode and the cell can work in 
+            multimaster configuration. */
+            disabled,
+            /* SS output is enabled in master mode and when the cell is enabled.
+            The cell cannot work in a multimaster environment. */
+            enabled,
+        };
+
+        enum class Internal_slave_select : uint32_t
+        {
+            disabled,
+            enabled,
+        };
+
         Bus bus;
-        Data_frame_format data_frame_format;
         Baud_rate_ctrl baud_rate_ctrl;
+        Device_mode dev_mode{Device_mode::master};
+        Communication communication{Communication::full_duplex};
+        Data_frame_format data_frame_format{Data_frame_format::bit_8};
         struct
         {
-            Clock_polarity polarity;
-            Clock_phase phase;
+            Clock_polarity polarity{Clock_polarity::low};
+            Clock_phase phase{Clock_phase::first_edge};
         } clock;
+        Frame_format frame_format{Frame_format::msb};
+        Ss_out_enable ss_out{Ss_out_enable::disabled};
+        Sw_slave_management ssm{Sw_slave_management::disabled};
+        Internal_slave_select ssi{Internal_slave_select::disabled};
     };
 
 } // namespace mcal::peripherals::spi
