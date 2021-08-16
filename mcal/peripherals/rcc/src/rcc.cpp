@@ -53,8 +53,9 @@ namespace mcal::peripherals::rcc
 
     void set_system_cfg_ctrl_clock_enabled(bool b_enabled)
     {
-        utils::set_bits_by_position(
-            RCC->apbenr[static_cast<size_t>(apb::Bus::two)],
+        const auto index{static_cast<size_t>(apb::Bus::two)};
+        RCC->apbenr[index] = utils::set_bits_by_position(
+            RCC->apbenr[index],
             static_cast<uint32_t>(apb::Two_bits::syscfg),
             b_enabled);
     }
@@ -63,24 +64,24 @@ namespace mcal::peripherals::rcc
     {
         const auto bit_position{
             g_gpio_bit_positions.at(static_cast<std::size_t>(channel))};
-        utils::set_bits_by_position(
-            RCC->ahbenr[static_cast<size_t>(ahb::Bus::one)],
-            bit_position,
-            b_set);
+        const auto index{static_cast<size_t>(ahb::Bus::one)};
+
+        RCC->ahbenr[index] = utils::set_bits_by_position(RCC->ahbenr[index],
+                                                         bit_position,
+                                                         b_set);
     }
 
     void reset_reg(peripherals::gpio::Cfg::Channel channel)
     {
         const auto bit_position{
             g_gpio_bit_positions.at(static_cast<std::size_t>(channel))};
-        utils::set_bits_by_position(
-            RCC->ahbrstr[static_cast<size_t>(ahb::Bus::one)],
-            bit_position,
-            true);
-        utils::set_bits_by_position(
-            RCC->ahbrstr[static_cast<size_t>(ahb::Bus::one)],
-            bit_position,
-            false);
+        const auto index{static_cast<size_t>(ahb::Bus::one)};
+
+        RCC->ahbrstr[index] = utils::set_bits_by_position(RCC->ahbrstr[index],
+                                                          bit_position);
+        RCC->ahbrstr[index] = utils::set_bits_by_position(RCC->ahbrstr[index],
+                                                          bit_position,
+                                                          false);
     }
 
     void set_clock_enabled(peripherals::spi::Cfg::Bus bus, bool b_set)
@@ -88,9 +89,9 @@ namespace mcal::peripherals::rcc
         const auto [bit_position, apb_bus] =
             g_spi_mapping.at(static_cast<std::size_t>(bus));
 
-        utils::set_bits_by_position(RCC->apbenr[apb_bus],
-                                    bit_position,
-                                    b_set);
+        RCC->apbenr[apb_bus] = utils::set_bits_by_position(RCC->apbenr[apb_bus],
+                                                           bit_position,
+                                                           b_set);
     }
 
     void reset_reg(peripherals::spi::Cfg::Bus bus)
@@ -98,12 +99,13 @@ namespace mcal::peripherals::rcc
         const auto [bit_position, apb_bus] =
             g_spi_mapping.at(static_cast<std::size_t>(bus));
 
-        utils::set_bits_by_position(RCC->apbrstr[apb_bus],
-                                    bit_position,
-                                    true);
+        RCC->apbrstr[apb_bus] = utils::set_bits_by_position(
+            RCC->apbrstr[apb_bus],
+            bit_position);
 
-        utils::set_bits_by_position(RCC->apbrstr[apb_bus],
-                                    bit_position,
-                                    false);
+        RCC->apbrstr[apb_bus] = utils::set_bits_by_position(
+            RCC->apbrstr[apb_bus],
+            bit_position,
+            false);
     }
 } // namespace mcal::peripherals::rcc

@@ -122,20 +122,20 @@ namespace mcal::peripherals::spi
             uint32_t cr1{0U};
 
             /* Baud rate */
-            utils::set_bits_by_position(
+            cr1 = utils::set_bits_by_position(
                 cr1,
                 static_cast<uint32_t>(bitfield::Cr1::br0),
                 true,
                 static_cast<uint32_t>(cfg.baud_rate_ctrl));
 
             /* Clock phase */
-            utils::set_bits_by_position(
+            cr1 = utils::set_bits_by_position(
                 cr1,
                 static_cast<uint32_t>(bitfield::Cr1::cpha),
                 Cfg::Clock_phase::second_edge == cfg.clock.phase);
 
             /* Clock polarity */
-            utils::set_bits_by_position(
+            cr1 = utils::set_bits_by_position(
                 cr1,
                 static_cast<uint32_t>(bitfield::Cr1::cpol),
                 Cfg::Clock_polarity::high == cfg.clock.polarity);
