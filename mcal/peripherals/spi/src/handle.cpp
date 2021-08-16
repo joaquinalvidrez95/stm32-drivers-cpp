@@ -77,8 +77,44 @@ namespace mcal::peripherals::spi
 
         uint32_t calculate_cr1(const Cfg &cfg);
         uint32_t calculate_communication_mode(Cfg::Communication mode);
+    }
+
+    Handle::Handle(/* args */)
+    {
+    }
+
+    Handle::~Handle()
+    {
+    }
+
+    void Handle::init(const Cfg *p_cfg)
+    {
+        rcc::set_clock_enabled(p_cfg->bus, true);
+        auto *const p_reg{gp_registers.at(static_cast<size_t>(p_cfg->bus))};
+
+        p_reg->cr1 = calculate_cr1(*p_cfg);
+#if 0
+                p_cfg->baud_rate_ctrl
+#endif
+    }
+
+    void Handle::send()
+    {
+    }
+
+    namespace
+    {
         uint32_t calculate_communication_mode(Cfg::Communication mode)
         {
+            constexpr std::array<uint32_t,
+                                 static_cast<size_t>(Cfg::Communication::total)>
+                masks{
+                    0U,
+                    1U << static_cast<uint32_t>(bitfield::Cr1::bidimode),
+                    1U << static_cast<uint32_t>(bitfield::Cr1::rxonly),
+                };
+
+            return masks.at(static_cast<size_t>(mode));
         }
 
         uint32_t calculate_cr1(const Cfg &cfg)
@@ -108,25 +144,7 @@ namespace mcal::peripherals::spi
 
             return cr1;
         }
-    }
 
-    Handle::Handle(/* args */)
-    {
-    }
-
-    Handle::~Handle()
-    {
-    }
-
-    void Handle::init(const Cfg *p_cfg)
-    {
-        rcc::set_clock_enabled(p_cfg->bus, true);
-        auto *const p_reg{gp_registers.at(static_cast<size_t>(p_cfg->bus))};
-
-        p_reg->cr1 = calculate_cr1(*p_cfg);
-#if 0
-                p_cfg->baud_rate_ctrl
-#endif
-    }
+    } // namespace
 
 } // namespace mcal::peripherals::spi

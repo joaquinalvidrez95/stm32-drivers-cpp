@@ -1,8 +1,11 @@
-/*
- * cfg.h
- *
- *  Created on: Aug 11, 2021
- *      Author: joaquin
+/**
+ * @file cfg.h
+ * @author Joaquin Alan Alvidrez Soto
+ * @brief 
+ * @date 2021-08-16
+ * 
+ * @copyright Copyright (c) 2021
+ * 
  */
 
 #ifndef PERIPHERALS_SPI_INC_CFG_H_
@@ -25,6 +28,7 @@ namespace mcal::peripherals::spi
             full_duplex,
             half_duplex,
             simplex,
+            total,
         };
 
         enum class Baud_rate_ctrl : uint32_t
@@ -46,9 +50,9 @@ namespace mcal::peripherals::spi
         };
 
         /**
-                * @brief The CPOL (clock polarity) bit controls the idle state 
-                * value of the clock when no data is being transferred.
-                */
+        * @brief The CPOL (clock polarity) bit controls the idle state 
+        * value of the clock when no data is being transferred.
+        */
         enum class Clock_polarity : uint32_t
         {
             /** CK to 0 when idle  */
@@ -60,15 +64,14 @@ namespace mcal::peripherals::spi
         enum class Clock_phase : uint32_t
         {
             /**
-                     * @brief The first clock transition is the first data 
-                     * capture edge                    
-                     */
+             * @brief The first clock transition is the first data capture edge.                
+             */
             first_edge,
 
             /**
-                     * @brief The second clock transition is the first data 
-                     * capture edge
-                     */
+             * @brief The second clock transition is the first data capture 
+             * edge.
+             */
             second_edge
         };
 

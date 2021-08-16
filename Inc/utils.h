@@ -12,7 +12,7 @@ namespace utils
     template <typename Integer>
     void set_bits_by_position(volatile Integer &out,
                               Integer position,
-                              bool b_set,
+                              bool b_set = true,
                               Integer mask = 1U)
     {
         if (b_set)
@@ -23,6 +23,15 @@ namespace utils
         {
             out &= ~(mask << position);
         }
+    }
+
+    template <typename Integer>
+    Integer set_bits_by_position2(Integer in,
+                                  Integer position,
+                                  bool b_set = true,
+                                  Integer mask = 1U)
+    {
+        return b_set ? (in | (mask << position)) : (in & ~(mask << position));
     }
 
     template <typename Integer>

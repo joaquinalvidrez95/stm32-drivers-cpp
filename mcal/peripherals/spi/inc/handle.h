@@ -18,6 +18,7 @@ namespace mcal::peripherals::spi
         Handle(/* args */);
         ~Handle();
         void init(const Cfg *p_cfg);
+        void send();
 
     private:
         /* data */
