@@ -46,15 +46,15 @@ namespace mcal::peripherals::spi
         p_reg->cr2 = calculate_cr2(*p_cfg);
     }
 
-    void Handle::send(const std::byte *first, const std::byte *last)
+    void Handle::send(const std::byte *p_first, const std::byte *p_last)
     {
         auto *const p_reg{get_reg(cfg_.bus)};
-        const size_t increment{Cfg::Data_frame_format::bit_16 ==
-                                       cfg_.data_frame_format
-                                   ? 2u
-                                   : 1u};
+        const auto [increment, offset]{Cfg::Data_frame_format::bit_16 ==
+                                               cfg_.data_frame_format
+                                           ? std::pair{2U, 1U}
+                                           : std::pair{1U, 0U}};
 
-        for (auto it = first; first != last; it += increment)
+        for (auto it = p_first; (p_first + offset) < p_last; it += increment)
         {
             while (!utils::is_bit_set(p_reg->sr,
                                       static_cast<uint32_t>(bitfield::Sr::txe)))
@@ -92,6 +92,7 @@ namespace mcal::peripherals::spi
                     reinterpret_cast<Reg *>(address::apb1::spi3_i2s3),
                     reinterpret_cast<Reg *>(address::apb2::spi4),
                 };
+            auto x = registers.cbegin();
             return registers.at(static_cast<size_t>(bus));
         }
 
