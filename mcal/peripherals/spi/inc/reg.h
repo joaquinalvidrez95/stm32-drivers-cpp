@@ -73,6 +73,55 @@ namespace mcal::peripherals::spi
         volatile uint32_t i2spr;
     };
 
+    namespace bitfield
+    {
+        enum class Cr1 : uint32_t
+        {
+            cpha,
+            cpol,
+            mstr,
+            br0,
+            br1,
+            br2,
+            spe,
+            lsbfirst,
+            ssi,
+            ssm,
+            rxonly,
+            dff,
+            crcnext,
+            crcen,
+            bidioe,
+            bidimode,
+        };
+
+        enum class Cr2 : uint32_t
+        {
+            rxdmaen,
+            txdmaen,
+            ssoe,
+            _reserved,
+            frf,
+            errie,
+            rxneie,
+            txeie,
+        };
+
+        enum class Sr : uint32_t
+        {
+            rxne,
+            txe,
+            chside,
+            udr,
+            crcerr,
+            modf,
+            ovr,
+            bsy,
+            fre,
+        };
+
+    } // namespace bitfield
+
 } // namespace mcal::peripherals::spi
 
 #endif /* PERIPHERALS_SPI_INC_REG_H_ */

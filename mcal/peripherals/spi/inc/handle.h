@@ -9,19 +9,30 @@
 #define PERIPHERALS_SPI_INC_HANDLE_H_
 
 #include "mcal/peripherals/spi/inc/cfg.h"
+#include <cstddef>
 
 namespace mcal::peripherals::spi
 {
+    enum class Peripheral_state
+    {
+        disabled,
+        enabled,
+    };
+
     class Handle
     {
     public:
-        Handle(/* args */);
+        Handle(const Cfg &cfg);
         ~Handle();
         void init(const Cfg *p_cfg);
-        void send();
+        void send(const std::byte *first, const std::byte *last);
+        void set_peripheral_state(Peripheral_state state);
 
     private:
-        /* data */
+        const Cfg &cfg_;
+#if 0
+        const Cfg *p_cfg_{nullptr};
+#endif
     };
 } // namespace mcal::peripherals::spi
 

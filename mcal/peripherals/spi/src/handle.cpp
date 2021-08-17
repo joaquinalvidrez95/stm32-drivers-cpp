@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cstdint>
+#include <cstddef>
 
 #include "mcal/peripherals/spi/inc/cfg.h"
 #include "mcal/peripherals/spi/inc/reg.h"
@@ -17,92 +18,83 @@
 
 namespace mcal::peripherals::spi
 {
-    namespace bitfield
-    {
-        enum class Cr1 : uint32_t
-        {
-            cpha,
-            cpol,
-            mstr,
-            br0,
-            br1,
-            br2,
-            spe,
-            lsbfirst,
-            ssi,
-            ssm,
-            rxonly,
-            dff,
-            crcnext,
-            crcen,
-            bidioe,
-            bidimode,
-        };
-
-        enum class Cr2 : uint32_t
-        {
-            rxdmaen,
-            txdmaen,
-            ssoe,
-            _reserved,
-            frf,
-            errie,
-            rxneie,
-            txeie,
-        };
-
-        enum class Sr : uint32_t
-        {
-            rxne,
-            txe,
-            chside,
-            udr,
-            crcerr,
-            modf,
-            ovr,
-            bsy,
-            fre,
-        };
-
-    } // namespace bitfield
     namespace
     {
-        const std::array<Reg *const, static_cast<size_t>(Cfg::Bus::total)>
-            gp_registers{
-                reinterpret_cast<Reg *>(address::apb2::spi1),
-                reinterpret_cast<Reg *>(address::apb1::spi2_i2s2),
-                reinterpret_cast<Reg *>(address::apb1::spi3_i2s3),
-                reinterpret_cast<Reg *>(address::apb2::spi4),
-            };
+        Reg *get_reg(Cfg::Bus bus);
 
         uint32_t calculate_cr1(const Cfg &cfg);
         uint32_t calculate_cr2(const Cfg &cfg);
         uint32_t calculate_communication_mode(Cfg::Communication mode);
     }
 
-    Handle::Handle(/* args */)
+    Handle::Handle(const Cfg &cfg) : cfg_{cfg}
     {
+        init(&cfg_);
     }
 
     Handle::~Handle()
     {
+        rcc::reset_reg(cfg_.bus);
     }
 
     void Handle::init(const Cfg *p_cfg)
     {
         rcc::set_clock_enabled(p_cfg->bus, true);
-        auto *const p_reg{gp_registers.at(static_cast<size_t>(p_cfg->bus))};
+        auto *const p_reg{get_reg(p_cfg->bus)};
 
         p_reg->cr1 = calculate_cr1(*p_cfg);
         p_reg->cr2 = calculate_cr2(*p_cfg);
     }
 
-    void Handle::send()
+    void Handle::send(const std::byte *first, const std::byte *last)
     {
+        auto *const p_reg{get_reg(cfg_.bus)};
+        const size_t increment{Cfg::Data_frame_format::bit_16 ==
+                                       cfg_.data_frame_format
+                                   ? 2u
+                                   : 1u};
+
+        for (auto it = first; first != last; it += increment)
+        {
+            while (!utils::is_bit_set(p_reg->sr,
+                                      static_cast<uint32_t>(bitfield::Sr::txe)))
+            {
+            }
+            if (Cfg::Data_frame_format::bit_8 == cfg_.data_frame_format)
+            {
+                p_reg->dr = std::to_integer<uint32_t>(*it);
+            }
+            else
+            {
+                const auto lsb{std::to_integer<uint32_t>(it[0])};
+                const auto msb{std::to_integer<uint32_t>(it[1]) << 8u};
+                p_reg->dr = msb | lsb;
+            }
+        }
+    }
+
+    void Handle::set_peripheral_state(Peripheral_state state)
+    {
+        auto *const p_reg{get_reg(cfg_.bus)};
+        p_reg->cr1 = utils::set_bits_by_position(
+            p_reg->cr1, static_cast<uint32_t>(bitfield::Cr1::spe),
+            Peripheral_state::enabled == state);
     }
 
     namespace
     {
+        Reg *get_reg(Cfg::Bus bus)
+        {
+            const std::array<Reg *const, static_cast<size_t>(Cfg::Bus::total)>
+                registers{
+                    reinterpret_cast<Reg *>(address::apb2::spi1),
+                    reinterpret_cast<Reg *>(address::apb1::spi2_i2s2),
+                    reinterpret_cast<Reg *>(address::apb1::spi3_i2s3),
+                    reinterpret_cast<Reg *>(address::apb2::spi4),
+                };
+            return registers.at(static_cast<size_t>(bus));
+        }
+
         uint32_t calculate_communication_mode(Cfg::Communication mode)
         {
             constexpr std::array<uint32_t,

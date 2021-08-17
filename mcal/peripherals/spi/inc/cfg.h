@@ -11,18 +11,19 @@
 #define PERIPHERALS_SPI_INC_CFG_H_
 
 #include <cstdint>
+#include <cstddef>
 
 namespace mcal::peripherals::spi
 {
     struct Cfg
     {
-        enum class Device_mode : uint32_t
+        enum class Device_mode
         {
             slave,
             master,
         };
 
-        enum class Communication : uint32_t
+        enum class Communication
         {
             full_duplex,
             half_duplex,
@@ -42,7 +43,7 @@ namespace mcal::peripherals::spi
             div_256,
         };
 
-        enum class Data_frame_format : uint32_t
+        enum class Data_frame_format
         {
             bit_8,
             bit_16,
@@ -52,7 +53,7 @@ namespace mcal::peripherals::spi
         * @brief The CPOL (clock polarity) bit controls the idle state 
         * value of the clock when no data is being transferred.
         */
-        enum class Clock_polarity : uint32_t
+        enum class Clock_polarity
         {
             /** CK to 0 when idle  */
             low,
@@ -60,7 +61,7 @@ namespace mcal::peripherals::spi
             high
         };
 
-        enum class Clock_phase : uint32_t
+        enum class Clock_phase
         {
             /**
              * @brief The first clock transition is the first data capture edge.                
@@ -74,7 +75,7 @@ namespace mcal::peripherals::spi
             second_edge
         };
 
-        enum class Bus : uint32_t
+        enum class Bus : size_t
         {
             one,
             two,
@@ -83,7 +84,7 @@ namespace mcal::peripherals::spi
             total
         };
 
-        enum class Frame_format : uint32_t
+        enum class Frame_format
         {
             /* MSB transmitted first. */
             msb,
@@ -91,7 +92,7 @@ namespace mcal::peripherals::spi
             lsb,
         };
 
-        enum class Sw_slave_management : uint32_t
+        enum class Sw_slave_management
         {
             /* Software Slave Management disabled. */
             disabled,
@@ -99,7 +100,7 @@ namespace mcal::peripherals::spi
             enabled,
         };
 
-        enum class Ss_out_enable : uint32_t
+        enum class Ss_out_enable
         {
             /* SS output is disabled in master mode and the cell can work in 
             multimaster configuration. */
@@ -109,7 +110,7 @@ namespace mcal::peripherals::spi
             enabled,
         };
 
-        enum class Internal_slave_select : uint32_t
+        enum class Internal_slave_select
         {
             disabled,
             enabled,
