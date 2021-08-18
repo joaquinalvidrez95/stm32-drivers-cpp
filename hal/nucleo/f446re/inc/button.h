@@ -27,22 +27,22 @@ namespace hal::nucleo::f446re
     private:
         static constexpr mcal::peripherals::gpio::Cfg cfg_{
             mcal::peripherals::gpio::Cfg::Channel::c,
-            mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
+            mcal::peripherals::gpio::Cfg::Pin_num::p13,
             mcal::peripherals::gpio::Cfg::Mode::in,
             mcal::peripherals::gpio::Cfg::Out_type::push_pull,
             mcal::peripherals::gpio::Cfg::Pull_mode::none,
             mcal::peripherals::gpio::Cfg::Speed::fast,
-            mcal::peripherals::gpio::Cfg::Alternate_function::zero,
+            mcal::peripherals::gpio::Cfg::Alternate_function::f0,
         };
 
         static constexpr mcal::peripherals::gpio::Cfg interrupt_cfg_{
             mcal::peripherals::gpio::Cfg::Channel::c,
-            mcal::peripherals::gpio::Cfg::Pin_num::thirteen,
+            mcal::peripherals::gpio::Cfg::Pin_num::p13,
             mcal::peripherals::gpio::Cfg::Mode::falling_transition_interrupt,
             mcal::peripherals::gpio::Cfg::Out_type::push_pull,
             mcal::peripherals::gpio::Cfg::Pull_mode::none,
             mcal::peripherals::gpio::Cfg::Speed::fast,
-            mcal::peripherals::gpio::Cfg::Alternate_function::zero,
+            mcal::peripherals::gpio::Cfg::Alternate_function::f0,
         };
         mcal::peripherals::gpio::Handle handle_{&cfg_};
     };

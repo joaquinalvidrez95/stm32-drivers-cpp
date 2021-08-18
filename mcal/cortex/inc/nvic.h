@@ -47,22 +47,22 @@ extern "C"
 
 		enum class Irq_prio : uint32_t
 		{
-			zero,
-			one,
-			two,
-			three,
-			four,
-			five,
-			six,
-			seven,
-			eight,
-			nine,
-			ten,
-			eleven,
-			twelve,
-			thirteen,
-			fourteen,
-			fifteen,
+			p0,
+			p1,
+			p2,
+			p3,
+			p4,
+			p5,
+			p6,
+			p7,
+			p8,
+			p9,
+			p10,
+			p11,
+			p12,
+			p13,
+			p14,
+			p15,
 		};
 
 		void set_irq_enabled(Irq_num irq_num, bool b_enabled);

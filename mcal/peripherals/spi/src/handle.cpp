@@ -55,7 +55,7 @@ namespace mcal::peripherals::spi
                                            ? std::pair{2U, 1U}
                                            : std::pair{1U, 0U}};
 
-        for (auto it = p_first; (p_first + offset) < p_last; it += increment)
+        for (auto it = p_first; (it + offset) < p_last; it += increment)
         {
             while (!utils::is_bit_set(p_reg->sr,
                                       static_cast<uint32_t>(bitfield::Sr::txe)))
