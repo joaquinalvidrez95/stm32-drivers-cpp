@@ -10,6 +10,8 @@
 
 #include <cstddef>
 
+#include "mcal/peripherals/spi/inc/handle.h"
+
 namespace hal::nucleo::f446re
 {
     class Spi
@@ -19,9 +21,10 @@ namespace hal::nucleo::f446re
 
         void init();
 
-        void send(std::byte *first, std::byte *last);
+        const mcal::peripherals::spi::Handle &handle() const;
 
-        void send(const char *first, const char *last);
+    private:
+        const mcal::peripherals::spi::Handle handle_;
     };
 } // namespace hal::nucleo::f446re
 

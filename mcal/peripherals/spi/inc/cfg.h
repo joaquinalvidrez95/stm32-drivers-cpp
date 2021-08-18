@@ -116,8 +116,8 @@ namespace mcal::peripherals::spi
             enabled,
         };
 
-        Bus bus;
-        Baud_rate_ctrl baud_rate_ctrl;
+        Bus bus{Bus::two};
+        Baud_rate_ctrl baud_rate_ctrl{Baud_rate_ctrl::div_8};
         Device_mode dev_mode{Device_mode::master};
         Communication communication{Communication::full_duplex};
         Data_frame_format data_frame_format{Data_frame_format::bit_8};

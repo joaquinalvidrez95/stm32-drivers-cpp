@@ -7,19 +7,24 @@
 
 #include "hal/nucleo/f446re/inc/spi.h"
 
-hal::nucleo::f446re::Spi::Spi()
+namespace hal::nucleo::f446re
 {
-}
+    namespace
+    {
+        constexpr mcal::peripherals::spi::Cfg cfg{};
 
-void hal::nucleo::f446re::Spi::init()
-{
+    } // namespace
 
-}
+    Spi::Spi() : handle_{cfg}
+    {
+    }
 
-void hal::nucleo::f446re::Spi::send(std::byte *first, std::byte *last)
-{
-}
+    void Spi::init()
+    {
+    }
 
-void hal::nucleo::f446re::Spi::send(const char *first, const char *last)
-{
+    const mcal::peripherals::spi::Handle &Spi::handle() const
+    {
+        return handle_;
+    }
 }

@@ -25,8 +25,8 @@ namespace mcal::peripherals::spi
         Handle(const Cfg &cfg);
         ~Handle();
         void init(const Cfg *p_cfg);
-        void send(const std::byte *p_first, const std::byte *p_last);
-        void set_peripheral_state(Peripheral_state state);
+        void send(const std::byte *p_first, const std::byte *p_last) const;
+        void set_peripheral_state(Peripheral_state state) const;
 
     private:
         const Cfg &cfg_;

@@ -46,7 +46,8 @@ namespace mcal::peripherals::spi
         p_reg->cr2 = calculate_cr2(*p_cfg);
     }
 
-    void Handle::send(const std::byte *p_first, const std::byte *p_last)
+    // TODO: Check if it can be a template
+    void Handle::send(const std::byte *p_first, const std::byte *p_last) const
     {
         auto *const p_reg{get_reg(cfg_.bus)};
         const auto [increment, offset]{Cfg::Data_frame_format::bit_16 ==
@@ -66,14 +67,14 @@ namespace mcal::peripherals::spi
             }
             else
             {
-                const auto lsb{std::to_integer<uint32_t>(it[0])};
-                const auto msb{std::to_integer<uint32_t>(it[1]) << 8u};
+                const auto lsb{std::to_integer<uint32_t>(it[0U])};
+                const auto msb{std::to_integer<uint32_t>(it[1U]) << 8U};
                 p_reg->dr = msb | lsb;
             }
         }
     }
 
-    void Handle::set_peripheral_state(Peripheral_state state)
+    void Handle::set_peripheral_state(Peripheral_state state) const
     {
         auto *const p_reg{get_reg(cfg_.bus)};
         p_reg->cr1 = utils::set_bits_by_position(
@@ -92,7 +93,6 @@ namespace mcal::peripherals::spi
                     reinterpret_cast<Reg *>(address::apb1::spi3_i2s3),
                     reinterpret_cast<Reg *>(address::apb2::spi4),
                 };
-            auto x = registers.cbegin();
             return registers.at(static_cast<size_t>(bus));
         }
 
