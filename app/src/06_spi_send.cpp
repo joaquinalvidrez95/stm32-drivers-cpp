@@ -5,8 +5,8 @@
 #include "mcal/peripherals/spi/inc/cfg.h"
 #include "mcal/peripherals/gpio/inc/handle.h"
 #include "mcal/peripherals/gpio/inc/configuration.h"
-#include "cfg.h"
-#include "utils.h"
+#include "app/inc/cfg.h"
+#include "utils/inc/utils.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_06_SPI_SEND
 

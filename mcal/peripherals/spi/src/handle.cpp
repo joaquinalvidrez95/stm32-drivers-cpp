@@ -14,7 +14,7 @@
 #include "mcal/peripherals/spi/inc/reg.h"
 #include "mcal/peripherals/rcc/inc/rcc.h"
 #include "mcal/inc/stm32f446xx.h"
-#include "utils.h"
+#include "utils/inc/utils.h"
 
 namespace mcal::peripherals::spi
 {

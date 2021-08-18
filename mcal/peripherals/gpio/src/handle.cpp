@@ -14,7 +14,7 @@
 #include "mcal/cortex/inc/nvic.h"
 #include "mcal/inc/exti.h"
 #include "mcal/inc/syscfg.h"
-#include "utils.h"
+#include "utils/inc/utils.h"
 
 namespace mcal::peripherals::gpio
 {

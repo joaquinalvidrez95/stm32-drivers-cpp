@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <array>
 
-#include "utils.h"
+#include "utils/inc/utils.h"
 #include "mcal/peripherals/gpio/inc/configuration.h"
 #include "mcal/peripherals/spi/inc/cfg.h"
 #include "mcal/inc/stm32f446xx.h"

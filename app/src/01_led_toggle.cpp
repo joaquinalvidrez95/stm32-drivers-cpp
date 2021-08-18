@@ -17,8 +17,8 @@
  ******************************************************************************
  */
 #include "hal/nucleo/f446re/inc/led.h"
-#include "utils.h"
-#include "cfg.h"
+#include "utils/inc/utils.h"
+#include "app/inc/cfg.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_01_LED_TOGGLE
 

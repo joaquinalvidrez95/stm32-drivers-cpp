@@ -6,7 +6,7 @@
  */
 
 #include "mcal/peripherals/gpio/inc/handle.h"
-#include "utils.h"
+#include "utils/inc/utils.h"
 #include "hal/nucleo/f446re/inc/button.h"
 
 namespace hal::nucleo::f446re
