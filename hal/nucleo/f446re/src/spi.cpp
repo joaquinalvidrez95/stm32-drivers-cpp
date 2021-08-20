@@ -15,7 +15,6 @@ namespace hal::nucleo::f446re
 {
     namespace
     {
-
         // D8
         constexpr mcal::peripherals::gpio::Cfg g_sck_cfg{
             mcal::peripherals::gpio::Cfg::Channel::a,

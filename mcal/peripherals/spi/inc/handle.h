@@ -35,6 +35,8 @@ namespace mcal::peripherals::spi
     private:
         void init_registers();
 
+        void wait_till_not_busy() const;
+
         const Cfg &cfg_;
         Reg *const p_reg_;
     };

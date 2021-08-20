@@ -75,9 +75,22 @@ namespace mcal::peripherals::spi
 
     void Handle::set_peripheral_state(Peripheral_state state) const
     {
+        if (Peripheral_state::disabled == state)
+        {
+            wait_till_not_busy();
+        }
+
         p_reg_->cr1 = utils::set_bits_by_position(
             p_reg_->cr1, static_cast<uint32_t>(bitfield::Cr1::spe),
             Peripheral_state::enabled == state);
+    }
+
+    void Handle::wait_till_not_busy() const
+    {
+        while (utils::is_bit_set(p_reg_->sr,
+                                 static_cast<uint32_t>(bitfield::Sr::bsy)))
+        {
+        }
     }
 
     namespace
