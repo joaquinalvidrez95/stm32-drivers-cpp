@@ -21,16 +21,7 @@ namespace hal::nucleo::f446re
         void toggle();
 
     private:
-        static constexpr mcal::peripherals::gpio::Cfg cfg_{
-            mcal::peripherals::gpio::Cfg::Channel::a,
-            mcal::peripherals::gpio::Cfg::Pin_num::p5,
-            mcal::peripherals::gpio::Cfg::Mode::out,
-            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-            mcal::peripherals::gpio::Cfg::Pull_mode::none,
-            mcal::peripherals::gpio::Cfg::Speed::fast,
-            mcal::peripherals::gpio::Cfg::Alternate_function::f0,
-        };
-        mcal::peripherals::gpio::Handle handle_{&cfg_};
+        mcal::peripherals::gpio::Handle handle_;
     };
 
 } // namespace hal::nucleo::f446re

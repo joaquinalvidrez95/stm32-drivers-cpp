@@ -44,6 +44,7 @@ namespace
 {
     void init_gpios()
     {
+        // D8
         constexpr mcal::peripherals::gpio::Cfg sck_cfg{
             mcal::peripherals::gpio::Cfg::Channel::a,
             mcal::peripherals::gpio::Cfg::Pin_num::p9,
@@ -56,6 +57,7 @@ namespace
         mcal::peripherals::gpio::Handle h_sck{&sck_cfg};
         h_sck.init();
 
+        // H26
         constexpr mcal::peripherals::gpio::Cfg mosi_cfg{
             mcal::peripherals::gpio::Cfg::Channel::b,
             mcal::peripherals::gpio::Cfg::Pin_num::p15,
