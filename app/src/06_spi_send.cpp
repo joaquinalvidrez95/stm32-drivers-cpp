@@ -54,8 +54,7 @@ namespace
             mcal::peripherals::gpio::Cfg::Speed::low,
             mcal::peripherals::gpio::Cfg::Alternate_function::f5,
         };
-        mcal::peripherals::gpio::Handle h_sck{&sck_cfg};
-        h_sck.init();
+        mcal::peripherals::gpio::Handle h_sck{sck_cfg};
 
         // H26
         constexpr mcal::peripherals::gpio::Cfg mosi_cfg{
@@ -67,8 +66,7 @@ namespace
             mcal::peripherals::gpio::Cfg::Speed::low,
             mcal::peripherals::gpio::Cfg::Alternate_function::f5,
         };
-        mcal::peripherals::gpio::Handle h_mosi{&mosi_cfg};
-        h_mosi.init();
+        mcal::peripherals::gpio::Handle h_mosi{mosi_cfg};
     }
 } // namespace
 
