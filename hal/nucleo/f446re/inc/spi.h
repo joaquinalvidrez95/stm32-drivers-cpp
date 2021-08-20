@@ -11,6 +11,7 @@
 #include <cstddef>
 
 #include "mcal/peripherals/spi/inc/handle.h"
+#include "mcal/peripherals/gpio/inc/handle.h"
 
 namespace hal::nucleo::f446re
 {
@@ -22,6 +23,9 @@ namespace hal::nucleo::f446re
         const mcal::peripherals::spi::Handle &handle() const;
 
     private:
+        const mcal::peripherals::gpio::Handle h_sck_;
+        const mcal::peripherals::gpio::Handle h_mosi_;
+        const mcal::peripherals::gpio::Handle h_nss_;
         const mcal::peripherals::spi::Handle handle_;
     };
 } // namespace hal::nucleo::f446re

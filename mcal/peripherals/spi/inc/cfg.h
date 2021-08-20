@@ -127,7 +127,7 @@ namespace mcal::peripherals::spi
             Clock_phase phase{Clock_phase::first_edge};
         } clock;
         Frame_format frame_format{Frame_format::msb};
-        Ss_out_enable ss_out{Ss_out_enable::disabled};
+        Ss_out_enable ssoe{Ss_out_enable::enabled};
         Sw_slave_management ssm{Sw_slave_management::disabled};
         Internal_slave_select ssi{Internal_slave_select::disabled};
     };

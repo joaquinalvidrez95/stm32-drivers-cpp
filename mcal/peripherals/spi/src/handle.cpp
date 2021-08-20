@@ -156,7 +156,7 @@ namespace mcal::peripherals::spi
 
             cr2 = utils::set_bits_by_position(
                 cr2, static_cast<uint32_t>(bitfield::Cr2::ssoe),
-                Cfg::Ss_out_enable::enabled == cfg.ss_out);
+                Cfg::Ss_out_enable::enabled == cfg.ssoe);
 
             return cr2;
         }
