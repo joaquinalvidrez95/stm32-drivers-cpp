@@ -17,11 +17,10 @@ namespace hal::nucleo::f446re
     {
     public:
         Led();
-        void init();
-        void toggle();
+        void toggle() const;
 
     private:
-        mcal::peripherals::gpio::Handle handle_;
+        const mcal::peripherals::gpio::Handle handle_;
     };
 
 } // namespace hal::nucleo::f446re

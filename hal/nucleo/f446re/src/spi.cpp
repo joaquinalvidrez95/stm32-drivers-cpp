@@ -12,14 +12,9 @@ namespace hal::nucleo::f446re
     namespace
     {
         constexpr mcal::peripherals::spi::Cfg cfg{};
-
     } // namespace
 
     Spi::Spi() : handle_{cfg}
-    {
-    }
-
-    void Spi::init()
     {
     }
 

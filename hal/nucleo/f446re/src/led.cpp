@@ -22,16 +22,11 @@ namespace hal::nucleo::f446re
         };
     } // namespace
 
-    Led::Led() : handle_{&g_cfg}
+    Led::Led() : handle_{g_cfg}
     {
     }
 
-    void Led::init()
-    {
-        handle_.init();
-    }
-
-    void Led::toggle()
+    void Led::toggle() const
     {
         handle_.toggle_pin();
     }

@@ -8,8 +8,10 @@
 #ifndef PERIPHERALS_SPI_INC_HANDLE_H_
 #define PERIPHERALS_SPI_INC_HANDLE_H_
 
-#include "mcal/peripherals/spi/inc/cfg.h"
 #include <cstddef>
+
+#include "mcal/peripherals/spi/inc/reg.h"
+#include "mcal/peripherals/spi/inc/cfg.h"
 
 namespace mcal::peripherals::spi
 {
@@ -23,19 +25,18 @@ namespace mcal::peripherals::spi
     {
     public:
         Handle(const Cfg &cfg);
+
         ~Handle();
-        // TODO: Check if needed
-        void init(const Cfg *p_cfg);
 
         void send(const std::byte *p_first, const std::byte *p_last) const;
 
         void set_peripheral_state(Peripheral_state state) const;
 
     private:
+        void init_registers();
+
         const Cfg &cfg_;
-#if 0
-        const Cfg *p_cfg_{nullptr};
-#endif
+        Reg *const p_reg_;
     };
 } // namespace mcal::peripherals::spi
 

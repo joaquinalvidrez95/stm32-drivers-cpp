@@ -19,8 +19,6 @@ namespace hal::nucleo::f446re
     public:
         Spi();
 
-        void init();
-
         const mcal::peripherals::spi::Handle &handle() const;
 
     private:

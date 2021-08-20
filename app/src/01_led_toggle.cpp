@@ -24,8 +24,7 @@
 
 int main(void)
 {
-  hal::nucleo::f446re::Led led{};
-  led.init();
+  const hal::nucleo::f446re::Led led{};
   for (;;)
   {
     led.toggle();

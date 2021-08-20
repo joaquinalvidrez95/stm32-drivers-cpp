@@ -35,9 +35,8 @@ extern "C"
         class Handle
         {
         public:
-            Handle(const Cfg *p_cfg = nullptr);
+            Handle(const Cfg &cfg);
             ~Handle();
-            void init(const Cfg *p_cfg = nullptr);
             void toggle_pin() const;
             void deinit() const;
             Pin_state read_pin() const;
@@ -49,26 +48,11 @@ extern "C"
             void handle_irq() const;
 
         private:
-            const Cfg *p_cfg_;
+            void init_registers();
 
-            inline Reg *reg() const
-            {
-                static const std::array<Reg *const,
-                                        static_cast<std::size_t>(Cfg::Channel::total)>
-                    p_registers{
-                        reinterpret_cast<Reg *>(address::ahb1::gpioa),
-                        reinterpret_cast<Reg *>(address::ahb1::gpiob),
-                        reinterpret_cast<Reg *>(address::ahb1::gpioc),
-                        reinterpret_cast<Reg *>(address::ahb1::gpiod),
-                        reinterpret_cast<Reg *>(address::ahb1::gpioe),
-                        reinterpret_cast<Reg *>(address::ahb1::gpiof),
-                        reinterpret_cast<Reg *>(address::ahb1::gpiog),
-                        reinterpret_cast<Reg *>(address::ahb1::gpioh),
-                    };
-                return p_cfg_
-                           ? p_registers.at(static_cast<std::size_t>(p_cfg_->channel))
-                           : nullptr;
-            }
+            const Cfg &cfg_;
+
+            Reg *const p_reg_;
         };
 
     } // namespace mcal::peripherals::gpio

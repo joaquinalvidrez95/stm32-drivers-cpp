@@ -27,9 +27,12 @@ namespace mcal::peripherals::spi
         uint32_t calculate_communication_mode(Cfg::Communication mode);
     }
 
-    Handle::Handle(const Cfg &cfg) : cfg_{cfg}
+    Handle::Handle(const Cfg &cfg)
+        : cfg_{cfg},
+          p_reg_{get_reg(cfg.bus)}
     {
-        init(&cfg_);
+        rcc::set_clock_enabled(cfg.bus, true);
+        init_registers();
     }
 
     Handle::~Handle()
@@ -37,19 +40,15 @@ namespace mcal::peripherals::spi
         rcc::reset_reg(cfg_.bus);
     }
 
-    void Handle::init(const Cfg *p_cfg)
+    void Handle::init_registers()
     {
-        rcc::set_clock_enabled(p_cfg->bus, true);
-        auto *const p_reg{get_reg(p_cfg->bus)};
-
-        p_reg->cr1 = calculate_cr1(*p_cfg);
-        p_reg->cr2 = calculate_cr2(*p_cfg);
+        p_reg_->cr1 = calculate_cr1(cfg_);
+        p_reg_->cr2 = calculate_cr2(cfg_);
     }
 
     // TODO: Check if it can be a template
     void Handle::send(const std::byte *p_first, const std::byte *p_last) const
     {
-        auto *const p_reg{get_reg(cfg_.bus)};
         const auto [increment, offset]{Cfg::Data_frame_format::bit_16 ==
                                                cfg_.data_frame_format
                                            ? std::pair{2U, 1U}
@@ -57,28 +56,27 @@ namespace mcal::peripherals::spi
 
         for (auto it = p_first; (it + offset) < p_last; it += increment)
         {
-            while (!utils::is_bit_set(p_reg->sr,
+            while (!utils::is_bit_set(p_reg_->sr,
                                       static_cast<uint32_t>(bitfield::Sr::txe)))
             {
             }
             if (Cfg::Data_frame_format::bit_8 == cfg_.data_frame_format)
             {
-                p_reg->dr = std::to_integer<uint32_t>(*it);
+                p_reg_->dr = std::to_integer<uint32_t>(*it);
             }
             else
             {
                 const auto lsb{std::to_integer<uint32_t>(it[0U])};
                 const auto msb{std::to_integer<uint32_t>(it[1U]) << 8U};
-                p_reg->dr = msb | lsb;
+                p_reg_->dr = msb | lsb;
             }
         }
     }
 
     void Handle::set_peripheral_state(Peripheral_state state) const
     {
-        auto *const p_reg{get_reg(cfg_.bus)};
-        p_reg->cr1 = utils::set_bits_by_position(
-            p_reg->cr1, static_cast<uint32_t>(bitfield::Cr1::spe),
+        p_reg_->cr1 = utils::set_bits_by_position(
+            p_reg_->cr1, static_cast<uint32_t>(bitfield::Cr1::spe),
             Peripheral_state::enabled == state);
     }
 
@@ -87,13 +85,13 @@ namespace mcal::peripherals::spi
         Reg *get_reg(Cfg::Bus bus)
         {
             const std::array<Reg *const, static_cast<size_t>(Cfg::Bus::total)>
-                registers{
+                p_registers{
                     reinterpret_cast<Reg *>(address::apb2::spi1),
                     reinterpret_cast<Reg *>(address::apb1::spi2_i2s2),
                     reinterpret_cast<Reg *>(address::apb1::spi3_i2s3),
                     reinterpret_cast<Reg *>(address::apb2::spi4),
                 };
-            return registers.at(static_cast<size_t>(bus));
+            return p_registers.at(static_cast<size_t>(bus));
         }
 
         uint32_t calculate_communication_mode(Cfg::Communication mode)

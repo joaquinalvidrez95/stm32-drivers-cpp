@@ -5,14 +5,16 @@
 
 #if CFG_SAMPLE == CFG_SAMPLE_05_BUTTTON_INTERRUPT
 
-static hal::nucleo::f446re::Button g_button{};
-static hal::nucleo::f446re::Led g_led{};
+namespace
+{
+    const hal::nucleo::f446re::Button g_button{
+        mcal::peripherals::Mechanism::interrupt};
+    const hal::nucleo::f446re::Led g_led{};
+
+} // namespace
 
 int main(void)
 {
-    g_button.init(mcal::peripherals::Mechanism::interrupt);
-    g_led.init();
-
     for (;;)
     {
     }
