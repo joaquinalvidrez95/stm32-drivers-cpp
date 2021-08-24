@@ -7,9 +7,9 @@
 
 namespace
 {
-    const hal::nucleo::f446re::Button g_button{
-        mcal::peripherals::Mechanism::interrupt};
-    const hal::nucleo::f446re::Led g_led{};
+    const hal::nucleo::f446re::button g_button{
+        mcal::peripherals::mechanism::interrupt};
+    const hal::nucleo::f446re::led g_led{};
 
 } // namespace
 

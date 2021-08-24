@@ -7,7 +7,7 @@
 
 namespace mcal::peripherals::gpio
 {
-    struct Reg
+    struct reg
     {
         volatile uint32_t moder;
         volatile uint32_t otyper;
@@ -19,15 +19,6 @@ namespace mcal::peripherals::gpio
         volatile uint32_t lckr;
         volatile uint32_t afr[2];
     };
-
-#define GPIOA (reinterpret_cast<Reg *>(GPIOA_BASEADDR))
-#define GPIOB (reinterpret_cast<Reg *>(GPIOB_BASEADDR))
-#define GPIOC (reinterpret_cast<Reg *>(GPIOC_BASEADDR))
-#define GPIOD (reinterpret_cast<Reg *>(GPIOD_BASEADDR))
-#define GPIOE (reinterpret_cast<Reg *>(GPIOE_BASEADDR))
-#define GPIOF (reinterpret_cast<Reg *>(GPIOF_BASEADDR))
-#define GPIOG (reinterpret_cast<Reg *>(GPIOG_BASEADDR))
-#define GPIOH (reinterpret_cast<Reg *>(GPIOH_BASEADDR))
 
 } // namespace mcal::peripherals::gpio
 

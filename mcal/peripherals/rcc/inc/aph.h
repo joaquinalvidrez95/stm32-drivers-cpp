@@ -13,14 +13,14 @@
 
 namespace mcal::peripherals::rcc::apb
 {
-    enum class Bus : size_t
+    enum class bus : size_t
     {
         one,
         two,
         total,
     };
 
-    enum class One_bits : uint32_t
+    enum class one_bits : uint32_t
     {
         tim2,
         tim3,
@@ -54,7 +54,7 @@ namespace mcal::peripherals::rcc::apb
         dac,
     };
 
-    enum class Two_bits : uint32_t
+    enum class two_bits : uint32_t
     {
         tim1,
         tim8,

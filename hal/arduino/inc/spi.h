@@ -26,10 +26,10 @@ namespace hal::arduino
 
         ~spi();
 
-        mcal::peripherals::gpio::Pin_state read_digital(digital_pin pin);
+        mcal::peripherals::gpio::pin_state read_digital(digital_pin pin);
 
         void write_pin(digital_pin pin,
-                       mcal::peripherals::gpio::Pin_state state);
+                       mcal::peripherals::gpio::pin_state state);
 
         std::byte read_analog(analog_pin pin);
 

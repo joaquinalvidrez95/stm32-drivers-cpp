@@ -12,7 +12,7 @@
 
 namespace mcal::peripherals::spi
 {
-    struct Reg
+    struct reg
     {
         volatile uint32_t cr1;
         volatile uint32_t cr2;
@@ -75,7 +75,7 @@ namespace mcal::peripherals::spi
 
     namespace bitfield
     {
-        enum class Cr1 : uint32_t
+        enum class cr1 : uint32_t
         {
             cpha,
             cpol,
@@ -95,7 +95,7 @@ namespace mcal::peripherals::spi
             bidimode,
         };
 
-        enum class Cr2 : uint32_t
+        enum class cr2 : uint32_t
         {
             rxdmaen,
             txdmaen,
@@ -107,7 +107,7 @@ namespace mcal::peripherals::spi
             txeie,
         };
 
-        enum class Sr : uint32_t
+        enum class sr : uint32_t
         {
             rxne,
             txe,

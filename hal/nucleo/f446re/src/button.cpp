@@ -14,34 +14,34 @@ namespace hal::nucleo::f446re
 {
     namespace
     {
-        constexpr mcal::peripherals::gpio::Cfg cfg_{
-            mcal::peripherals::gpio::Cfg::Channel::c,
-            mcal::peripherals::gpio::Cfg::Pin_num::p13,
-            mcal::peripherals::gpio::Cfg::Mode::in,
-            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-            mcal::peripherals::gpio::Cfg::Pull_mode::none,
-            mcal::peripherals::gpio::Cfg::Speed::fast,
-            mcal::peripherals::gpio::Cfg::Alternate_function::f0,
+        constexpr mcal::peripherals::gpio::cfg cfg_{
+            mcal::peripherals::gpio::channel::c,
+            mcal::peripherals::gpio::pin_num::p13,
+            mcal::peripherals::gpio::mode::in,
+            mcal::peripherals::gpio::out_type::push_pull,
+            mcal::peripherals::gpio::pull_mode::none,
+            mcal::peripherals::gpio::speed::fast,
+            mcal::peripherals::gpio::alternate_function::f0,
         };
 
-        constexpr mcal::peripherals::gpio::Cfg interrupt_cfg_{
-            mcal::peripherals::gpio::Cfg::Channel::c,
-            mcal::peripherals::gpio::Cfg::Pin_num::p13,
-            mcal::peripherals::gpio::Cfg::Mode::falling_transition_interrupt,
-            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-            mcal::peripherals::gpio::Cfg::Pull_mode::none,
-            mcal::peripherals::gpio::Cfg::Speed::fast,
-            mcal::peripherals::gpio::Cfg::Alternate_function::f0,
+        constexpr mcal::peripherals::gpio::cfg interrupt_cfg_{
+            mcal::peripherals::gpio::channel::c,
+            mcal::peripherals::gpio::pin_num::p13,
+            mcal::peripherals::gpio::mode::falling_transition_interrupt,
+            mcal::peripherals::gpio::out_type::push_pull,
+            mcal::peripherals::gpio::pull_mode::none,
+            mcal::peripherals::gpio::speed::fast,
+            mcal::peripherals::gpio::alternate_function::f0,
         };
     } // namespace
 
-    Button::Button(mcal::peripherals::Mechanism mechanism)
-        : handle_{mcal::peripherals::Mechanism::polling ==
+    button::button(mcal::peripherals::mechanism mechanism)
+        : handle_{mcal::peripherals::mechanism::polling ==
                           mechanism
                       ? cfg_
                       : interrupt_cfg_}
     {
-        if (mcal::peripherals::Mechanism::interrupt == mechanism)
+        if (mcal::peripherals::mechanism::interrupt == mechanism)
         {
             // TODO: Check if it makes sense to move this to handle's
             // constructor
@@ -49,7 +49,7 @@ namespace hal::nucleo::f446re
         }
     }
 
-    void Button::wait_till_pressed() const
+    void button::wait_till_pressed() const
     {
         while (!is_pressed())
         {
@@ -57,12 +57,12 @@ namespace hal::nucleo::f446re
         utils::delay();
     }
 
-    bool Button::is_pressed() const
+    bool button::is_pressed() const
     {
-        return mcal::peripherals::gpio::Pin_state::reset == handle_.read_pin();
+        return mcal::peripherals::gpio::pin_state::reset == handle_.read_pin();
     }
 
-    void Button::handle_irq() const
+    void button::handle_irq() const
     {
         handle_.handle_irq();
     }

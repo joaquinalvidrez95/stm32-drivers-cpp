@@ -20,14 +20,14 @@ namespace hal::arduino
     {
     }
 
-    mcal::peripherals::gpio::Pin_state spi::read_digital(digital_pin pin)
+    mcal::peripherals::gpio::pin_state spi::read_digital(digital_pin pin)
     {
         // TODO: Implement
-        return mcal::peripherals::gpio::Pin_state::reset;
+        return mcal::peripherals::gpio::pin_state::reset;
     }
 
     void spi::write_pin(digital_pin pin,
-                        mcal::peripherals::gpio::Pin_state state)
+                        mcal::peripherals::gpio::pin_state state)
     {
     }
 

@@ -21,48 +21,48 @@ namespace mcal::peripherals::gpio
 {
     namespace
     {
-        constexpr std::array<cortex::nvic::Irq_num,
-                             static_cast<std::size_t>(Cfg::Pin_num::total)>
+        constexpr std::array<cortex::nvic::irq_num,
+                             static_cast<std::size_t>(pin_num::total)>
             g_irq_nums{
-                cortex::nvic::Irq_num::exti0,
-                cortex::nvic::Irq_num::exti1,
-                cortex::nvic::Irq_num::exti2,
-                cortex::nvic::Irq_num::exti3,
-                cortex::nvic::Irq_num::exti4,
-                cortex::nvic::Irq_num::exti9_5,
-                cortex::nvic::Irq_num::exti9_5,
-                cortex::nvic::Irq_num::exti9_5,
-                cortex::nvic::Irq_num::exti9_5,
-                cortex::nvic::Irq_num::exti9_5,
-                cortex::nvic::Irq_num::exti15_10,
-                cortex::nvic::Irq_num::exti15_10,
-                cortex::nvic::Irq_num::exti15_10,
-                cortex::nvic::Irq_num::exti15_10,
-                cortex::nvic::Irq_num::exti15_10,
-                cortex::nvic::Irq_num::exti15_10,
+                cortex::nvic::irq_num::exti0,
+                cortex::nvic::irq_num::exti1,
+                cortex::nvic::irq_num::exti2,
+                cortex::nvic::irq_num::exti3,
+                cortex::nvic::irq_num::exti4,
+                cortex::nvic::irq_num::exti9_5,
+                cortex::nvic::irq_num::exti9_5,
+                cortex::nvic::irq_num::exti9_5,
+                cortex::nvic::irq_num::exti9_5,
+                cortex::nvic::irq_num::exti9_5,
+                cortex::nvic::irq_num::exti15_10,
+                cortex::nvic::irq_num::exti15_10,
+                cortex::nvic::irq_num::exti15_10,
+                cortex::nvic::irq_num::exti15_10,
+                cortex::nvic::irq_num::exti15_10,
+                cortex::nvic::irq_num::exti15_10,
             };
 
-        Reg *reg(Cfg::Channel channel)
+        reg *map_reg(channel channel)
         {
-            const std::array<Reg *const,
-                             static_cast<std::size_t>(Cfg::Channel::total)>
+            const std::array<reg *const,
+                             static_cast<std::size_t>(channel::total)>
                 p_registers{
-                    reinterpret_cast<Reg *>(address::ahb1::gpioa),
-                    reinterpret_cast<Reg *>(address::ahb1::gpiob),
-                    reinterpret_cast<Reg *>(address::ahb1::gpioc),
-                    reinterpret_cast<Reg *>(address::ahb1::gpiod),
-                    reinterpret_cast<Reg *>(address::ahb1::gpioe),
-                    reinterpret_cast<Reg *>(address::ahb1::gpiof),
-                    reinterpret_cast<Reg *>(address::ahb1::gpiog),
-                    reinterpret_cast<Reg *>(address::ahb1::gpioh),
+                    reinterpret_cast<reg *>(address::ahb1::gpioa),
+                    reinterpret_cast<reg *>(address::ahb1::gpiob),
+                    reinterpret_cast<reg *>(address::ahb1::gpioc),
+                    reinterpret_cast<reg *>(address::ahb1::gpiod),
+                    reinterpret_cast<reg *>(address::ahb1::gpioe),
+                    reinterpret_cast<reg *>(address::ahb1::gpiof),
+                    reinterpret_cast<reg *>(address::ahb1::gpiog),
+                    reinterpret_cast<reg *>(address::ahb1::gpioh),
                 };
             return p_registers.at(static_cast<std::size_t>(channel));
         }
     } // namespace
 
-    handle::handle(const Cfg &cfg)
+    handle::handle(const cfg &cfg)
         : cfg_{cfg},
-          p_reg_{reg(cfg_.channel)}
+          p_reg_{map_reg(cfg_.channel)}
     {
         rcc::set_clock_enabled(cfg_.channel, true);
         init_registers();
@@ -79,7 +79,7 @@ namespace mcal::peripherals::gpio
 
         /* TODO: Check if memset */
         /* Configures mode. */
-        if (cfg_.mode <= Cfg::Mode::analog)
+        if (cfg_.mode <= mode::analog)
         {
             p_reg_->moder = utils::set_bits_by_position<uint32_t>(
                 p_reg_->moder,
@@ -97,7 +97,7 @@ namespace mcal::peripherals::gpio
             /* TODO: Use utils */
             switch (cfg_.mode)
             {
-            case Cfg::Mode::falling_transition_interrupt:
+            case mode::falling_transition_interrupt:
                 EXTI->ftsr = utils::set_bits_by_position(
                     EXTI->ftsr,
                     static_cast<uint32_t>(cfg_.pin_num));
@@ -107,7 +107,7 @@ namespace mcal::peripherals::gpio
                     false);
                 break;
 
-            case Cfg::Mode::rising_transition_interrupt:
+            case mode::rising_transition_interrupt:
                 EXTI->rtsr = utils::set_bits_by_position(
                     EXTI->rtsr,
                     static_cast<uint32_t>(cfg_.pin_num));
@@ -117,7 +117,7 @@ namespace mcal::peripherals::gpio
                     false);
                 break;
 
-            case Cfg::Mode::rising_falling_transition_interrupt:
+            case mode::rising_falling_transition_interrupt:
                 EXTI->rtsr = utils::set_bits_by_position(
                     EXTI->rtsr,
                     static_cast<uint32_t>(cfg_.pin_num));
@@ -180,7 +180,7 @@ namespace mcal::peripherals::gpio
             static_cast<uint32_t>(cfg_.out_type));
 
         /* Configures alternate function */
-        if (Cfg::Mode::alternate_function == cfg_.mode)
+        if (mode::alternate_function == cfg_.mode)
         {
             /* TODO: Refactor */
             const uint32_t tmp1 = static_cast<uint32_t>(cfg_.pin_num) / 8U;
@@ -208,12 +208,12 @@ namespace mcal::peripherals::gpio
         rcc::reset_reg(cfg_.channel);
     }
 
-    Pin_state handle::read_pin() const
+    pin_state handle::read_pin() const
     {
         return utils::is_bit_set(p_reg_->idr,
                                  static_cast<uint32_t>(cfg_.pin_num))
-                   ? Pin_state::set
-                   : Pin_state::reset;
+                   ? pin_state::set
+                   : pin_state::reset;
     }
 
     uint16_t handle::read_port() const
@@ -221,12 +221,12 @@ namespace mcal::peripherals::gpio
         return static_cast<uint16_t>(p_reg_->idr);
     }
 
-    void handle::write_pin(Pin_state state) const
+    void handle::write_pin(pin_state state) const
     {
         p_reg_->odr = utils::set_bits_by_position(
             p_reg_->odr,
             static_cast<uint32_t>(cfg_.pin_num),
-            Pin_state::set == state);
+            pin_state::set == state);
     }
 
     void handle::write_port(uint16_t value) const
@@ -241,7 +241,7 @@ namespace mcal::peripherals::gpio
             b_enabled);
     }
 
-    void handle::config_irq_priority(cortex::nvic::Irq_prio prio) const
+    void handle::config_irq_priority(cortex::nvic::irq_prio prio) const
     {
         cortex::nvic::set_irq_priority(
             g_irq_nums.at(static_cast<std::size_t>(cfg_.pin_num)),

@@ -8,7 +8,7 @@ extern "C"
     namespace mcal::peripherals
     {
 
-        enum class Mechanism
+        enum class mechanism
         {
             polling,
             interrupt

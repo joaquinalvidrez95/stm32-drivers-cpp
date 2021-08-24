@@ -12,7 +12,7 @@
 
 namespace mcal
 {
-    struct Exti_reg
+    struct exti_reg
     {
         volatile uint32_t imr;
         volatile uint32_t emr;
@@ -23,6 +23,6 @@ namespace mcal
     };
 } // namespace mcal
 
-#define EXTI (reinterpret_cast<mcal::Exti_reg *>(mcal::address::apb2::exti))
+#define EXTI (reinterpret_cast<mcal::exti_reg *>(mcal::address::apb2::exti))
 
 #endif /* INC_EXTI_H_ */

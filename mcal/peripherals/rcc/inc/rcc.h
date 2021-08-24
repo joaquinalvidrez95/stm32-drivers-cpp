@@ -15,13 +15,13 @@ namespace mcal::peripherals::rcc
 {
     void set_system_cfg_ctrl_clock_enabled(bool b_enabled);
 
-    void set_clock_enabled(peripherals::gpio::Cfg::Channel channel, bool b_set);
+    void set_clock_enabled(peripherals::gpio::channel channel, bool b_set);
 
-    void reset_reg(peripherals::gpio::Cfg::Channel channel);
+    void reset_reg(peripherals::gpio::channel channel);
 
-    void set_clock_enabled(peripherals::spi::Cfg::Bus bus, bool b_set);
+    void set_clock_enabled(peripherals::spi::bus bus, bool b_set);
 
-    void reset_reg(peripherals::spi::Cfg::Bus bus);
+    void reset_reg(peripherals::spi::bus bus);
 
 } // namespace mcal::peripherals::rcc
 

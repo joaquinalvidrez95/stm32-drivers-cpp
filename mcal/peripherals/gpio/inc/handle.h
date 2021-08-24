@@ -29,24 +29,24 @@ extern "C"
         class handle
         {
         public:
-            handle(const Cfg &cfg);
+            handle(const cfg &cfg);
             ~handle();
             void toggle_pin() const;
             void deinit() const;
-            Pin_state read_pin() const;
+            pin_state read_pin() const;
             uint16_t read_port() const;
-            void write_pin(Pin_state state) const;
+            void write_pin(pin_state state) const;
             void write_port(uint16_t value) const;
             void set_irq_enabled(bool b_enabled) const;
-            void config_irq_priority(cortex::nvic::Irq_prio prio) const;
+            void config_irq_priority(cortex::nvic::irq_prio prio) const;
             void handle_irq() const;
 
         private:
             void init_registers();
 
-            const Cfg &cfg_;
+            const cfg &cfg_;
 
-            Reg *const p_reg_;
+            reg *const p_reg_;
         };
 
     } // namespace mcal::peripherals::gpio

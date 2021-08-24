@@ -24,7 +24,7 @@ namespace mcal::peripherals::spi
     class handle
     {
     public:
-        handle(const Cfg &cfg);
+        handle(const cfg &cfg);
 
         ~handle();
 
@@ -45,8 +45,8 @@ namespace mcal::peripherals::spi
 
         void wait_till_rx_buffer_not_empty() const;
 
-        const Cfg &cfg_;
-        Reg *const p_reg_;
+        const cfg &cfg_;
+        reg *const p_reg_;
     };
 } // namespace mcal::peripherals::spi
 

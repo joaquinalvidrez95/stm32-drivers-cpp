@@ -6,8 +6,8 @@
 
 int main(void)
 {
-    const hal::nucleo::f446re::Led led{};
-    const hal::nucleo::f446re::Button button{};
+    const hal::nucleo::f446re::led led{};
+    const hal::nucleo::f446re::button button{};
 
     for (;;)
     {

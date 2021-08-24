@@ -12,7 +12,7 @@
 
 namespace mcal
 {
-    struct Syscfg_reg
+    struct syscfg_reg
     {
         volatile uint32_t memrmp;
         volatile uint32_t pmc;
@@ -25,6 +25,6 @@ namespace mcal
     };
 } // namespace mcal
 
-#define SYSCFG (reinterpret_cast<mcal::Syscfg_reg *>(mcal::address::apb2::syscfg))
+#define SYSCFG (reinterpret_cast<mcal::syscfg_reg *>(mcal::address::apb2::syscfg))
 
 #endif /* INC_SYSCFG_H_ */

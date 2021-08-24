@@ -13,11 +13,11 @@
 
 namespace hal::nucleo::f446re
 {
-    class Button
+    class button
     {
     public:
-        Button(mcal::peripherals::Mechanism mechanism =
-                   mcal::peripherals::Mechanism::polling);
+        button(mcal::peripherals::mechanism mechanism =
+                   mcal::peripherals::mechanism::polling);
         void wait_till_pressed() const;
         bool is_pressed() const;
         void handle_irq() const;

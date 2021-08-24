@@ -5,8 +5,8 @@
  *      Author: joaquin
  */
 
-#ifndef INC_STM32F446XX_NVIC_DRIVER_H_
-#define INC_STM32F446XX_NVIC_DRIVER_H_
+#ifndef MCAL_CORTEX_INC_NVIC_H
+#define MCAL_CORTEX_INC_NVIC_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -18,7 +18,7 @@ extern "C"
 
 	namespace mcal::cortex::nvic
 	{
-		enum class Irq_num : uint32_t
+		enum class irq_num : uint32_t
 		{
 			exti0 = 6U,
 			exti1 = 7U,
@@ -45,7 +45,7 @@ extern "C"
 			spi4 = 84U,
 		};
 
-		enum class Irq_prio : uint32_t
+		enum class irq_prio : uint32_t
 		{
 			p0,
 			p1,
@@ -65,12 +65,12 @@ extern "C"
 			p15,
 		};
 
-		void set_irq_enabled(Irq_num irq_num, bool b_enabled);
-		void set_irq_priority(Irq_num irq_num, Irq_prio prio);
+		void set_irq_enabled(irq_num num, bool b_enabled);
+		void set_irq_priority(irq_num num, irq_prio prio);
 	} // namespace mcal::cortex::nvic
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* INC_STM32F446XX_NVIC_DRIVER_H_ */
+#endif /* MCAL_CORTEX_INC_NVIC_H */

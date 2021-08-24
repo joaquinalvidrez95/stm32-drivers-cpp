@@ -12,7 +12,7 @@
 
 namespace mcal::peripherals::gpio
 {
-    enum class Pin_state
+    enum class pin_state
     {
         reset,
         set

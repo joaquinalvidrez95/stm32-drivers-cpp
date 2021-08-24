@@ -15,10 +15,10 @@
 
 namespace hal::nucleo::f446re
 {
-    class Spi
+    class spi
     {
     public:
-        Spi();
+        spi();
 
         const mcal::peripherals::spi::handle &handle() const;
 

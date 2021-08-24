@@ -13,7 +13,7 @@
 
 namespace mcal::peripherals::rcc::ahb
 {
-    enum class Bus : size_t
+    enum class bus : size_t
     {
         one,
         two,
@@ -21,7 +21,7 @@ namespace mcal::peripherals::rcc::ahb
         total,
     };
 
-    enum class One_bits : uint32_t
+    enum class one_bits : uint32_t
     {
         gpioa,
         gpiob,

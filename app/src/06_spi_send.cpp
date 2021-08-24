@@ -17,9 +17,9 @@ int main(void)
 {
     init_gpios();
 
-    mcal::peripherals::spi::Cfg cfg{};
-    cfg.ssm = mcal::peripherals::spi::Cfg::Sw_slave_management::enabled;
-    cfg.ssi = mcal::peripherals::spi::Cfg::Internal_slave_select::enabled;
+    mcal::peripherals::spi::cfg cfg{};
+    cfg.ssm = mcal::peripherals::spi::sw_slave_management::enabled;
+    cfg.ssi = mcal::peripherals::spi::internal_slave_select::enabled;
     const mcal::peripherals::spi::handle h_spi{cfg};
 
     constexpr std::array<char, 12> message{"Hello world"};
@@ -43,26 +43,26 @@ namespace
     void init_gpios()
     {
         // D8
-        constexpr mcal::peripherals::gpio::Cfg sck_cfg{
-            mcal::peripherals::gpio::Cfg::Channel::a,
-            mcal::peripherals::gpio::Cfg::Pin_num::p9,
-            mcal::peripherals::gpio::Cfg::Mode::alternate_function,
-            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-            mcal::peripherals::gpio::Cfg::Pull_mode::none,
-            mcal::peripherals::gpio::Cfg::Speed::low,
-            mcal::peripherals::gpio::Cfg::Alternate_function::f5,
+        constexpr mcal::peripherals::gpio::cfg sck_cfg{
+            mcal::peripherals::gpio::channel::a,
+            mcal::peripherals::gpio::pin_num::p9,
+            mcal::peripherals::gpio::mode::alternate_function,
+            mcal::peripherals::gpio::out_type::push_pull,
+            mcal::peripherals::gpio::pull_mode::none,
+            mcal::peripherals::gpio::speed::low,
+            mcal::peripherals::gpio::alternate_function::f5,
         };
         mcal::peripherals::gpio::handle h_sck{sck_cfg};
 
         // H26
-        constexpr mcal::peripherals::gpio::Cfg mosi_cfg{
-            mcal::peripherals::gpio::Cfg::Channel::b,
-            mcal::peripherals::gpio::Cfg::Pin_num::p15,
-            mcal::peripherals::gpio::Cfg::Mode::alternate_function,
-            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-            mcal::peripherals::gpio::Cfg::Pull_mode::none,
-            mcal::peripherals::gpio::Cfg::Speed::low,
-            mcal::peripherals::gpio::Cfg::Alternate_function::f5,
+        constexpr mcal::peripherals::gpio::cfg mosi_cfg{
+            mcal::peripherals::gpio::channel::b,
+            mcal::peripherals::gpio::pin_num::p15,
+            mcal::peripherals::gpio::mode::alternate_function,
+            mcal::peripherals::gpio::out_type::push_pull,
+            mcal::peripherals::gpio::pull_mode::none,
+            mcal::peripherals::gpio::speed::low,
+            mcal::peripherals::gpio::alternate_function::f5,
         };
         mcal::peripherals::gpio::handle h_mosi{mosi_cfg};
     }

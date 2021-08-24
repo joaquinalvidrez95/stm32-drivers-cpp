@@ -11,22 +11,22 @@ namespace hal::nucleo::f446re
 {
     namespace
     {
-        constexpr mcal::peripherals::gpio::Cfg g_cfg{
-            mcal::peripherals::gpio::Cfg::Channel::a,
-            mcal::peripherals::gpio::Cfg::Pin_num::p5,
-            mcal::peripherals::gpio::Cfg::Mode::out,
-            mcal::peripherals::gpio::Cfg::Out_type::push_pull,
-            mcal::peripherals::gpio::Cfg::Pull_mode::none,
-            mcal::peripherals::gpio::Cfg::Speed::fast,
-            mcal::peripherals::gpio::Cfg::Alternate_function::f0,
+        constexpr mcal::peripherals::gpio::cfg g_cfg{
+            mcal::peripherals::gpio::channel::a,
+            mcal::peripherals::gpio::pin_num::p5,
+            mcal::peripherals::gpio::mode::out,
+            mcal::peripherals::gpio::out_type::push_pull,
+            mcal::peripherals::gpio::pull_mode::none,
+            mcal::peripherals::gpio::speed::fast,
+            mcal::peripherals::gpio::alternate_function::f0,
         };
     } // namespace
 
-    Led::Led() : handle_{g_cfg}
+    led::led() : handle_{g_cfg}
     {
     }
 
-    void Led::toggle() const
+    void led::toggle() const
     {
         handle_.toggle_pin();
     }

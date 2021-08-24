@@ -25,8 +25,8 @@ int main(void)
     std::array<std::byte, message.size()> buffer{};
     utils::to_bytes(message.cbegin(), message.cend(), buffer.begin());
 
-    const hal::nucleo::f446re::Spi h_spi{};
-    const hal::nucleo::f446re::Button h_button{};
+    const hal::nucleo::f446re::spi h_spi{};
+    const hal::nucleo::f446re::button h_button{};
 
     for (;;)
     {

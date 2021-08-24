@@ -12,10 +12,10 @@
 
 namespace hal::nucleo::f446re
 {
-    class Led
+    class led
     {
     public:
-        Led();
+        led();
         void toggle() const;
 
     private:
