@@ -8,8 +8,8 @@
 #ifndef PERIPHERALS_RCC_INC_RCC_H_
 #define PERIPHERALS_RCC_INC_RCC_H_
 
-#include "mcal/peripherals/gpio/inc/configuration.h"
-#include "mcal/peripherals/spi/inc/cfg.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
+#include "mcal/peripherals/spi/inc/ext.h"
 
 namespace mcal::peripherals::rcc
 {

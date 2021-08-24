@@ -5,9 +5,10 @@
  *      Author: joaquin
  */
 
-#include "mcal/peripherals/gpio/inc/handle.h"
-#include "utils/inc/utils.h"
 #include "hal/nucleo/f446re/inc/button.h"
+
+#include "utils/inc/utils.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
 
 namespace hal::nucleo::f446re
 {
@@ -42,7 +43,7 @@ namespace hal::nucleo::f446re
     {
         if (mcal::peripherals::Mechanism::interrupt == mechanism)
         {
-            // TODO: Check if it makes sense to move this to Handle's
+            // TODO: Check if it makes sense to move this to handle's
             // constructor
             handle_.set_irq_enabled(true);
         }

@@ -15,6 +15,7 @@
 #include "mcal/inc/exti.h"
 #include "mcal/inc/syscfg.h"
 #include "utils/inc/utils.h"
+#include "mcal/peripherals/gpio/inc/gpio.h"
 
 namespace mcal::peripherals::gpio
 {
@@ -59,7 +60,7 @@ namespace mcal::peripherals::gpio
         }
     } // namespace
 
-    Handle::Handle(const Cfg &cfg)
+    handle::handle(const Cfg &cfg)
         : cfg_{cfg},
           p_reg_{reg(cfg_.channel)}
     {
@@ -67,12 +68,12 @@ namespace mcal::peripherals::gpio
         init_registers();
     }
 
-    Handle::~Handle()
+    handle::~handle()
     {
         deinit();
     }
 
-    void Handle::init_registers()
+    void handle::init_registers()
     {
         /* TODO: Create helper functions */
 
@@ -197,17 +198,17 @@ namespace mcal::peripherals::gpio
         }
     }
 
-    void Handle::toggle_pin() const
+    void handle::toggle_pin() const
     {
         p_reg_->odr ^= 1U << static_cast<uint32_t>(cfg_.pin_num);
     }
 
-    void Handle::deinit() const
+    void handle::deinit() const
     {
         rcc::reset_reg(cfg_.channel);
     }
 
-    Pin_state Handle::read_pin() const
+    Pin_state handle::read_pin() const
     {
         return utils::is_bit_set(p_reg_->idr,
                                  static_cast<uint32_t>(cfg_.pin_num))
@@ -215,12 +216,12 @@ namespace mcal::peripherals::gpio
                    : Pin_state::reset;
     }
 
-    uint16_t Handle::read_port() const
+    uint16_t handle::read_port() const
     {
         return static_cast<uint16_t>(p_reg_->idr);
     }
 
-    void Handle::write_pin(Pin_state state) const
+    void handle::write_pin(Pin_state state) const
     {
         p_reg_->odr = utils::set_bits_by_position(
             p_reg_->odr,
@@ -228,26 +229,26 @@ namespace mcal::peripherals::gpio
             Pin_state::set == state);
     }
 
-    void Handle::write_port(uint16_t value) const
+    void handle::write_port(uint16_t value) const
     {
         p_reg_->odr = value;
     }
 
-    void Handle::set_irq_enabled(bool b_enabled) const
+    void handle::set_irq_enabled(bool b_enabled) const
     {
         cortex::nvic::set_irq_enabled(
             g_irq_nums.at(static_cast<std::size_t>(cfg_.pin_num)),
             b_enabled);
     }
 
-    void Handle::config_irq_priority(cortex::nvic::Irq_prio prio) const
+    void handle::config_irq_priority(cortex::nvic::Irq_prio prio) const
     {
         cortex::nvic::set_irq_priority(
             g_irq_nums.at(static_cast<std::size_t>(cfg_.pin_num)),
             prio);
     }
 
-    void Handle::handle_irq() const
+    void handle::handle_irq() const
     {
         const auto pin_number{static_cast<uint32_t>(cfg_.pin_num)};
         if (utils::is_bit_set(EXTI->pr, pin_number))

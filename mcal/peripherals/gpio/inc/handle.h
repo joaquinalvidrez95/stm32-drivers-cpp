@@ -22,21 +22,15 @@ extern "C"
 
 #include "mcal/peripherals/gpio/inc/reg.h"
 #include "mcal/peripherals/gpio/inc/configuration.h"
+#include "mcal/peripherals/gpio/inc/gpio.h"
 
     namespace mcal::peripherals::gpio
     {
-
-        enum class Pin_state : uint32_t
-        {
-            reset,
-            set
-        };
-
-        class Handle
+        class handle
         {
         public:
-            Handle(const Cfg &cfg);
-            ~Handle();
+            handle(const Cfg &cfg);
+            ~handle();
             void toggle_pin() const;
             void deinit() const;
             Pin_state read_pin() const;

@@ -15,27 +15,35 @@
 
 namespace mcal::peripherals::spi
 {
-    enum class Peripheral_state
+    enum class peripheral_state
     {
         disabled,
         enabled,
     };
 
-    class Handle
+    class handle
     {
     public:
-        Handle(const Cfg &cfg);
+        handle(const Cfg &cfg);
 
-        ~Handle();
+        ~handle();
 
         void send(const std::byte *p_first, const std::byte *p_last) const;
 
-        void set_peripheral_state(Peripheral_state state) const;
+        void send(std::byte data) const;
+
+        void send_dummy() const;
+
+        void set_peripheral_state(peripheral_state state) const;
 
     private:
-        void init_registers();
+        void init_registers() const;
 
         void wait_till_not_busy() const;
+
+        void wait_till_tx_buffer_empty() const;
+
+        void wait_till_rx_buffer_not_empty() const;
 
         const Cfg &cfg_;
         Reg *const p_reg_;

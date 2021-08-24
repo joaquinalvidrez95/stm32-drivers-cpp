@@ -7,9 +7,8 @@
 
 #include "hal/nucleo/f446re/inc/spi.h"
 
-#include "mcal/peripherals/spi/inc/handle.h"
-#include "mcal/peripherals/gpio/inc/handle.h"
-#include "mcal/peripherals/gpio/inc/configuration.h"
+#include "mcal/peripherals/spi/inc/ext.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
 
 namespace hal::nucleo::f446re
 {
@@ -59,7 +58,7 @@ namespace hal::nucleo::f446re
     {
     }
 
-    const mcal::peripherals::spi::Handle &Spi::handle() const
+    const mcal::peripherals::spi::handle &Spi::handle() const
     {
         return handle_;
     }

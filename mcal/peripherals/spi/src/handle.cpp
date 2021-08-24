@@ -27,7 +27,7 @@ namespace mcal::peripherals::spi
         uint32_t calculate_communication_mode(Cfg::Communication mode);
     }
 
-    Handle::Handle(const Cfg &cfg)
+    handle::handle(const Cfg &cfg)
         : cfg_{cfg},
           p_reg_{get_reg(cfg.bus)}
     {
@@ -35,19 +35,19 @@ namespace mcal::peripherals::spi
         init_registers();
     }
 
-    Handle::~Handle()
+    handle::~handle()
     {
         rcc::reset_reg(cfg_.bus);
     }
 
-    void Handle::init_registers()
+    void handle::init_registers() const
     {
         p_reg_->cr1 = calculate_cr1(cfg_);
         p_reg_->cr2 = calculate_cr2(cfg_);
     }
 
     // TODO: Check if it can be a template
-    void Handle::send(const std::byte *p_first, const std::byte *p_last) const
+    void handle::send(const std::byte *p_first, const std::byte *p_last) const
     {
         const auto [increment, offset]{Cfg::Data_frame_format::bit_16 ==
                                                cfg_.data_frame_format
@@ -56,10 +56,8 @@ namespace mcal::peripherals::spi
 
         for (auto it = p_first; (it + offset) < p_last; it += increment)
         {
-            while (!utils::is_bit_set(p_reg_->sr,
-                                      static_cast<uint32_t>(bitfield::Sr::txe)))
-            {
-            }
+            wait_till_tx_buffer_empty();
+
             if (Cfg::Data_frame_format::bit_8 == cfg_.data_frame_format)
             {
                 p_reg_->dr = std::to_integer<uint32_t>(*it);
@@ -73,22 +71,49 @@ namespace mcal::peripherals::spi
         }
     }
 
-    void Handle::set_peripheral_state(Peripheral_state state) const
+    void handle::send(std::byte data) const
     {
-        if (Peripheral_state::disabled == state)
+        wait_till_tx_buffer_empty();
+        p_reg_->dr = std::to_integer<uint32_t>(data);
+    }
+
+    void handle::send_dummy() const
+    {
+        send(std::byte{0});
+    }
+
+    void handle::set_peripheral_state(peripheral_state state) const
+    {
+        if (peripheral_state::disabled == state)
         {
             wait_till_not_busy();
         }
 
         p_reg_->cr1 = utils::set_bits_by_position(
             p_reg_->cr1, static_cast<uint32_t>(bitfield::Cr1::spe),
-            Peripheral_state::enabled == state);
+            peripheral_state::enabled == state);
     }
 
-    void Handle::wait_till_not_busy() const
+    void handle::wait_till_not_busy() const
     {
         while (utils::is_bit_set(p_reg_->sr,
                                  static_cast<uint32_t>(bitfield::Sr::bsy)))
+        {
+        }
+    }
+
+    void handle::wait_till_tx_buffer_empty() const
+    {
+        while (!utils::is_bit_set(p_reg_->sr,
+                                  static_cast<uint32_t>(bitfield::Sr::txe)))
+        {
+        }
+    }
+
+    void handle::wait_till_rx_buffer_not_empty() const
+    {
+        while (!utils::is_bit_set(p_reg_->sr,
+                                  static_cast<uint32_t>(bitfield::Sr::rxne)))
         {
         }
     }

@@ -4,8 +4,8 @@
 #include <array>
 
 #include "utils/inc/utils.h"
-#include "mcal/peripherals/gpio/inc/configuration.h"
-#include "mcal/peripherals/spi/inc/cfg.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
+#include "mcal/peripherals/spi/inc/ext.h"
 #include "mcal/inc/stm32f446xx.h"
 #include "mcal/peripherals/rcc/inc/ahb.h"
 #include "mcal/peripherals/rcc/inc/aph.h"

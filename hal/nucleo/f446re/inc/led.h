@@ -8,8 +8,7 @@
 #ifndef NUCLEO_F446RE_INC_LED_H_
 #define NUCLEO_F446RE_INC_LED_H_
 
-#include "mcal/peripherals/gpio/inc/handle.h"
-#include "mcal/peripherals/gpio/inc/configuration.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
 
 namespace hal::nucleo::f446re
 {
@@ -20,7 +19,7 @@ namespace hal::nucleo::f446re
         void toggle() const;
 
     private:
-        const mcal::peripherals::gpio::Handle handle_;
+        const mcal::peripherals::gpio::handle handle_;
     };
 
 } // namespace hal::nucleo::f446re

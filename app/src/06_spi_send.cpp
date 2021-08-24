@@ -1,10 +1,8 @@
 #include <array>
 #include <cstddef>
 
-#include "mcal/peripherals/spi/inc/handle.h"
-#include "mcal/peripherals/spi/inc/cfg.h"
-#include "mcal/peripherals/gpio/inc/handle.h"
-#include "mcal/peripherals/gpio/inc/configuration.h"
+#include "mcal/peripherals/spi/inc/ext.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
 #include "app/inc/cfg.h"
 #include "utils/inc/utils.h"
 
@@ -22,17 +20,17 @@ int main(void)
     mcal::peripherals::spi::Cfg cfg{};
     cfg.ssm = mcal::peripherals::spi::Cfg::Sw_slave_management::enabled;
     cfg.ssi = mcal::peripherals::spi::Cfg::Internal_slave_select::enabled;
-    const mcal::peripherals::spi::Handle h_spi{cfg};
+    const mcal::peripherals::spi::handle h_spi{cfg};
 
     constexpr std::array<char, 12> message{"Hello world"};
     std::array<std::byte, 12> buffer{};
     utils::to_bytes(message.cbegin(), message.cend(), buffer.begin());
 
     h_spi.set_peripheral_state(
-        mcal::peripherals::spi::Peripheral_state::enabled);
+        mcal::peripherals::spi::peripheral_state::enabled);
     h_spi.send(buffer.cbegin(), buffer.cend());
     h_spi.set_peripheral_state(
-        mcal::peripherals::spi::Peripheral_state::disabled);
+        mcal::peripherals::spi::peripheral_state::disabled);
 
     for (;;)
     {
@@ -54,7 +52,7 @@ namespace
             mcal::peripherals::gpio::Cfg::Speed::low,
             mcal::peripherals::gpio::Cfg::Alternate_function::f5,
         };
-        mcal::peripherals::gpio::Handle h_sck{sck_cfg};
+        mcal::peripherals::gpio::handle h_sck{sck_cfg};
 
         // H26
         constexpr mcal::peripherals::gpio::Cfg mosi_cfg{
@@ -66,7 +64,7 @@ namespace
             mcal::peripherals::gpio::Cfg::Speed::low,
             mcal::peripherals::gpio::Cfg::Alternate_function::f5,
         };
-        mcal::peripherals::gpio::Handle h_mosi{mosi_cfg};
+        mcal::peripherals::gpio::handle h_mosi{mosi_cfg};
     }
 } // namespace
 

@@ -10,8 +10,8 @@
 
 #include <cstddef>
 
-#include "mcal/peripherals/spi/inc/handle.h"
-#include "mcal/peripherals/gpio/inc/handle.h"
+#include "mcal/peripherals/spi/inc/ext.h"
+#include "mcal/peripherals/gpio/inc/ext.h"
 
 namespace hal::nucleo::f446re
 {
@@ -20,13 +20,13 @@ namespace hal::nucleo::f446re
     public:
         Spi();
 
-        const mcal::peripherals::spi::Handle &handle() const;
+        const mcal::peripherals::spi::handle &handle() const;
 
     private:
-        const mcal::peripherals::gpio::Handle h_sck_;
-        const mcal::peripherals::gpio::Handle h_mosi_;
-        const mcal::peripherals::gpio::Handle h_nss_;
-        const mcal::peripherals::spi::Handle handle_;
+        const mcal::peripherals::gpio::handle h_sck_;
+        const mcal::peripherals::gpio::handle h_mosi_;
+        const mcal::peripherals::gpio::handle h_nss_;
+        const mcal::peripherals::spi::handle handle_;
     };
 } // namespace hal::nucleo::f446re
 
