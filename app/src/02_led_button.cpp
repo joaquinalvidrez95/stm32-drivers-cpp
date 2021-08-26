@@ -1,8 +1,9 @@
-#include "hal/nucleo/f446re/inc/button.h"
-#include "hal/nucleo/f446re/inc/led.h"
 #include "app/inc/cfg.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_02_LED_BUTTON
+
+#include "hal/nucleo/f446re/inc/button.h"
+#include "hal/nucleo/f446re/inc/led.h"
 
 int main(void)
 {

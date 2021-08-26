@@ -23,19 +23,30 @@ namespace hal::arduino
     class spi
     {
     public:
+        static constexpr size_t id_length{10U};
+
+        enum class command : std::underlying_type_t<std::byte>
+        {
+            digital_write = 0x50U,
+            analog_read = 0x51U,
+            digital_read = 0x52U,
+            print = 0x53U,
+            read_id = 0x54U,
+        };
+
         spi(const mcal::peripherals::spi::handle &handle);
 
         std::optional<mcal::peripherals::gpio::pin_state> read_digital(
-            digital_pin pin);
+            digital_pin pin) const;
 
         void write_pin(digital_pin pin,
-                       mcal::peripherals::gpio::pin_state state);
+                       mcal::peripherals::gpio::pin_state state) const;
 
-        std::optional<std::byte> read_analog(analog_pin pin);
+        std::optional<std::byte> read_analog(analog_pin pin) const;
 
-        void print(std::string_view message);
+        void print(std::string_view message) const;
 
-        void read_id(std::byte *p_first, std::byte *p_last);
+        bool read_id(std::byte *p_first, std::byte *p_last) const;
 
     private:
         const mcal::peripherals::spi::handle &handle_;

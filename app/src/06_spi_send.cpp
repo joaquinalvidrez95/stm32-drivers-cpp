@@ -1,12 +1,12 @@
+#include "app/inc/cfg.h"
+
+#if CFG_SAMPLE == CFG_SAMPLE_06_SPI_SEND
 #include <array>
 #include <cstddef>
 
 #include "mcal/peripherals/spi/inc/ext.h"
 #include "mcal/peripherals/gpio/inc/ext.h"
-#include "app/inc/cfg.h"
 #include "utils/inc/utils.h"
-
-#if CFG_SAMPLE == CFG_SAMPLE_06_SPI_SEND
 
 namespace
 {

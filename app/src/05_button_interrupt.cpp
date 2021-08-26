@@ -1,9 +1,10 @@
-#include "hal/nucleo/f446re/inc/button.h"
-#include "hal/nucleo/f446re/inc/led.h"
 #include "app/inc/cfg.h"
-#include "utils/inc/utils.h"
 
 #if CFG_SAMPLE == CFG_SAMPLE_05_BUTTTON_INTERRUPT
+
+#include "hal/nucleo/f446re/inc/button.h"
+#include "hal/nucleo/f446re/inc/led.h"
+#include "utils/inc/utils.h"
 
 namespace
 {

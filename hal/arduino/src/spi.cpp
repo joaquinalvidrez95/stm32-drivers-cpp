@@ -17,15 +17,6 @@
 
 namespace hal::arduino
 {
-    enum class command : std::underlying_type_t<std::byte>
-    {
-        digital_write = 0x50U,
-        analog_read = 0x51U,
-        digital_read = 0x52U,
-        print = 0x53U,
-        read_id = 0x54U,
-    };
-
     enum class response : std::underlying_type_t<std::byte>
     {
         nack = 0xA5U,
@@ -34,19 +25,9 @@ namespace hal::arduino
 
     namespace
     {
-        bool is_response_ack(const mcal::peripherals::spi::handle &h_spi)
-        {
-            h_spi.move_shift_register();
-            const auto ack_response{h_spi.read_byte()};
-            return static_cast<std::byte>(response::ack) == ack_response;
-        }
-
-        bool send_cmd(const mcal::peripherals::spi::handle &h_spi, command cmd)
-        {
-            h_spi.send(static_cast<std::byte>(cmd));
-            h_spi.clear_rx_buffer_not_empty_flag();
-            return is_response_ack(h_spi);
-        }
+        bool is_response_ack(const mcal::peripherals::spi::handle &h_spi);
+        bool send_cmd(const mcal::peripherals::spi::handle &h_spi,
+                      spi::command cmd);
     } // namespace
 
     spi::spi(const mcal::peripherals::spi::handle &handle) : handle_{handle}
@@ -54,7 +35,7 @@ namespace hal::arduino
     }
 
     std::optional<mcal::peripherals::gpio::pin_state> spi::read_digital(
-        digital_pin pin)
+        digital_pin pin) const
     {
         handle_.set_state(mcal::peripherals::spi::state::enabled);
 
@@ -79,7 +60,7 @@ namespace hal::arduino
     }
 
     void spi::write_pin(digital_pin pin,
-                        mcal::peripherals::gpio::pin_state state)
+                        mcal::peripherals::gpio::pin_state state) const
     {
         handle_.set_state(mcal::peripherals::spi::state::enabled);
 
@@ -96,7 +77,7 @@ namespace hal::arduino
         handle_.set_state(mcal::peripherals::spi::state::disabled);
     }
 
-    std::optional<std::byte> spi::read_analog(analog_pin pin)
+    std::optional<std::byte> spi::read_analog(analog_pin pin) const
     {
         handle_.set_state(mcal::peripherals::spi::state::enabled);
 
@@ -116,7 +97,7 @@ namespace hal::arduino
         return out;
     }
 
-    void spi::print(std::string_view message)
+    void spi::print(std::string_view message) const
     {
         handle_.set_state(mcal::peripherals::spi::state::enabled);
         if (send_cmd(handle_, command::print))
@@ -130,15 +111,38 @@ namespace hal::arduino
         handle_.set_state(mcal::peripherals::spi::state::disabled);
     }
 
-    void spi::read_id(std::byte *p_first, std::byte *p_last)
+    bool spi::read_id(std::byte *p_first, std::byte *p_last) const
     {
         handle_.set_state(mcal::peripherals::spi::state::enabled);
+
+        bool ok{false};
         if (send_cmd(handle_, command::read_id))
         {
+            ok = true;
             handle_.move_shift_register();
             handle_.read(p_first, p_last);
         }
         handle_.set_state(mcal::peripherals::spi::state::disabled);
+
+        return ok;
     }
+
+    namespace
+    {
+        bool is_response_ack(const mcal::peripherals::spi::handle &h_spi)
+        {
+            h_spi.move_shift_register();
+            const auto ack_response{h_spi.read_byte()};
+            return static_cast<std::byte>(response::ack) == ack_response;
+        }
+
+        bool send_cmd(const mcal::peripherals::spi::handle &h_spi,
+                      spi::command cmd)
+        {
+            h_spi.send(static_cast<std::byte>(cmd));
+            h_spi.clear_rx_buffer_not_empty_flag();
+            return is_response_ack(h_spi);
+        }
+    } // namespace
 
 } // namespace hal::arduino

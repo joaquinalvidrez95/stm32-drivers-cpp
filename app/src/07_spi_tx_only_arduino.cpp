@@ -7,17 +7,16 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#include "app/inc/cfg.h"
 
+#if CFG_SAMPLE == CFG_SAMPLE_07_SPI_TX_ONLY_ARDUINO
 #include <array>
 #include <cstddef>
 
 #include "mcal/peripherals/spi/inc/ext.h"
 #include "hal/nucleo/f446re/inc/spi.h"
 #include "hal/nucleo/f446re/inc/button.h"
-#include "app/inc/cfg.h"
 #include "utils/inc/utils.h"
-
-#if CFG_SAMPLE == CFG_SAMPLE_07_SPI_TX_ONLY_ARDUINO
 
 int main(void)
 {
