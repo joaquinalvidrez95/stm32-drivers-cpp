@@ -21,10 +21,13 @@ namespace mcal::peripherals::spi
     namespace
     {
         reg *get_reg(bus bus);
-
         uint32_t calculate_cr1(const cfg &cfg);
         uint32_t calculate_cr2(const cfg &cfg);
         uint32_t calculate_communication_mode(communication mode);
+        void init_registers(const spi::cfg &cfg, spi::reg &reg);
+        void wait_till_not_busy(const spi::reg &reg);
+        void wait_till_tx_buffer_empty(const spi::reg &reg);
+        void wait_till_rx_buffer_not_empty(const spi::reg &reg);
     }
 
     handle::handle(const cfg &cfg)
@@ -32,18 +35,12 @@ namespace mcal::peripherals::spi
           p_reg_{get_reg(cfg.bus)}
     {
         rcc::set_clock_enabled(cfg.bus, true);
-        init_registers();
+        init_registers(cfg_, *p_reg_);
     }
 
     handle::~handle()
     {
         rcc::reset_reg(cfg_.bus);
-    }
-
-    void handle::init_registers() const
-    {
-        p_reg_->cr1 = calculate_cr1(cfg_);
-        p_reg_->cr2 = calculate_cr2(cfg_);
     }
 
     // TODO: Check if it can be a template
@@ -56,7 +53,7 @@ namespace mcal::peripherals::spi
 
         for (auto it = p_first; (it + offset) < p_last; it += increment)
         {
-            wait_till_tx_buffer_empty();
+            wait_till_tx_buffer_empty(*p_reg_);
 
             if (data_frame_format::bit_8 == cfg_.data_frame_format)
             {
@@ -73,7 +70,7 @@ namespace mcal::peripherals::spi
 
     void handle::send(std::byte data) const
     {
-        wait_till_tx_buffer_empty();
+        wait_till_tx_buffer_empty(*p_reg_);
         p_reg_->dr = std::to_integer<uint32_t>(data);
     }
 
@@ -86,7 +83,7 @@ namespace mcal::peripherals::spi
 
         for (auto it = p_first; (it + offset) < p_last; it += increment)
         {
-            wait_till_tx_buffer_empty();
+            wait_till_tx_buffer_empty(*p_reg_);
 
             if (data_frame_format::bit_8 == cfg_.data_frame_format)
             {
@@ -107,7 +104,7 @@ namespace mcal::peripherals::spi
 
     std::byte handle::read_byte() const
     {
-        wait_till_rx_buffer_not_empty();
+        wait_till_rx_buffer_not_empty(*p_reg_);
         return static_cast<std::byte>(p_reg_->dr);
     }
 
@@ -120,36 +117,12 @@ namespace mcal::peripherals::spi
     {
         if (state::disabled == state)
         {
-            wait_till_not_busy();
+            wait_till_not_busy(*p_reg_);
         }
 
         p_reg_->cr1 = utils::set_bits_by_position(
             p_reg_->cr1, static_cast<uint32_t>(bitfield::cr1::spe),
             state::enabled == state);
-    }
-
-    void handle::wait_till_not_busy() const
-    {
-        while (utils::is_bit_set(p_reg_->sr,
-                                 static_cast<uint32_t>(bitfield::sr::bsy)))
-        {
-        }
-    }
-
-    void handle::wait_till_tx_buffer_empty() const
-    {
-        while (!utils::is_bit_set(p_reg_->sr,
-                                  static_cast<uint32_t>(bitfield::sr::txe)))
-        {
-        }
-    }
-
-    void handle::wait_till_rx_buffer_not_empty() const
-    {
-        while (!utils::is_bit_set(p_reg_->sr,
-                                  static_cast<uint32_t>(bitfield::sr::rxne)))
-        {
-        }
     }
 
     namespace
@@ -231,6 +204,36 @@ namespace mcal::peripherals::spi
                 ss_out_enable::enabled == cfg.ssoe);
 
             return cr2;
+        }
+
+        void init_registers(const spi::cfg &cfg, spi::reg &reg)
+        {
+            reg.cr1 = calculate_cr1(cfg);
+            reg.cr2 = calculate_cr2(cfg);
+        }
+
+        void wait_till_not_busy(const spi::reg &reg)
+        {
+            while (utils::is_bit_set(reg.sr,
+                                     static_cast<uint32_t>(bitfield::sr::bsy)))
+            {
+            }
+        }
+
+        void wait_till_tx_buffer_empty(const spi::reg &reg)
+        {
+            while (!utils::is_bit_set(reg.sr,
+                                      static_cast<uint32_t>(bitfield::sr::txe)))
+            {
+            }
+        }
+
+        void wait_till_rx_buffer_not_empty(const spi::reg &reg)
+        {
+            while (!utils::is_bit_set(reg.sr,
+                                      static_cast<uint32_t>(bitfield::sr::rxne)))
+            {
+            }
         }
 
     } // namespace

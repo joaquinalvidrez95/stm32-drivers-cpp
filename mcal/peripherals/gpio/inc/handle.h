@@ -42,8 +42,6 @@ extern "C"
             void handle_irq() const;
 
         private:
-            void init_registers();
-
             const cfg &cfg_;
 
             reg *const p_reg_;

@@ -47,15 +47,6 @@ namespace mcal::peripherals::spi
         void set_state(state state) const;
 
     private:
-        // TODO: Move to unnamed namespace
-        void init_registers() const;
-
-        void wait_till_not_busy() const;
-
-        void wait_till_tx_buffer_empty() const;
-
-        void wait_till_rx_buffer_not_empty() const;
-
         const cfg &cfg_;
         reg *const p_reg_;
     };
