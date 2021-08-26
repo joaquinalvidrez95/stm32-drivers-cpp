@@ -77,21 +77,55 @@ namespace mcal::peripherals::spi
         p_reg_->dr = std::to_integer<uint32_t>(data);
     }
 
-    void handle::send_dummy() const
+    void handle::read(std::byte *p_first, std::byte *p_last) const
+    {
+        const auto [increment, offset]{data_frame_format::bit_16 ==
+                                               cfg_.data_frame_format
+                                           ? std::pair{2U, 1U}
+                                           : std::pair{1U, 0U}};
+
+        for (auto it = p_first; (it + offset) < p_last; it += increment)
+        {
+            wait_till_tx_buffer_empty();
+
+            if (data_frame_format::bit_8 == cfg_.data_frame_format)
+            {
+                *it = static_cast<std::byte>(p_reg_->dr);
+            }
+            else
+            {
+                it[0U] = std::byte{p_reg_->dr && 0xFFU};
+                it[1U] = std::byte{(p_reg_->dr >> 8U) && 0xFFU};
+            }
+        }
+    }
+
+    void handle::move_shift_register() const
     {
         send(std::byte{0});
     }
 
-    void handle::set_peripheral_state(peripheral_state state) const
+    std::byte handle::read_byte() const
     {
-        if (peripheral_state::disabled == state)
+        wait_till_rx_buffer_not_empty();
+        return static_cast<std::byte>(p_reg_->dr);
+    }
+
+    void handle::clear_rx_buffer_not_empty_flag() const
+    {
+        static_cast<void>(read_byte());
+    }
+
+    void handle::set_state(state state) const
+    {
+        if (state::disabled == state)
         {
             wait_till_not_busy();
         }
 
         p_reg_->cr1 = utils::set_bits_by_position(
             p_reg_->cr1, static_cast<uint32_t>(bitfield::cr1::spe),
-            peripheral_state::enabled == state);
+            state::enabled == state);
     }
 
     void handle::wait_till_not_busy() const

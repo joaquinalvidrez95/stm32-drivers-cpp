@@ -26,11 +26,9 @@ int main(void)
     std::array<std::byte, 12> buffer{};
     utils::to_bytes(message.cbegin(), message.cend(), buffer.begin());
 
-    h_spi.set_peripheral_state(
-        mcal::peripherals::spi::peripheral_state::enabled);
+    h_spi.set_state(mcal::peripherals::spi::state::enabled);
     h_spi.send(buffer.cbegin(), buffer.cend());
-    h_spi.set_peripheral_state(
-        mcal::peripherals::spi::peripheral_state::disabled);
+    h_spi.set_state(mcal::peripherals::spi::state::disabled);
 
     for (;;)
     {

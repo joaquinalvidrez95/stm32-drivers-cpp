@@ -31,13 +31,11 @@ int main(void)
     for (;;)
     {
         h_button.wait_till_pressed();
-        h_spi.handle().set_peripheral_state(
-            mcal::peripherals::spi::peripheral_state::enabled);
+        h_spi.handle().set_state(mcal::peripherals::spi::state::enabled);
 
         h_spi.handle().send(length.cbegin(), length.cend());
         h_spi.handle().send(buffer.cbegin(), buffer.cend());
-        h_spi.handle().set_peripheral_state(
-            mcal::peripherals::spi::peripheral_state::disabled);
+        h_spi.handle().set_state(mcal::peripherals::spi::state::disabled);
     }
     return 0;
 }

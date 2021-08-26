@@ -15,7 +15,7 @@
 
 namespace mcal::peripherals::spi
 {
-    enum class peripheral_state
+    enum class state
     {
         disabled,
         enabled,
@@ -32,11 +32,22 @@ namespace mcal::peripherals::spi
 
         void send(std::byte data) const;
 
-        void send_dummy() const;
+        void read(std::byte *p_first, std::byte *p_last) const;
 
-        void set_peripheral_state(peripheral_state state) const;
+        /**
+         * @brief Sends a dummy byte to move shift register.
+         * 
+         */
+        void move_shift_register() const;
+
+        std::byte read_byte() const;
+
+        void clear_rx_buffer_not_empty_flag() const;
+
+        void set_state(state state) const;
 
     private:
+        // TODO: Move to unnamed namespace
         void init_registers() const;
 
         void wait_till_not_busy() const;
